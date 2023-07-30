@@ -1,90 +1,38 @@
-# FoundryVTT - Forien's Easy Polls
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/forien/foundryvtt-forien-easy-polls?style=for-the-badge) 
-![GitHub Releases](https://img.shields.io/github/downloads/Forien/foundryvtt-forien-easy-polls/latest/module.zip?style=for-the-badge) 
-![GitHub All Releases](https://img.shields.io/github/downloads/Forien/foundryvtt-forien-easy-polls/module.zip?style=for-the-badge&label=Downloads+total)    
-**[Compatibility]**: *FoundryVTT* 0.6.0+ (verified working on v11)  
-**[Systems]**: *any*  
-**[Languages]**: *English, Polish*  
+# FoundryVTT - Token Action HUD WFRP 4e
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Foundry-Workshop/token-action-hud-wfrp4e?style=for-the-badge) 
+![GitHub Releases](https://img.shields.io/github/downloads/Foundry-Workshop/token-action-hud-wfrp4e/latest/module.zip?style=for-the-badge) 
+![GitHub All Releases](https://img.shields.io/github/downloads/Foundry-Workshop/token-action-hud-wfrp4e/module.zip?style=for-the-badge&label=Downloads+total)    
 
-This module aims to provide solution to create, manage, vote and see results of Polls in Chat Log during games played via Foundry Virtual Tabletop.
+Token Action HUD is a repositionable HUD of actions for a selected token.
 
-## Usage
+![Token Action HUD](https://raw.githubusercontent.com/Larkinabout/fvtt-token-action-hud-template/main/.github/readme/token-action-hud.gif)
 
-This module lets you create and manage Polls using [Chat Command](#through-chat-command), [Create Poll Dialog](#through-create-dialog-ui) and [Saved Polls App](#saved-polls)
+## Features
+- Make rolls directly from the HUD instead of opening your character sheet.
+- Use items from the HUD or right-click an item to open its sheet.
+- Move the HUD and choose to expand the menus up or down.
+- Unlock the HUD to customise layout and groups per user, and actions per actor.
+- Add your own macros, journal entries and roll table compendiums.
 
-### Through Chat Command
-To create a poll, use `/poll` chat command. 
-* First line becomes the question.
-* Every other line becomes an answer. 
-* Empty lines are ignored
+## Required Modules
 
-_Tip_: Use `Shift+Enter` to go to new line when writing a message
+**IMPORTANT** - Token Action HUD WFRP 4e requires the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) module to be installed.
 
+## Recommended Modules
+* Token Action HUD uses the [Color Picker](https://foundryvtt.com/packages/color-picker) library module for its color picker settings.
 
-#### Optional flags
+## FAQ
 
-Chat Command supports the following optional flags. Flags allow overriding the default [Configuration Settings](#configuration)
+For a guide on using Token Action HUD, go to: [How to Use Token Action HUD](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD)
 
-##### Mode
-Use this flag by typing `--mode` or `--m` directly followed by one of allowed modes:
-* `multiple` (also `multi`, `m`) — set Poll to multiple vote poll, allowing players to vote on multiple options
-* `single` (also `s`) — set Poll to single vote poll, allowing players to only pick one option
+For questions, feature requests or bug reports, please open an issue [here](https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues).
 
-##### Results
-Use this flag by typing `--results` or `--r` directly followed by one of allowed settings:
-* `true` (also `t`) — set Poll to allow players checking the Poll's results
-* `false` (also `f`) — set Poll to hide results from players
-
-##### Secret
-Use this flag by typing `--secret` or `--s` directly followed by one of allowed settings:
-* `true` (also `t`) — set Poll to allow players seeing who voted for what options (requires players to also see results)
-* `false` (also `f`) — set Poll to hide voters
-
-#### Example:
-```
-/p --mode single Ultimate Question of Life, the Universe, and Everything
-Stupid answer
-Dumb answer
-Just answer
-Barely answer
-42
-¯\_(ツ)_/¯
-```
-
-### Through Create Dialog UI
-
-Press `P` (keybinding is editable through Foundry's `Configure Options`) to open a "Create Poll" Dialog, where you can set Poll's Question and Options in visual form.
-
-In this Dialog you can also set all flags as you wish.
-
-![](https://i.imgur.com/edljE6f.png)
-
-### Saved Polls
-
-When using "Creat Poll" Dialog, you have an option to "Create and Save". Using this button will save the Poll for your later use.
-
-Press `Ctrl+P` (keybinding is editable through Foundry's `Configure Options`) to open a "Saved Polls" App, where you can see all your Saved Polls and quickly post them to Chat, delete them, or edit them.
-
-![](https://i.imgur.com/qs1eD1a.png)
-
-## Configuration
-
-In configuration you can set several handy options like:
-- Allowing Players to create Polls
-- Default flags for newly created Polls
-
-![](https://i.imgur.com/ZgjSU6o.png)
-
-## Screenshots 
-
-![](https://i.gyazo.com/d7b662c2e90a366c14171c8d6e0a3f3b.gif)
-![](https://i.imgur.com/x1T35P6.png)
 
 ## Future plans
 
 * _none currently_
 
-You can **always** check current and up-to-date [planned and requested features here](https://github.com/Forien/foundryvtt-forien-easy-polls/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+You can **always** check current and up-to-date [planned and requested features here](https://github.com/https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 *If you have **any** suggestion or idea on new contents, hit me up on Discord!*
 
@@ -99,11 +47,14 @@ If you wish to contact me for any reason, reach me out on Discord using my tag: 
 
 ## Acknowledgments
 
-* Thanks to Discord member Vathraq for the idea for this module!
+* Thanks to Russell (@Larkinabout) for creating the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core)!
+* Thank you to the Community Helpers on Foundry's Discord who provide tireless support for people seeking help with the HUD.
 
 ## Support
 
 If you wish to support module development, please consider [becoming Patron](https://www.patreon.com/foundryworkshop) or donating [through Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6P2RRX7HVEMV2&source=url). Thanks!
+
+Please also consider [supporting Russell](https://ko-fi.com/larkinabout) (@Larkinabout), the author of the Token Action HUD Core, which is the basis of this module!
 
 ## License
 
