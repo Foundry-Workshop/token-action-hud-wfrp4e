@@ -1,0 +1,78 @@
+{
+  "id": "token-action-hud-wfrp4e",
+  "title": "Token Action HUD WFRP4e",
+  "description": "Token Action HUD system module integration for WFRP4e system.",
+  "authors": [
+    {
+      "name": "Forien",
+      "discord": "forien",
+      "url": "https://www.patreon.com/foundryworkshop"
+    }
+  ],
+  "url": "<<autoreplaced>>",
+  "manifest": "<<autoreplaced>>",
+  "download": "<<autoreplaced>>",
+  "readme": "<<autoreplaced>>",
+  "changelog": "<<autoreplaced>>",
+  "bugs": "<<autoreplaced>>",
+  "version": "<<autoreplaced>>",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11.306"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "wfrp4e",
+        "type": "system",
+        "compatibility": [
+          {
+            "minimum": "6.6.1",
+            "verified": "6.6.1"
+          }
+        ]
+      }
+    ],
+    "requires": [
+      {
+        "id": "token-action-hud-core",
+        "type": "module",
+        "compatibility": [
+          {
+            "minimum": "1.4.16",
+            "verified": "1.4.16"
+          }
+        ]
+      }
+    ]
+  },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "esmodules": [
+    "./modules/token-action-hud-wfrp4e.mjs"
+  ],
+  "styles": [
+    "./styles/token-action-hud-wfrp4e.css"
+  ],
+  "flags": {
+    "hotReload": {
+      "extensions": [
+        "css",
+        "html",
+        "hbs",
+        "json"
+      ],
+      "paths": [
+        "templates/",
+        "styles/",
+        "languages/"
+      ]
+    }
+  },
+  "socket": false
+}
