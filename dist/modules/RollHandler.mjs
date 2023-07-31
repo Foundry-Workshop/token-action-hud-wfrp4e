@@ -13,7 +13,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {object} event        The event
      * @param {string} encodedValue The encoded value
      */
-    async doHandleActionEvent (event, encodedValue) {
+    async doHandleActionEvent(event, encodedValue) {
       const payload = encodedValue.split('|')
 
       if (payload.length !== 2) {
@@ -29,7 +29,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         return this.doRenderItem(this.actor, actionId)
       }
 
-      const knownCharacters = ['character']
+      const knownCharacters = ['character', 'creature', 'npc'];
 
       // If single actor is selected
       if (this.actor) {
@@ -56,8 +56,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} actionTypeId The action type id
      * @param {string} actionId     The actionId
      */
-    async #handleAction (event, actor, token, actionTypeId, actionId) {
+    async #handleAction(event, actor, token, actionTypeId, actionId) {
       switch (actionTypeId) {
+        case 'characteristic':
+          this.#handleCharacteristicAction(event, actor, actionId)
+          break
         case 'item':
           this.#handleItemAction(event, actor, actionId)
           break
@@ -67,6 +70,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
 
+    #handleCharacteristicAction(event, actor, actionId) {
+      return actor.setupCharacteristic(actionId).then(test => test.roll());
+    }
+
     /**
      * Handle item action
      * @private
@@ -74,9 +81,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {object} actor    The actor
      * @param {string} actionId The action id
      */
-    #handleItemAction (event, actor, actionId) {
-      const item = actor.items.get(actionId)
-      item.toChat(event)
+    #handleItemAction(event, actor, actionId) {
+      const item = actor.items.get(actionId);
+
+      switch (item.type) {
+        case 'skill':
+          return actor.setupSkill(item).then(test => test.roll());
+        case 'weapon':
+          return actor.setupWeapon(item).then(setupData => {
+            if (!setupData.abort)
+              actor.weaponTest(setupData);
+          });
+        case 'spell':
+          return actor.sheet.spellDialog(item);
+        default:
+          item.postItem(0);
+      }
     }
 
     /**
@@ -85,7 +105,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {object} token    The token
      * @param {string} actionId The action id
      */
-    async #handleUtilityAction (token, actionId) {
+    async #handleUtilityAction(token, actionId) {
       switch (actionId) {
         case 'endTurn':
           if (game.combat?.current?.tokenId === token.id) {

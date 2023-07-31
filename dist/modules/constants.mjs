@@ -18,7 +18,8 @@ const tah = {
    * Action types
    */
   actions: {
-    item: 'tokenActionHud.template.item',
+    characteristic: 'tokenActionHud.wfrp4e.characteristic',
+    item: 'tokenActionHud.wfrp4e.item',
     utility: 'tokenActionHud.utility'
   },
 
@@ -26,12 +27,21 @@ const tah = {
    * Groups
    */
   groups: {
-    armour: {id: 'armour', name: 'tokenActionHud.template.armor', type: 'system'},
-    trapping: {id: 'trapping', name: 'tokenActionHud.template.trapping', type: 'system'},
-    containers: {id: 'containers', name: 'tokenActionHud.template.containers', type: 'system'},
-    treasure: {id: 'treasure', name: 'tokenActionHud.template.treasure', type: 'system'},
-    weapons: {id: 'weapons', name: 'tokenActionHud.template.weapons', type: 'system'},
-    combat: {id: 'combat', name: 'tokenActionHud.combat', type: 'system'},
+    characteristics: {id: 'characteristics', name: 'tokenActionHud.wfrp4e.characteristics', type: 'system'},
+    armour: {id: 'armour', name: 'tokenActionHud.wfrp4e.armour', type: 'system'},
+    skillsBasic: {id: 'skillsBasic', name: 'tokenActionHud.wfrp4e.skillsBasic', type: 'system'},
+    skillsAdvanced: {id: 'skillsAdvanced', name: 'tokenActionHud.wfrp4e.skillsAdvanced', type: 'system'},
+    trappings: {id: 'trappings', name: 'tokenActionHud.wfrp4e.trappings', type: 'system'},
+    consumables: {id: 'consumables', name: 'tokenActionHud.wfrp4e.consumables', type: 'system'},
+    containers: {id: 'containers', name: 'tokenActionHud.wfrp4e.containers', type: 'system'},
+    treasure: {id: 'treasure', name: 'tokenActionHud.wfrp4e.treasure', type: 'system'},
+    weapons: {id: 'weapons', name: 'tokenActionHud.wfrp4e.weapons', type: 'system'},
+    spellsArcane: {id: 'spellsArcane', name: 'tokenActionHud.wfrp4e.spellsArcane', type: 'system'},
+    spellsPetty: {id: 'spellsPetty', name: 'tokenActionHud.wfrp4e.spellsPetty', type: 'system'},
+    prayers: {id: 'prayers', name: 'tokenActionHud.wfrp4e.prayers', type: 'system'},
+    talents: {id: 'talents', name: 'tokenActionHud.wfrp4e.talents', type: 'system'},
+    traits: {id: 'traits', name: 'tokenActionHud.wfrp4e.traits', type: 'system'},
+    combat: {id: 'combat', name: 'tokenActionHud.wfrp4e.combat', type: 'system'},
     token: {id: 'token', name: 'tokenActionHud.token', type: 'system'},
     utility: {id: 'utility', name: 'tokenActionHud.utility', type: 'system'}
   },
@@ -43,7 +53,14 @@ const tah = {
     armour: {groupId: 'armour'},
     container: {groupId: 'containers'},
     trapping: {groupId: 'trapping'},
-    weapon: {groupId: 'weapons'}
+    weapon: {groupId: 'weapons'},
+    skillBasic: {groupId: 'skillsBasic'},
+    skillAdvanced: {groupId: 'skillsAdvanced'},
+    talent: {groupId: 'talents'},
+    trait: {groupId: 'traits'},
+    spellPetty: {groupId: 'spellsPetty'},
+    spellArcane: {groupId: 'spellsArcane'},
+    prayer: {groupId: 'prayers'}
   }
 }
 

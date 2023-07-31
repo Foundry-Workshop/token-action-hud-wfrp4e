@@ -1,7 +1,28 @@
 {
-  "Forien": {
-    "TAH_WFRP4e": {
-
+  "tokenActionHud": {
+    "wfrp4e": {
+      "armour": "Armour",
+      "characteristic": "Characteristic",
+      "characteristics": "Characteristics",
+      "combat": "Combat",
+      "consumables": "Consumables",
+      "containers": "Containers",
+      "inventory": "Inventory",
+      "item": "Item",
+      "magic": "Magic",
+      "prayers": "Prayers",
+      "skills": "Skills",
+      "skillsBasic": "Basic Skills",
+      "skillsAdvanced": "Advanced Skills",
+      "spells": "Spells",
+      "spellsArcane": "Arcane Spells",
+      "spellsPetty": "Petty Spells",
+      "talents": "Talents",
+      "traits": "Traits",
+      "trappings": "Trappings",
+      "token": "Token",
+      "utility": "Utility",
+      "weapons": "Weapons"
     }
   }
 }
