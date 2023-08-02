@@ -61,7 +61,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'characteristic':
           this.#handleCharacteristicAction(event, actor, actionId)
           break
+        case 'skill':
+        case 'talent':
         case 'item':
+        case 'magic':
           this.#handleItemAction(event, actor, actionId)
           break
         case 'utility':

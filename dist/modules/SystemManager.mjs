@@ -29,7 +29,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @returns {object} The available roll handlers
      */
     getAvailableRollHandlers () {
-      const coreTitle = 'Core Template'
+      const coreTitle = 'WFRP4e'
       const choices = { core: coreTitle }
       return choices
     }
@@ -44,7 +44,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     doGetRollHandler (rollHandlerId) {
       let rollHandler
       switch (rollHandlerId) {
-        case 'core':
+        case 'wfrp4e':
         default:
           rollHandler = new RollHandlerWfrp4e()
           break

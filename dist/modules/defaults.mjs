@@ -18,7 +18,7 @@ Hooks.once('setup', () => {
   DEFAULTS = {
     layout: [
       {
-        nestId: 'characteristics',
+        nestId: 'categoryCharacteristics',
         id: 'categoryCharacteristics',
         name: game.i18n.localize('tokenActionHud.wfrp4e.characteristics'),
         groups: [
@@ -26,7 +26,7 @@ Hooks.once('setup', () => {
         ]
       },
       {
-        nestId: 'skills',
+        nestId: 'categorySkills',
         id: 'categorySkills',
         name: game.i18n.localize('tokenActionHud.wfrp4e.skills'),
         groups: [
@@ -35,7 +35,7 @@ Hooks.once('setup', () => {
         ]
       },
       {
-        nestId: 'talents',
+        nestId: 'categoryTalents',
         id: 'categoryTalents',
         name: game.i18n.localize('tokenActionHud.wfrp4e.talents'),
         groups: [
@@ -44,37 +44,42 @@ Hooks.once('setup', () => {
         ]
       },
       {
-        nestId: 'combat',
+        nestId: 'categoryCombat',
         id: 'categoryCombat',
         name: game.i18n.localize('tokenActionHud.wfrp4e.combat'),
         groups: [
-          {...groups.weapons, nestId: 'categoryCombat_weapons'},
+          {...groups.combatBasic, nestId: 'categoryCombat_combatBasic'},
+          {...groups.combatWeapons, nestId: 'categoryCombat_combatWeapons'},
+          {...groups.combatTraits, nestId: 'categoryCombat_combatTraits'},
           {...groups.consumables, nestId: 'categoryCombat_consumables'},
+          {...groups.combatArmour, nestId: 'categoryCombat_combatArmour'},
         ]
       },
       {
-        nestId: 'magic',
+        nestId: 'categoryMagic',
         id: 'categoryMagic',
         name: game.i18n.localize('tokenActionHud.wfrp4e.magic'),
         groups: [
           {...groups.spellsPetty, nestId: 'categoryMagic_spellsPetty'},
           {...groups.spellsArcane, nestId: 'categoryMagic_spellsArcane'},
-          {...groups.prayers, nestId: 'categoryMagic_prayers'},
+          {...groups.prayersBlessings, nestId: 'categoryMagic_prayersBlessings'},
+          {...groups.prayersMiracles, nestId: 'categoryMagic_prayersMiracles'},
         ]
       },
       {
-        nestId: 'inventory',
+        nestId: 'categoryInventory',
         id: 'categoryInventory',
         name: game.i18n.localize('tokenActionHud.wfrp4e.inventory'),
         groups: [
           {...groups.weapons, nestId: 'categoryInventory_weapons'},
           {...groups.armour, nestId: 'categoryInventory_armour'},
+          {...groups.ammunition, nestId: 'categoryInventory_ammunition'},
           {...groups.containers, nestId: 'categoryInventory_containers'},
           {...groups.trappings, nestId: 'categoryInventory_trapping'}
         ]
       },
       {
-        nestId: 'utility',
+        nestId: 'categoryUtility',
         id: 'categoryUtility',
         name: game.i18n.localize('tokenActionHud.utility'),
         groups: [

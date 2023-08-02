@@ -22,7 +22,22 @@
       "trappings": "Trappings",
       "token": "Token",
       "utility": "Utility",
-      "weapons": "Weapons"
+      "weapons": "Weapons",
+
+      "settings": {
+        "displayUnequipped": {
+          "name": "Display Unequipped",
+          "hint": "Whether to display unequipped weapons on the Combat tab or not."
+        },
+        "groupLores": {
+          "name": "Group Magic Lores",
+          "hint": "Whether to display magic Lores grouped into a tabs. If disabled, spells from Lores will display as lists."
+        },
+        "groupTrappings": {
+          "name": "Group Trappings",
+          "hint": "Whether to display Trappings grouped into tabs by category. If disabled, Trapping types will display as lists."
+        }
+      }
     }
   }
 }
