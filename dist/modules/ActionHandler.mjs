@@ -85,6 +85,32 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     #buildMultipleTokenActions() {
     }
 
+    #makeActionFromItem(item, actionTypeName, actionType) {
+      return {
+        id: item._id,
+        name: this.#getActionName(item.name),
+        img: coreModule.api.Utils.getImage(item),
+        listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+        encodedValue: [actionType, item._id].join(this.delimiter),
+        info1: {
+          class: '',
+          text: this.#getTestTarget(item),
+          title: 'Test Target'
+        },
+        info2: {
+          class: '',
+          text: this.#getItemValue(item),
+          title: this.#getItemValueTooltip(item)
+        },
+        info3: {
+          class: '',
+          text: this.#getItemSecondaryValue(item),
+          title: this.#gerItemSecondaryValueTooltip(item)
+        },
+        tooltip: item.name
+      };
+    }
+
     async #buildCharacteristics() {
       const groupData = tah.groups.characteristics;
       const actions = [];
@@ -150,15 +176,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       this.#addActionsFromMap(actionTypeId, inventoryMap);
     };
 
+
     async #buildCombat() {
       await this.#buildCombatBasic();
-      if (this.items.size === 0) return;
 
+      if (this.talents.size > 0)
+        this.#buildCombatTraits();
+
+      if (this.items.size === 0) return;
       this.#buildCombatWeapons();
-      this.#buildCombatTraits();
       this.#buildCombatArmour();
     }
-
 
     async #buildCombatBasic() {
       const actionsData = [];
@@ -177,6 +205,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         {
           name: game.i18n.localize('SHEET.Improvised'),
           value: 'improv'
+        },
+        {
+          name: game.i18n.localize('SHEET.Stomp'),
+          value: 'stomp'
         }
       ];
 
@@ -201,35 +233,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         if (item.type !== 'weapon') continue;
         if (!this.displayUnequipped && !item.equipped) continue;
 
-        actionsData.push({
-          id: item._id,
-          name: this.#getActionName(item.name),
-          img: coreModule.api.Utils.getImage(item),
-          listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
-          encodedValue: [actionType, item._id].join(this.delimiter),
-          info1: {
-            class: '',
-            text: this.#getTestTarget(item),
-            title: 'Test Target'
-          },
-          info2: {
-            class: '',
-            text: this.#getItemValue(item),
-            title: this.#getItemValueTooltip(item)
-          },
-          info3: {
-            class: '',
-            text: this.#getItemSecondaryValue(item),
-            title: this.#gerItemSecondaryValueTooltip(item)
-          },
-          tooltip: item.name
-        })
+        let action = this.#makeActionFromItem(item, actionTypeName, actionType);
+        actionsData.push(action);
       }
 
       this.addActions(actionsData, groupData)
     };
 
     async #buildCombatTraits() {
+      const actionsData = [];
+      const actionType = 'combatTrait';
+      const actionTypeName = game.i18n.localize(tah.actions.trait);
+      const groupData = tah.groups.combatTraits;
+
+      for (let [key, item] of this.talents) {
+        if (item.type !== 'trait') continue;
+        if (!item.rollable?.value) continue;
+
+        let action = this.#makeActionFromItem(item, actionTypeName, actionType);
+        actionsData.push(action);
+      }
+
+      this.addActions(actionsData, groupData)
     };
 
     async #buildCombatArmour() {
@@ -499,7 +524,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'ammunition':
           return itemData.quantity.value;
         case 'container':
-          console.log(itemData);
           return `${this.#containerCarries(itemData)}/${itemData.system.carries.value}`;
         case 'armour':
           let highest = 0;

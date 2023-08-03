@@ -57,9 +57,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} actionId     The actionId
      */
     async #handleAction(event, actor, token, actionTypeId, actionId) {
-      console.log(event);
-      console.log(actionTypeId);
-      console.log(actionId);
       switch (actionTypeId) {
         case 'characteristic':
           this.#handleCharacteristicAction(event, actor, actionId);
@@ -72,6 +69,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           break;
         case 'combatBasic':
           this.#handleCombatAction(event, actor, actionId);
+          break;
+        case 'combatWeapon':
+        case 'combatTrait':
+          this.#handleCombatItemAction(event, actor, actionId);
           break;
         case 'utility':
           this.#handleUtilityAction(token, actionId);
@@ -124,8 +125,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return actor.setupWeapon(improv).then(setupData => {
             actor.weaponTest(setupData)
           })
+        case 'stomp':
+          let stomp = game.wfrp4e.config.systemItems.stomp;
+          return actor.setupTrait(stomp).then(setupData => {
+            actor.traitTest(setupData)
+          })
         default:
           break;
+      }
+    }
+
+    async #handleCombatItemAction(event, actor, actionId) {
+      const item = actor.items.get(actionId);
+
+      switch (item.type) {
+        case 'trait':
+          actor.setupTrait(item).then(setupData => {
+            actor.traitTest(setupData)
+          })
+          return;
+        case 'weapon':
+          return;
+        default:
       }
     }
 

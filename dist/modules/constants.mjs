@@ -23,6 +23,7 @@ const tah = {
   actions: {
     characteristic: 'tokenActionHud.wfrp4e.characteristic',
     item: 'tokenActionHud.wfrp4e.item',
+    trait: 'tokenActionHud.wfrp4e.trait',
     utility: 'tokenActionHud.utility',
     weapon: 'tokenActionHud.wfrp4e.weapon',
   },
