@@ -39,7 +39,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       this.groupTrappings = Utility.getSetting(settings.groupTrappings);
       this.maxCharacters = parseInt(Utility.getSetting(settings.maxCharacters)) ?? 0;
 
-      // Set items variable
+      // Set items variables
+      // Declaring multiple arrays, while taking more memory for sure, should be better
+      // than having to reconvert map to array to map every time I want to filter
       if (this.actor) {
         let skills = this.actor.items.filter(i => i.type === 'skill');
         let talents = this.actor.items.filter(i => i.type === 'talent' || i.type === 'trait');
@@ -151,12 +153,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #buildCombat() {
       await this.#buildCombatBasic();
       if (this.items.size === 0) return;
+
+      this.#buildCombatWeapons();
+      this.#buildCombatTraits();
+      this.#buildCombatArmour();
     }
 
+
     async #buildCombatBasic() {
-      const actionsData = []
-      const actionType = 'combatBasic'
-      const groupData = {id: actionType, type: 'system'}
+      const actionsData = [];
+      const actionType = 'combatBasic';
+      const groupData = {id: actionType, type: 'system'};
 
       let actions = [
         {
@@ -183,6 +190,50 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       this.addActions(actionsData, groupData)
     }
+
+    async #buildCombatWeapons() {
+      const actionsData = [];
+      const actionType = 'combatWeapon';
+      const actionTypeName = game.i18n.localize(tah.actions.weapon);
+      const groupData = tah.groups.combatWeapons;
+
+      for (let [key, item] of this.items) {
+        if (item.type !== 'weapon') continue;
+        if (!this.displayUnequipped && !item.equipped) continue;
+
+        actionsData.push({
+          id: item._id,
+          name: this.#getActionName(item.name),
+          img: coreModule.api.Utils.getImage(item),
+          listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+          encodedValue: [actionType, item._id].join(this.delimiter),
+          info1: {
+            class: '',
+            text: this.#getTestTarget(item),
+            title: 'Test Target'
+          },
+          info2: {
+            class: '',
+            text: this.#getItemValue(item),
+            title: this.#getItemValueTooltip(item)
+          },
+          info3: {
+            class: '',
+            text: this.#getItemSecondaryValue(item),
+            title: this.#gerItemSecondaryValueTooltip(item)
+          },
+          tooltip: item.name
+        })
+      }
+
+      this.addActions(actionsData, groupData)
+    };
+
+    async #buildCombatTraits() {
+    };
+
+    async #buildCombatArmour() {
+    };
 
     async #buildMagic() {
       if (this.magic.size === 0) return;
