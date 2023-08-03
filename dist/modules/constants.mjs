@@ -2,7 +2,7 @@ const constants = {
   modulePath: 'modules/token-action-hud-wfrp4e',
   moduleId: 'token-action-hud-wfrp4e',
   moduleLabel: `Token Action HUD WFRP4e`,
-  requiredCoreModuleVersion: '1.4.16'
+  requiredCoreModuleVersion: '1.4'
 };
 
 const defaults = {}
@@ -22,6 +22,8 @@ const tah = {
    */
   actions: {
     characteristic: 'tokenActionHud.wfrp4e.characteristic',
+    condition: 'tokenActionHud.wfrp4e.condition',
+    consumable: 'tokenActionHud.wfrp4e.consumable',
     item: 'tokenActionHud.wfrp4e.item',
     trait: 'tokenActionHud.wfrp4e.trait',
     utility: 'tokenActionHud.utility',
@@ -34,12 +36,14 @@ const tah = {
   groups: {
     ammunition: {id: 'ammunition', name: 'tokenActionHud.wfrp4e.ammunition', type: 'system'},
     armour: {id: 'armour', name: 'tokenActionHud.wfrp4e.armour', type: 'system'},
+    character: {id: 'character', name: 'tokenActionHud.wfrp4e.character', type: 'system'},
     characteristics: {id: 'characteristics', name: 'tokenActionHud.wfrp4e.characteristics', type: 'system'},
     combat: {id: 'combat', name: 'tokenActionHud.wfrp4e.combat', type: 'system'},
     combatArmour: {id: 'combatArmour', name: 'tokenActionHud.wfrp4e.armour', type: 'system'},
     combatBasic: {id: 'combatBasic', name: 'tokenActionHud.wfrp4e.basic', type: 'system'},
     combatTraits: {id: 'combatTraits', name: 'tokenActionHud.wfrp4e.traits', type: 'system'},
     combatWeapons: {id: 'combatWeapons', name: 'tokenActionHud.wfrp4e.weapons', type: 'system'},
+    conditions: {id: 'conditions', name: 'tokenActionHud.wfrp4e.conditions', type: 'system'},
     consumables: {id: 'consumables', name: 'tokenActionHud.wfrp4e.consumables', type: 'system'},
     containers: {id: 'containers', name: 'tokenActionHud.wfrp4e.containers', type: 'system'},
     prayersBlessings: {id: 'prayersBlessings', name: 'tokenActionHud.wfrp4e.prayersBlessings', type: 'system'},

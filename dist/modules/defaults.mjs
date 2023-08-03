@@ -20,9 +20,10 @@ Hooks.once('setup', () => {
       {
         nestId: 'categoryCharacteristics',
         id: 'categoryCharacteristics',
-        name: game.i18n.localize('tokenActionHud.wfrp4e.characteristics'),
+        name: game.i18n.localize('tokenActionHud.wfrp4e.character'),
         groups: [
           {...groups.characteristics, nestId: 'categoryCharacteristics_characteristics'},
+          {...groups.character, nestId: 'categoryCharacteristics_character'},
         ]
       },
       {
@@ -53,6 +54,7 @@ Hooks.once('setup', () => {
           {...groups.combatTraits, nestId: 'categoryCombat_combatTraits'},
           {...groups.consumables, nestId: 'categoryCombat_consumables'},
           {...groups.combatArmour, nestId: 'categoryCombat_combatArmour'},
+          {...groups.conditions, nestId: 'categoryCombat_conditions'},
         ]
       },
       {

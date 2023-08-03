@@ -14,73 +14,74 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} encodedValue The encoded value
      */
     async doHandleActionEvent(event, encodedValue) {
-      const payload = encodedValue.split('|')
-
-      if (payload.length !== 2) {
-        super.throwInvalidValueErr()
+      const payload = encodedValue.split('|');
+      console.log(encodedValue);
+      if (payload.length < 2) {
+        super.throwInvalidValueErr();
       }
 
-      const actionTypeId = payload[0]
-      const actionId = payload[1]
+      const actionTypeId = payload[0];
+      const actionId = payload[1];
+      const subActionType = payload[2] ?? null;
+      const subActionId = payload[3] ?? null;
 
-      const renderable = ['item']
+      const renderable = ['item'];
 
       if (renderable.includes(actionTypeId) && this.isRenderItem()) {
-        return this.doRenderItem(this.actor, actionId)
+        return this.doRenderItem(this.actor, actionId);
       }
 
       const knownCharacters = ['character', 'creature', 'npc'];
 
       // If single actor is selected
       if (this.actor) {
-        await this.#handleAction(event, this.actor, this.token, actionTypeId, actionId)
-        return
+        return await this.#handleAction(event, this.actor, this.token, actionTypeId, actionId, subActionType, subActionId);
       }
 
-      const controlledTokens = canvas.tokens.controlled
-        .filter((token) => knownCharacters.includes(token.actor?.type))
+      const controlledTokens = canvas.tokens.controlled.filter((token) => knownCharacters.includes(token.actor?.type));
 
       // If multiple actors are selected
       for (const token of controlledTokens) {
-        const actor = token.actor
-        await this.#handleAction(event, actor, token, actionTypeId, actionId)
+        const actor = token.actor;
+        await this.#handleAction(event, actor, token, actionTypeId, actionId);
       }
     }
 
     /**
      * Handle action
      * @private
-     * @param {object} event        The event
-     * @param {object} actor        The actor
-     * @param {object} token        The token
-     * @param {string} actionTypeId The action type id
-     * @param {string} actionId     The actionId
+     * @param {object} event         The event
+     * @param {object} actor         The actor
+     * @param {object} token         The token
+     * @param {string} actionTypeId  The action type id
+     * @param {string} actionId      The actionId
+     * @param {string} subActionType The sub action type id
+     * @param {string} subActionId   The sub actionId
      */
-    async #handleAction(event, actor, token, actionTypeId, actionId) {
+    async #handleAction(event, actor, token, actionTypeId, actionId, subActionType, subActionId) {
       switch (actionTypeId) {
         case 'characteristic':
-          this.#handleCharacteristicAction(event, actor, actionId);
-          break;
+          return this.#handleCharacteristicAction(actor, actionId);
         case 'skill':
         case 'talent':
         case 'item':
         case 'magic':
-          this.#handleItemAction(event, actor, actionId);
-          break;
+          return this.#handleItemAction(actor, actionId);
         case 'combatBasic':
-          this.#handleCombatAction(event, actor, actionId);
-          break;
+          return this.#handleCombatAction(actor, actionId);
         case 'combatWeapon':
         case 'combatTrait':
-          this.#handleCombatItemAction(event, actor, actionId);
-          break;
+          return this.#handleCombatItemAction(actor, actionId);
+        case 'consumable':
+          return this.#handleCombatConsumableAction(actor, actionId, subActionType, subActionId);
+        case 'condition':
+          return this.#handleConditionAction(event, actor, actionId);
         case 'utility':
-          this.#handleUtilityAction(token, actionId);
-          break;
+          return this.#handleUtilityAction(token, actionId);
       }
     }
 
-    #handleCharacteristicAction(event, actor, actionId) {
+    #handleCharacteristicAction(actor, actionId) {
       return actor.setupCharacteristic(actionId).then(test => test.roll());
     }
 
@@ -91,17 +92,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {object} actor    The actor
      * @param {string} actionId The action id
      */
-    #handleItemAction(event, actor, actionId) {
+    #handleItemAction(actor, actionId) {
       const item = actor.items.get(actionId);
 
       switch (item.type) {
         case 'skill':
           return actor.setupSkill(item).then(test => test.roll());
         case 'weapon':
-          return actor.setupWeapon(item).then(setupData => {
-            if (!setupData.abort)
-              actor.weaponTest(setupData);
-          });
+          return this.#rollWeapon(actor, item);
         case 'spell':
           return actor.sheet.spellDialog(item);
         default:
@@ -109,7 +107,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
 
-    async #handleCombatAction(event, actor, actionId) {
+    async #handleCombatAction(actor, actionId) {
       switch (actionId) {
         case 'unarmed':
           let unarmed = game.wfrp4e.config.systemItems.unarmed
@@ -135,19 +133,68 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
 
-    async #handleCombatItemAction(event, actor, actionId) {
+    async #handleCombatItemAction(actor, actionId) {
       const item = actor.items.get(actionId);
 
       switch (item.type) {
         case 'trait':
-          actor.setupTrait(item).then(setupData => {
+          return actor.setupTrait(item).then(setupData => {
             actor.traitTest(setupData)
           })
-          return;
         case 'weapon':
-          return;
+          return this.#rollWeapon(actor, item);
+        case 'consumable':
         default:
       }
+    }
+
+    async #handleCombatConsumableAction(actor, actionId, subActionType, subActionId) {
+      switch (subActionType) {
+        case 'invokable':
+          return game.wfrp4e.utility.invokeEffect(actor, subActionId, actionId)
+        case 'targetable':
+          let effect = actor.populateEffect(subActionId, actionId)
+          let item = actor.items.get(actionId)
+
+          if (effect.flags.wfrp4e?.reduceQuantity && game.user.targets.size > 0) {
+            if (item.quantity.value > 0)
+              item.update({"system.quantity.value": item.quantity.value - 1})
+            else
+              throw ui.notifications.error(game.i18n.localize("EFFECT.QuantityError"))
+          }
+
+          if ((item.range && item.range.value.toLowerCase() === game.i18n.localize("You").toLowerCase())
+            && (item.target && item.target.value.toLowerCase() === game.i18n.localize("You").toLowerCase()))
+            return await game.wfrp4e.utility.applyEffectToTarget(effect, [{actor: this.actor}]) // Apply to caster (self)
+          return await game.wfrp4e.utility.applyEffectToTarget(effect)
+        default:
+      }
+    }
+
+    async #handleConditionAction(event, actor, actionId) {
+      const condition = game.wfrp4e.config.statusEffects.find(e => e.id === actionId);
+      // if (condition.flags.wfrp4e.value) {
+      //   if (ev.button == 0)
+      //     return this.actor.addCondition(actionId)
+      //   else if (ev.button == 2)
+      //     return this.actor.removeCondition(actionId)
+      // }
+      // value
+
+      // toggle
+      if (condition.flags.wfrp4e.value == null) {
+        if (this.actor.hasCondition(actionId))
+          await this.actor.removeCondition(actionId)
+        else
+          await this.actor.addCondition(actionId)
+      } else {
+        if (this.isRightClick(event))
+          await this.actor.removeCondition(actionId)
+        else
+          await this.actor.addCondition(actionId)
+      }
+
+      return Hooks.callAll('forceUpdateTokenActionHud');
     }
 
     /**
@@ -164,6 +211,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           }
           break
       }
+    }
+
+    #rollWeapon(actor, item) {
+      return actor.setupWeapon(item).then(setupData => {
+        if (!setupData.abort)
+          actor.weaponTest(setupData);
+      });
     }
   }
 })

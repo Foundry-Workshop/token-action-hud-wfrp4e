@@ -11,16 +11,16 @@
   inset 0 0 1px 1px #a98f39;
   --tah-button-disabled-text-color: #75683f;
   --tah-button-text-color: #D3D2D2;
-  --tah-fancy-font-family: CaslonAntique, sans-serif;
-  --tah-button-font-family: CaslonPro, sans-serif;
+  --tah-fancy-font-family: CaslonAntique, serif;
+  --tah-button-font-family: CaslonPro, CaslonAntique, Signika, sans-serif;
   --tah-button-height: 32px;
   --tah-button-min-width: 32px;
-  --tah-button-toggle-active-background-color: #ca6b6b;
+  --tah-button-toggle-active-background-color: #541414;
   --tah-button-hover-background-color: #3d0d0d;
   --tah-button-hover-box-shadow: 0 0 0 1px #f3e9ca, 0 0 0 1px #f3e9ca,
   0 0 0 2px #a98f39, inset 0 0 8px 1px rgb(0 0 0 / 50%),
   inset 0 0 1px 1px #a98f39;
-  --tah-button-toggle-hover-background-color: #d28c8c;
+  --tah-button-toggle-hover-background-color: #1e233a;
   --tah-text-disabled-color: #75683f;
   --tah-text-primary-color: #D8D695;
   --tah-text-secondary-color: #D8D695;
@@ -31,6 +31,9 @@
   --tah-text-hover-tertiary-color: var(--tah-text-tertiary-color);
   --tah-text-shadow: 1px 1px 1px rgb(0 0 0), 0px 1px 3px rgb(0 0 0);
   --tah-button-image-shadow: rgba(180, 80, 0, 0.65) 0 0 20px;
+  --tah-button-image-shadow-hover: rgba(80, 120, 255, 0.75) 0 0 20px;
+  --tah-button-toggle-active-box-shadow: 0 0 0 1px #D8D69566,
+  inset 0 0 10px #D8D69566;
 }
 
 /*** Warhammer Input Brown ***/
@@ -149,8 +152,8 @@
   box-shadow: none;
 }
 
-#tah-collapse-expand button > :is(.fa, .fas),
-#tah-buttons button > :is(.fa, .fas) {
+#tah-collapse-expand button > :is(.fa, .fas, .far),
+#tah-buttons button > :is(.fa, .fas, .far) {
   color: var(--tah-text-primary-color);
   font-size: var(--font-size-12);
   margin: 3px;
@@ -161,7 +164,7 @@
   text-shadow: var(--tah-text-shadow);
 }
 
-#tah-collapse-expand button > :is(.fa, .fas) {
+#tah-collapse-expand button > :is(.fa, .fas, .far) {
   font-size: medium;
 }
 
@@ -221,6 +224,7 @@
 .tah-action-button.active,
 .tah-action.button.active.disabled:hover {
   background: var(--tah-button-toggle-active-background-color);
+  box-shadow: var(--tah-button-toggle-active-box-shadow);
 }
 
 .tah-action-button.active.activeText > .tah-action-button-content:after {
@@ -243,7 +247,7 @@
   padding: 0;
 }
 
-.tah-group-button:hover:not(.disable-edit) .tah-button-content > :is(.fa, .fas) {
+.tah-group-button:hover:not(.disable-edit) .tah-button-content > :is(.fa, .fas, .far) {
   visibility: visible;
 }
 
@@ -251,7 +255,7 @@
   padding: 0 10px;
 }
 
-.tah-button-content > :is(.fa, .fas) {
+.tah-button-content > :is(.fa, .fas, .far) {
   font-size: 8px;
   position: absolute;
   right: 3px;
@@ -281,7 +285,7 @@
   text-shadow: 0 0 8px var(--color-shadow-primary);
 }
 
-#tah-edit-hud > :is(.fa, .fas) {
+#tah-edit-hud > :is(.fa, .fas, .far) {
   font-size: var(--font-size-16);
 }
 
@@ -415,6 +419,7 @@
 
 .tah-subtitle-text {
   color: var(--tah-text-primary-color);
+  text-transform: uppercase;
 }
 
 .tah-group[data-show-title=false] > div > .tah-subtitle > .tah-subtitle-text {
@@ -477,6 +482,10 @@
   width: var(--tah-button-min-width);
 }
 
+.tah-action-button.toggle:hover .tah-button-image {
+  box-shadow: var(--tah-button-image-shadow-hover);
+}
+
 .tah-list-image {
   border: none;
   border-radius: var(--tah-border-radius);
@@ -487,7 +496,7 @@
   width: var(--tah-button-min-width);
 }
 
-.tah-icon > :is(.fa, .fas) {
+.tah-icon > :is(.fa, .fas, .far) {
   font-size: x-small;
   margin: 0 2px 0 0;
 }
@@ -496,7 +505,7 @@
   color: var(--tah-text-disabled-color);
 }
 
-.tah-subtitle > .tah-icon > :is(.fa, .fas) {
+.tah-subtitle > .tah-icon > :is(.fa, .fas, .far) {
   text-shadow: var(--tah-text-shadow);
 }
 

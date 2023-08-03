@@ -1,7 +1,10 @@
 {
   "tokenActionHud": {
     "wfrp4e": {
+      "ammunition": "Ammunition",
       "armour": "Armour",
+      "basic": "Basic",
+      "character": "Character",
       "characteristic": "Characteristic",
       "characteristics": "Characteristics",
       "combat": "Combat",
@@ -10,17 +13,18 @@
       "inventory": "Inventory",
       "item": "Item",
       "magic": "Magic",
-      "prayers": "Prayers",
+      "prayersBlessings": "Blessings",
+      "prayersMiracles": "Miracles",
       "skills": "Skills",
-      "skillsBasic": "Basic Skills",
       "skillsAdvanced": "Advanced Skills",
+      "skillsBasic": "Basic Skills",
       "spells": "Spells",
       "spellsArcane": "Arcane Spells",
       "spellsPetty": "Petty Spells",
       "talents": "Talents",
+      "token": "Token",
       "traits": "Traits",
       "trappings": "Trappings",
-      "token": "Token",
       "utility": "Utility",
       "weapons": "Weapons",
 
@@ -36,6 +40,10 @@
         "groupTrappings": {
           "name": "Group Trappings",
           "hint": "Whether to display Trappings grouped into tabs by category. If disabled, Trapping types will display as lists."
+        },
+        "maxCharacters": {
+          "name": "Max Characters",
+          "hint": "Maximum number of characters displayed in Action names. Set 0 to disable trimming."
         }
       }
     }
