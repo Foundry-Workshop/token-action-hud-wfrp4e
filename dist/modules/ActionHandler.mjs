@@ -71,7 +71,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       this.#buildTalents();
       this.#buildCombat();
       this.#buildMagic();
-      this.#buildInventory(this.items);
+      this.#buildInventory();
       this.#buildUtility();
     }
 
@@ -151,18 +151,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #buildCombat() {
       await this.#buildCombatBasic();
       if (this.items.size === 0) return;
-
-      // let unarmed = game.wfrp4e.config.systemItems.unarmed
-      // this.actor.setupWeapon(unarmed).then(setupData => {
-      //   this.actor.weaponTest(setupData)
-      // })
-      // this.actor.setupSkill(game.i18n.localize("NAME.Dodge")).then(setupData => {
-      //   this.actor.basicTest(setupData)
-      // });
-      // let improv = game.wfrp4e.config.systemItems.improv;
-      // this.actor.setupWeapon(improv).then(setupData => {
-      //   this.actor.weaponTest(setupData)
-      // })
     }
 
     async #buildCombatBasic() {
@@ -253,13 +241,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * Build inventory
      * @private
      */
-    async #buildInventory(items) {
-      if (items.size === 0) return;
+    async #buildInventory() {
+      if (this.items.size === 0) return;
       const actionTypeId = 'item';
       const inventoryMap = new Map();
       const dynamicGroups = new Map();
 
-      for (const [itemKey, itemData] of items) {
+      for (const [itemKey, itemData] of this.items) {
         let itemId = itemData._id;
         let type = itemData.type;
 
@@ -323,7 +311,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             image: coreModule.api.Utils.getImage(item),
             style: 'tab'
           },
-          // info2: this.#getItemValue(item),
           // info2: {
           //   class: '',
           //   text: this.#getItemValue(item),

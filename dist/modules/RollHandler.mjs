@@ -57,19 +57,25 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} actionId     The actionId
      */
     async #handleAction(event, actor, token, actionTypeId, actionId) {
+      console.log(event);
+      console.log(actionTypeId);
+      console.log(actionId);
       switch (actionTypeId) {
         case 'characteristic':
-          this.#handleCharacteristicAction(event, actor, actionId)
-          break
+          this.#handleCharacteristicAction(event, actor, actionId);
+          break;
         case 'skill':
         case 'talent':
         case 'item':
         case 'magic':
-          this.#handleItemAction(event, actor, actionId)
-          break
+          this.#handleItemAction(event, actor, actionId);
+          break;
+        case 'combatBasic':
+          this.#handleCombatAction(event, actor, actionId);
+          break;
         case 'utility':
-          this.#handleUtilityAction(token, actionId)
-          break
+          this.#handleUtilityAction(token, actionId);
+          break;
       }
     }
 
@@ -99,6 +105,27 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return actor.sheet.spellDialog(item);
         default:
           item.postItem(0);
+      }
+    }
+
+    async #handleCombatAction(event, actor, actionId) {
+      switch (actionId) {
+        case 'unarmed':
+          let unarmed = game.wfrp4e.config.systemItems.unarmed
+          return actor.setupWeapon(unarmed).then(setupData => {
+            actor.weaponTest(setupData)
+          })
+        case 'dodge':
+          return actor.setupSkill(game.i18n.localize("NAME.Dodge")).then(setupData => {
+            actor.basicTest(setupData)
+          });
+        case 'improv':
+          let improv = game.wfrp4e.config.systemItems.improv;
+          return actor.setupWeapon(improv).then(setupData => {
+            actor.weaponTest(setupData)
+          })
+        default:
+          break;
       }
     }
 
