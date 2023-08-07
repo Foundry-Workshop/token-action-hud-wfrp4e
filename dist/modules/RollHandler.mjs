@@ -76,7 +76,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'condition':
           return this.#handleConditionAction(event, actor, actionId);
         case 'utility':
-          return this.#handleUtilityAction(token, actionId);
+          return this.#handleUtilityAction(token, actor, actionId);
       }
     }
 
@@ -201,16 +201,16 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
      * Handle utility action
      * @private
-     * @param {object} token    The token
-     * @param {string} actionId The action id
+     * @param {object}      token    The token
+     * @param {ActorWfrp4e} actor    The actor
+     * @param {string}      actionId The action id
      */
-    async #handleUtilityAction(token, actionId) {
-      const actor = token.actor;
+    async #handleUtilityAction(token, actor,  actionId) {
       switch (actionId) {
         case 'endTurn':
           return this.#endTurn(token);
         case 'initiative':
-          return this.#rollInitiative(token);
+          return this.#rollInitiative(actor);
         case 'restRecover':
           return this.#restRecover(actor);
         case 'incomeRoll':
@@ -231,8 +231,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         return await game.combat?.nextTurn();
     }
 
-    async #rollInitiative(token) {
-      let actor = token.actor;
+    async #rollInitiative(actor) {
       if (!actor) return;
       await actor.rollInitiative({createCombatants: true});
 

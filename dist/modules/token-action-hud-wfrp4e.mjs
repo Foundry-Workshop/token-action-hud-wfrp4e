@@ -1,16 +1,12 @@
 import {constants} from './constants.mjs';
-import registerSettings from './settings.mjs';
 import Utility from './utility/Utility.mjs';
 import {SystemManagerWfrp4e} from "./SystemManager.mjs";
 
 Hooks.once('init', () => {
-  registerSettings();
-
   Hooks.callAll(`${constants.moduleId}:afterInit`);
 });
 
 Hooks.once('setup', () => {
-
   Hooks.callAll(`${constants.moduleId}:afterSetup`);
 });
 

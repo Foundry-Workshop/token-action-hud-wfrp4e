@@ -23,7 +23,6 @@ Hooks.once('setup', () => {
         name: game.i18n.localize('tokenActionHud.wfrp4e.character'),
         groups: [
           {...groups.characteristics, nestId: 'categoryCharacteristics_characteristics'},
-          {...groups.character, nestId: 'categoryCharacteristics_character'},
         ]
       },
       {

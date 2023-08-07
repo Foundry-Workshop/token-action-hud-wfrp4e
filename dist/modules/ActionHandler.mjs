@@ -99,6 +99,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       await this.#buildInventory();
       await this.#buildUtility();
 
+
+      return;
       /**
        * Update Character tab to add Wounds
        * @type {unknown}
@@ -592,11 +594,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             image: coreModule.api.Utils.getImage(item),
             style: 'tab'
           },
-          info2: {
-            class: '',
-            text: this.#getItemValue(item),
-            title: this.#getItemValueTooltip(item)
-          }
+          // @todo container group info once it's fixed
+          // info2: {
+          //   class: '',
+          //   text: this.#getItemValue(item),
+          //   title: this.#getItemValueTooltip(item)
+          // }
         },
         parentGroupData: parentGroup
       };
@@ -692,7 +695,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         endTurn: {id: 'endTurn', name: game.i18n.localize('tokenActionHud.endTurn')}
       }
 
-      if (game.combat?.current?.tokenId !== this.token?.id) delete combatTypes.endTurn
+      if (!game.combat || game.combat?.current?.tokenId !== this.token?.id) delete combatTypes.endTurn
 
       return {'combat': combatTypes};
     }
@@ -721,7 +724,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #buildUtilityToken() {
       const tokenTypes = {}
 
-      if (game.modules.get('item-piles')?.active && game.user.isGM) {
+      if (this.token && game.modules.get('item-piles')?.active && game.user.isGM) {
         if (this.token.document.flags && this.token.document.flags['item-piles']?.data.enabled) {
           tokenTypes.makeItemPile = {
             id: 'revertItemPile',
@@ -915,6 +918,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           }
           return highest
         case 'spell':
+          if (itemData.lore?.value === 'petty') break;
           if (this.#useWomChanneling && itemData.lore?.value && this.#groupLores)
             return `${itemData.cn.value}`;
           else

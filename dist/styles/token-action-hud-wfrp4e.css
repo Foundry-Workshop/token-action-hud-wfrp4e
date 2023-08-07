@@ -509,4 +509,8 @@
   text-shadow: var(--tah-text-shadow);
 }
 
+.tah-actions {
+  max-width: 400px !important;
+}
+
 /*# sourceMappingURL=token-action-hud-wfrp4e.css.map */
