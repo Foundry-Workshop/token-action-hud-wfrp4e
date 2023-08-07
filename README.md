@@ -5,7 +5,7 @@
 
 Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token prepared specially for the WFRP4e system.
 
-![Token Action HUD](https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/blob/master/.github/assets/4cd11481757581585a975157579f6695.gif?raw=true)
+![Token Action HUD](https://raw.githubusercontent.com/Foundry-Workshop/token-action-hud-wfrp4e/master/.github/assets/4cd11481757581585a975157579f6695.gif)
 
 ## Features
 - Make rolls directly from the HUD instead of opening your character sheet.
