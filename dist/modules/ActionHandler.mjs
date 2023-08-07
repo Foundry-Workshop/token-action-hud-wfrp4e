@@ -105,7 +105,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
        */
       let characterGroup = this.#findGroup({id: 'categoryCharacteristics'})
       // @todo fix info1 to be object {class,text,title} when Core updates
-      // group.info1 = {
+      // Also color the info text based on wound %
+      // characterGroup.info1 = {
       //   class: '',
       //   text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
       //   title: ''
@@ -116,18 +117,25 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       /**
        * Update Combat tab to add Advantage
        */
-      let advantage;
-      if (game.settings.get("wfrp4e", "useGroupAdvantage") === true) {
-        let advantageSetting = game.settings.get("wfrp4e", "groupAdvantageValues");
-        advantage = advantageSetting[this.actor.advantageGroup] ?? 0;
-      } else {
-        advantage = `${this.actor.system.status.advantage.value}/${this.actor.system.status.advantage.max}`
-      }
+      if (game.combat?.combatants?.some(combatant => combatant.actorId === this.actor._id)) {
+        let combatGroup = this.#findGroup({id: 'categoryCombat'})
+        let advantage;
+        if (game.settings.get("wfrp4e", "useGroupAdvantage") === true) {
+          let advantageSetting = game.settings.get("wfrp4e", "groupAdvantageValues");
+          advantage = advantageSetting[this.actor.advantageGroup] ?? 0;
+        } else {
+          advantage = `${this.actor.system.status.advantage.value}/${this.actor.system.status.advantage.max}`
+        }
 
-      let combatGroup = this.#findGroup({id: 'categoryCombat'})
-      // @todo fix info1 to be object {class,text,title} when Core updates
-      combatGroup.info1 = advantage;
-      await this.updateGroup(combatGroup)
+        // @todo fix info1 to be object {class,text,title} when Core updates
+        combatGroup.info1 = advantage;
+        // combatGroup.info1 = {
+        //   class: '',
+        //   text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
+        //   title: ''
+        // }
+        await this.updateGroup(combatGroup)
+      }
 
       /**
        * Update Magic Lores with channeling
@@ -135,11 +143,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (this.#useWomChanneling) {
         for (let lore in this.#lores) {
           let group = this.#findGroup({id: this.#lores[lore]});
+          if (!group) continue;
           let action = group.actions[0] || null;
           if (!action) continue;
           let spell = this.actor.items.find(i => i.type === 'spell' && i._id === action.id);
           if (!spell) continue;
           // @todo fix info1 to be object {class,text,title} when Core updates
+          // group.info1 = {
+          //   class: '',
+          //   text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
+          //   title: ''
+          // }
           group.info1 = spell.cn.SL;
           await this.updateGroup(group);
         }
@@ -334,7 +348,126 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     };
 
     async #buildCombatArmour() {
+      const locations = WFRP4E.locations;
+      const armour = this.actor.armour;
+      const tb = this.actor.characteristics.t.bonus;
+      const actionsData = [];
+      const groupData = tah.groups.combatArmour;
+      const actionType = 'combatArmour';
+      const actionTypeName = 'Armour';
+      const shieldIcon = '<i class="fas fa-shield"></i>';
+      const armourIcon = '<i class="fas fa-shirt"></i>';
+      let icon2 = armour.shield ? shieldIcon : null;
+
+      for (let location in locations) {
+        const armourData = armour[location];
+        let icon1 = armour[location].value ? armourIcon : null;
+        actionsData.push({
+          id: location,
+          name: this.#getActionName(armour[location].label),
+          // img: coreModule.api.Utils.getImage(item),
+          icon1,
+          icon2,
+          cssClass: 'disabled',
+          listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${armour[location].label}`,
+          encodedValue: [actionType, location].join(this.delimiter),
+          info1: {
+            class: 'armour-ap',
+            text: armour[location].value,
+            title: 'Armour Points'
+          },
+          info2: {
+            class: 'armour-shield',
+            text: armour.shield,
+            title: 'Shield'
+          },
+          info3: {
+            class: 'armour-tb',
+            text: tb,
+            title: 'Toughness Bonus'
+          },
+          tooltip: armour[location].label
+        });
+
+      }
+
+      return this.addActions(actionsData, groupData)
     };
+
+    /**
+     * Build conditions
+     * @private
+     */
+    async #buildConditions() {
+      if (!this.token) return;
+      const actionType = 'condition';
+      const conditions = game.wfrp4e.config.statusEffects.filter((condition) => condition.id !== '');
+      if (conditions.length === 0) return;
+
+      const actions = conditions.map((condition) => {
+        const id = condition.id;
+        const name = coreModule.api.Utils.i18n(condition.label) ?? condition.name;
+        const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
+        const listName = `${actionTypeName}${name}`;
+        const encodedValue = [actionType, id].join(this.delimiter);
+        const effect = this.actor.effects.find(effect => effect.statuses.some(status => status === id) && !effect?.disabled);
+        const active = effect ? ' active' : '';
+        const info1 = this.#getConditionInfo(condition, effect);
+        const icon1 = this.#getConditionIcon(condition, effect);
+        const cssClass = `toggle${active}`;
+        const img = coreModule.api.Utils.getImage(condition);
+        const tooltip = this.#getConditionTooltipData(id);
+        return {
+          id,
+          name,
+          encodedValue,
+          img,
+          cssClass,
+          listName,
+          tooltip,
+          info1,
+          icon1
+        }
+      });
+
+      const groupData = {id: 'conditions', type: 'system'}
+      return this.addActions(actions, groupData)
+    }
+
+    /**
+     * Build effects
+     * @private
+     */
+    async #buildEffects() {
+      // const actionType = 'effect'
+      //
+      // // Get effects
+      // const effects = this.actor.effects
+      //
+      // // Exit if no effects exist
+      // if (effects.size === 0) return
+      //
+      // // Map passive and temporary effects to new maps
+      // const passiveEffects = new Map()
+      // const temporaryEffects = new Map()
+      //
+      // // Iterate effects and add to a map based on the isTemporary value
+      // for (const [effectId, effect] of effects.entries()) {
+      //   const isTemporary = effect.isTemporary
+      //   if (isTemporary) {
+      //     temporaryEffects.set(effectId, effect)
+      //   } else {
+      //     passiveEffects.set(effectId, effect)
+      //   }
+      // }
+      //
+      // await Promise.all([
+      //   // Build passive effects
+      //   this.#buildActions(passiveEffects, { id: 'passive-effects', type: 'system' }, actionType),
+      //   // Build temporary effects
+      //   this.#buildActions(temporaryEffects, { id: 'temporary-effects', type: 'system' }, actionType)
+      // ])
+    }
 
     async #buildMagic() {
       if (this.magic.size === 0) return;
@@ -454,15 +587,16 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           name: item.name,
           listName: `Container: ${item.name}`,
           type: 'system',
+          icon1: '<i class="fas fa-box-open></i>',
           settings: {
             image: coreModule.api.Utils.getImage(item),
             style: 'tab'
           },
-          // info2: {
-          //   class: '',
-          //   text: this.#getItemValue(item),
-          //   title: this.#getItemValueTooltip(item)
-          // }
+          info2: {
+            class: '',
+            text: this.#getItemValue(item),
+            title: this.#getItemValueTooltip(item)
+          }
         },
         parentGroupData: parentGroup
       };
@@ -503,158 +637,108 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     async #buildUtility() {
+      const combat = await this.#buildUtilityCombat();
+      const char = await this.#buildUtilityCharacter();
+      const token = await this.#buildUtilityToken();
       const actionType = 'utility';
+      let actionData = mergeObject(combat, char);
+      actionData = mergeObject(actionData, token);
 
+
+      for (let group in actionData) {
+        const types = actionData[group];
+        const actions = Object.entries(types).map((type) => {
+          const id = type[1].id;
+          const name = type[1].name;
+          const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
+          const listName = `${actionTypeName}${name}`;
+          const encodedValue = [actionType, id].join(this.delimiter);
+          const info1 = {};
+          let cssClass = '';
+
+          if (type[0] === 'initiative' && game.combat) {
+            const tokenIds = canvas.tokens.controlled.map((token) => token.id);
+            const combatants = game.combat.combatants.filter((combatant) => tokenIds.includes(combatant.tokenId));
+
+            // Get initiative for single token
+            if (combatants.length === 1) {
+              const currentInitiative = combatants[0].initiative;
+              info1.class = 'tah-spotlight';
+              info1.text = currentInitiative;
+            }
+
+            const active = combatants.length > 0 && (combatants.every((combatant) => combatant?.initiative)) ? ' active' : '';
+            cssClass = `toggle${active}`;
+          }
+
+          return {
+            id,
+            name,
+            encodedValue,
+            info1,
+            cssClass,
+            listName
+          }
+        })
+
+        const groupData = {id: group, type: 'system'}
+        await this.addActions(actions, groupData)
+      }
+    }
+
+    async #buildUtilityCombat() {
       const combatTypes = {
-        initiative: {id: 'initiative', name: game.i18n.localize('tokenActionHud.wfrp4e.rollInitiative')},
+        initiative: {id: 'initiative', name: game.i18n.localize('tokenActionHud.wfrp4e.actions.rollInitiative')},
         endTurn: {id: 'endTurn', name: game.i18n.localize('tokenActionHud.endTurn')}
       }
 
       if (game.combat?.current?.tokenId !== this.token?.id) delete combatTypes.endTurn
 
-      const actions = Object.entries(combatTypes).map((combatType) => {
-        const id = combatType[1].id;
-        const name = combatType[1].name;
-        const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
-        const listName = `${actionTypeName}${name}`;
-        const encodedValue = [actionType, id].join(this.delimiter);
-        const info1 = {};
-        let cssClass = '';
-        if (combatType[0] === 'initiative' && game.combat) {
-          const tokenIds = canvas.tokens.controlled.map((token) => token.id);
-          const combatants = game.combat.combatants.filter((combatant) => tokenIds.includes(combatant.tokenId));
-
-          // Get initiative for single token
-          if (combatants.length === 1) {
-            const currentInitiative = combatants[0].initiative;
-            info1.class = 'tah-spotlight';
-            info1.text = currentInitiative;
-          }
-
-          const active = combatants.length > 0 && (combatants.every((combatant) => combatant?.initiative)) ? ' active' : '';
-          cssClass = `toggle${active}`;
-        }
-        return {
-          id,
-          name,
-          encodedValue,
-          info1,
-          cssClass,
-          listName
-        }
-      })
-
-      const groupData = {id: 'combat', type: 'system'}
-      return this.addActions(actions, groupData)
+      return {'combat': combatTypes};
     }
 
-    /**
-     * Build conditions
-     * @private
-     */
-    async #buildConditions() {
-      if (!this.token) return;
-      const actionType = 'condition';
-      const conditions = game.wfrp4e.config.statusEffects.filter((condition) => condition.id !== '');
-      if (conditions.length === 0) return;
 
-      const actions = conditions.map((condition) => {
-        const id = condition.id;
-        const name = coreModule.api.Utils.i18n(condition.label) ?? condition.name;
-        const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
-        const listName = `${actionTypeName}${name}`;
-        const encodedValue = [actionType, id].join(this.delimiter);
-        const effect = this.actor.effects.find(effect => effect.statuses.some(status => status === id) && !effect?.disabled);
-        const active = effect ? ' active' : '';
-        const info1 = this.#getConditionInfo(condition, effect);
-        const icon1 = this.#getConditionIcon(condition, effect);
-        const cssClass = `toggle${active}`;
-        const img = coreModule.api.Utils.getImage(condition);
-        const tooltip = this.#getConditionTooltipData(id);
-        return {
-          id,
-          name,
-          encodedValue,
-          img,
-          cssClass,
-          listName,
-          tooltip,
-          info1,
-          icon1
-        }
-      });
-
-      const groupData = {id: 'conditions', type: 'system'}
-      return this.addActions(actions, groupData)
-    }
-
-    #getConditionInfo(condition, effect) {
-      if (!condition.flags.wfrp4e.value) return null;
-
-      return {
-        class: '',
-        text: effect?.flags.wfrp4e?.value ?? '0',
-        title: 'Condition Rating'
+    async #buildUtilityCharacter() {
+      const characterTypes = {
+        restRecover: {id: 'restRecover', name: game.i18n.localize('tokenActionHud.wfrp4e.actions.restRecover')},
+        incomeRoll: {id: 'incomeRoll', name: game.i18n.localize('tokenActionHud.wfrp4e.actions.incomeRoll')},
       }
+
+      if (game.modules.get('forien-armoury')?.active) {
+        characterTypes.checkCareer = {
+          id: 'checkCareer',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.checkCareer')
+        };
+        characterTypes.checkEquipment = {
+          id: 'checkEquipment',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.checkEquipment')
+        };
+      }
+
+      return {'character': characterTypes};
     }
 
-    #getConditionIcon(condition, effect) {
-      if (condition.flags.wfrp4e.value) return null;
-      const hasCondition = '<i class="far fa-circle-dot"></i>';
-      const noCondition = '<i class="far fa-circle"></i>';
+    async #buildUtilityToken() {
+      const tokenTypes = {}
 
-      return effect ? hasCondition : noCondition;
+      if (game.modules.get('item-piles')?.active && game.user.isGM) {
+        if (this.token.document.flags && this.token.document.flags['item-piles']?.data.enabled) {
+          tokenTypes.makeItemPile = {
+            id: 'revertItemPile',
+            name: game.i18n.localize('tokenActionHud.wfrp4e.actions.revertItemPile')
+          };
+        } else {
+          tokenTypes.makeItemPile = {
+            id: 'makeItemPile',
+            name: game.i18n.localize('tokenActionHud.wfrp4e.actions.makeItemPile')
+          };
+        }
+      }
+
+      return {'token': tokenTypes};
     }
 
-    /**
-     * Get condition tooltip data
-     * @param {*} id     The condition id
-     * @returns {object} The tooltip data
-     */
-    #getConditionTooltipData(id) {
-      let tooltip = `<h2>${game.wfrp4e.config.conditions[id]}</h2>` + game.wfrp4e.config.conditionDescriptions[id];
-      const regex = /@[a-zA-Z]+\[[a-zA-Z0-9._-]+]{([^}]+)}/g
-      const regexShort = /@[a-zA-Z]+\[([a-zA-Z0-9._-]+)](?!{)/g
-      tooltip = tooltip.replaceAll(regex, '<strong>$1</strong>');
-      return tooltip.replaceAll(regexShort, '<strong>$1</strong>');
-    }
-
-    /**
-     * Build effects
-     * @private
-     */
-    async #buildEffects() {
-      // const actionType = 'effect'
-      //
-      // // Get effects
-      // const effects = this.actor.effects
-      //
-      // // Exit if no effects exist
-      // if (effects.size === 0) return
-      //
-      // // Map passive and temporary effects to new maps
-      // const passiveEffects = new Map()
-      // const temporaryEffects = new Map()
-      //
-      // // Iterate effects and add to a map based on the isTemporary value
-      // for (const [effectId, effect] of effects.entries()) {
-      //   const isTemporary = effect.isTemporary
-      //   if (isTemporary) {
-      //     temporaryEffects.set(effectId, effect)
-      //   } else {
-      //     passiveEffects.set(effectId, effect)
-      //   }
-      // }
-      //
-      // await Promise.all([
-      //   // Build passive effects
-      //   this.#buildActions(passiveEffects, { id: 'passive-effects', type: 'system' }, actionType),
-      //   // Build temporary effects
-      //   this.#buildActions(temporaryEffects, { id: 'temporary-effects', type: 'system' }, actionType)
-      // ])
-    }
-
-    //#endregion
+//#endregion
 
     async #addDynamicGroups(dynamicGroups) {
       for (let [key, groupData] of dynamicGroups) {
@@ -771,6 +855,37 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
 
       return item.carries.current;
+    }
+
+    #getConditionInfo(condition, effect) {
+      if (!condition.flags.wfrp4e.value) return null;
+
+      return {
+        class: '',
+        text: effect?.flags.wfrp4e?.value ?? '0',
+        title: 'Condition Rating'
+      }
+    }
+
+    #getConditionIcon(condition, effect) {
+      if (condition.flags.wfrp4e.value) return null;
+      const hasCondition = '<i class="far fa-circle-dot"></i>';
+      const noCondition = '<i class="far fa-circle"></i>';
+
+      return effect ? hasCondition : noCondition;
+    }
+
+    /**
+     * Get condition tooltip data
+     * @param {*} id     The condition id
+     * @returns {object} The tooltip data
+     */
+    #getConditionTooltipData(id) {
+      let tooltip = `<h2>${game.wfrp4e.config.conditions[id]}</h2>` + game.wfrp4e.config.conditionDescriptions[id];
+      const regex = /@[a-zA-Z]+\[[a-zA-Z0-9._-]+]{([^}]+)}/g
+      const regexShort = /@[a-zA-Z]+\[([a-zA-Z0-9._-]+)](?!{)/g
+      tooltip = tooltip.replaceAll(regex, '<strong>$1</strong>');
+      return tooltip.replaceAll(regexShort, '<strong>$1</strong>');
     }
 
     #getTestTarget(itemData) {

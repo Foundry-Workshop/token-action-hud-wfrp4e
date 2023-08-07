@@ -8,6 +8,7 @@
       "characteristic": "Characteristic",
       "characteristics": "Characteristics",
       "combat": "Combat",
+      "conditions": "Conditions",
       "consumables": "Consumables",
       "containers": "Containers",
       "inventory": "Inventory",
@@ -27,6 +28,18 @@
       "trappings": "Trappings",
       "utility": "Utility",
       "weapons": "Weapons",
+
+      "actions": {
+        "rollInitiative": "Roll for Initiative",
+        "makeItemPile": "Convert to Item Pile",
+        "makeItemPiles": "Convert to Item Piles",
+        "revertItemPile": "Revert from Item Pile",
+        "revertItemPiles": "Revert from Item Piles",
+        "checkCareer": "Check Career Progress",
+        "checkEquipment": "Check Equipment",
+        "restRecover": "Rest and Recover",
+        "incomeRoll": "Roll for Income"
+      },
 
       "settings": {
         "displayUnequipped": {

@@ -3,13 +3,13 @@
   --tah-background-color: #270C0B00;
   --tah-border-radius: 0;
   --tah-gap: 5px;
-  --tah-subtitle-disabled-color: #75683f;
+  --tah-subtitle-disabled-color: #969560;
   --tah-button-background-color: #260909;
   --tah-button-background-image: url("/ui/parchment.jpeg") repeat;
   --tah-button-box-shadow: 0 0 0 1px #c5aa6faa,
   0 0 0 2px #73695333, inset 0 0 8px 1px rgb(0 0 0 / 50%),
   inset 0 0 1px 1px #a98f39;
-  --tah-button-disabled-text-color: #75683f;
+  --tah-button-disabled-text-color: #969560;
   --tah-button-text-color: #D3D2D2;
   --tah-fancy-font-family: CaslonAntique, serif;
   --tah-button-font-family: CaslonPro, CaslonAntique, Signika, sans-serif;
@@ -21,7 +21,7 @@
   0 0 0 2px #a98f39, inset 0 0 8px 1px rgb(0 0 0 / 50%),
   inset 0 0 1px 1px #a98f39;
   --tah-button-toggle-hover-background-color: #1e233a;
-  --tah-text-disabled-color: #75683f;
+  --tah-text-disabled-color: #969560;
   --tah-text-primary-color: #D8D695;
   --tah-text-secondary-color: #D8D695;
   --tah-text-tertiary-color: #D8D695;
@@ -236,7 +236,7 @@
 }
 
 .tah-action-button.disabled:hover {
-  box-shadow: var(--tah-button-box-shadow);
+  box-shadow: var(--tah-button-box-shadow) !important;
 }
 
 .tah-action-button.shrink {

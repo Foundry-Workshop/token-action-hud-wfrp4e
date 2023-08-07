@@ -54,7 +54,14 @@ Hooks.once('setup', () => {
           {...groups.combatTraits, nestId: 'categoryCombat_combatTraits'},
           {...groups.consumables, nestId: 'categoryCombat_consumables'},
           {...groups.combatArmour, nestId: 'categoryCombat_combatArmour'},
-          {...groups.conditions, nestId: 'categoryCombat_conditions'},
+        ]
+      },
+      {
+        nestId: 'categoryConditions',
+        id: 'categoryConditions',
+        name: game.i18n.localize('tokenActionHud.wfrp4e.conditions'),
+        groups: [
+          {...groups.conditions, nestId: 'categoryConditions_conditions'},
         ]
       },
       {
@@ -76,8 +83,8 @@ Hooks.once('setup', () => {
           {...groups.weapons, nestId: 'categoryInventory_weapons'},
           {...groups.armour, nestId: 'categoryInventory_armour'},
           {...groups.ammunition, nestId: 'categoryInventory_ammunition'},
+          {...groups.trappings, nestId: 'categoryInventory_trapping'},
           {...groups.containers, nestId: 'categoryInventory_containers'},
-          {...groups.trappings, nestId: 'categoryInventory_trapping'}
         ]
       },
       {
@@ -87,7 +94,7 @@ Hooks.once('setup', () => {
         groups: [
           {...groups.combat, nestId: 'categoryUtility_combat'},
           {...groups.token, nestId: 'categoryUtility_token'},
-          {...groups.rests, nestId: 'categoryUtility_rests'},
+          {...groups.character, nestId: 'categoryUtility_character'},
           {...groups.utility, nestId: 'categoryUtility_utility'}
         ]
       }

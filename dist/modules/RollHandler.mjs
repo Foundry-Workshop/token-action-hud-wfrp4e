@@ -15,7 +15,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      */
     async doHandleActionEvent(event, encodedValue) {
       const payload = encodedValue.split('|');
-      console.log(encodedValue);
       if (payload.length < 2) {
         super.throwInvalidValueErr();
       }
@@ -102,6 +101,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return this.#rollWeapon(actor, item);
         case 'spell':
           return actor.sheet.spellDialog(item);
+        case 'trait':
+          return this.#handleRollableTrait(actor, item);
         default:
           item.postItem(0);
       }
@@ -138,14 +139,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       switch (item.type) {
         case 'trait':
-          return actor.setupTrait(item).then(setupData => {
-            actor.traitTest(setupData)
-          })
+          return this.#handleRollableTrait(actor, item);
         case 'weapon':
           return this.#rollWeapon(actor, item);
         case 'consumable':
         default:
       }
+    }
+
+    #handleRollableTrait(actor, item) {
+      if (item.rollable?.value) {
+        return actor.setupTrait(item).then(setupData => {
+          actor.traitTest(setupData)
+        })
+      }
+
+      return item.postItem(0);
     }
 
     async #handleCombatConsumableAction(actor, actionId, subActionType, subActionId) {
@@ -173,15 +182,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #handleConditionAction(event, actor, actionId) {
       const condition = game.wfrp4e.config.statusEffects.find(e => e.id === actionId);
-      // if (condition.flags.wfrp4e.value) {
-      //   if (ev.button == 0)
-      //     return this.actor.addCondition(actionId)
-      //   else if (ev.button == 2)
-      //     return this.actor.removeCondition(actionId)
-      // }
-      // value
 
-      // toggle
       if (condition.flags.wfrp4e.value == null) {
         if (this.actor.hasCondition(actionId))
           await this.actor.removeCondition(actionId)
@@ -204,13 +205,89 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} actionId The action id
      */
     async #handleUtilityAction(token, actionId) {
+      const actor = token.actor;
       switch (actionId) {
         case 'endTurn':
-          if (game.combat?.current?.tokenId === token.id) {
-            await game.combat?.nextTurn()
-          }
-          break
+          return this.#endTurn(token);
+        case 'initiative':
+          return this.#rollInitiative(token);
+        case 'restRecover':
+          return this.#restRecover(actor);
+        case 'incomeRoll':
+          return this.#incomeRoll(actor);
+        case 'checkCareer':
+          return this.#checkCareer(actor);
+        case 'checkEquipment':
+          return this.#checkEquipment(actor);
+        case 'makeItemPile':
+          return this.#makeItemPile(token);
+        case 'revertItemPile':
+          return this.#makeItemPile(token, false);
       }
+    }
+
+    async #endTurn(token) {
+      if (game.combat?.current?.tokenId === token.id)
+        return await game.combat?.nextTurn();
+    }
+
+    async #rollInitiative(token) {
+      let actor = token.actor;
+      if (!actor) return;
+      await actor.rollInitiative({createCombatants: true});
+
+      return Hooks.callAll('forceUpdateTokenActionHud');
+    }
+
+    async #restRecover(actor) {
+      let skill = actor.getItemTypes("skill").find(s => s.name === game.i18n.localize("NAME.Endurance"));
+      let options = {rest: true, tb: actor.characteristics.t.bonus}
+      let setupData;
+      if (skill)
+        setupData = await actor.setupSkill(skill, options);
+      else
+        setupData = await actor.setupCharacteristic("t", options)
+
+      return actor.basicTest(setupData)
+    }
+
+    async #incomeRoll(actor) {
+      const career = actor.currentCareer;
+      if (!career) return;
+      const incomeSkill = career.skills[career.incomeSkill[0]];
+
+      if (!incomeSkill || !actor.items.some(i => i.type === 'skill' && i.name === incomeSkill))
+        return ui.notifications.error(game.i18n.localize("SHEET.SkillMissingWarning"));
+
+      let options = {
+        title: `${incomeSkill} - ${game.i18n.localize("Income")}`,
+        income: actor.details.status,
+        career: career.toObject()
+      };
+      let setupData = await actor.setupSkill(incomeSkill, options);
+      return actor.basicTest(setupData)
+    }
+
+    async #checkEquipment(actor) {
+      const api = game.modules.get('forien-armoury')?.api
+      if (!api) return;
+
+      return api.itemRepair.checkInventoryForDamage(actor);
+    }
+
+    async #checkCareer(actor) {
+      const api = game.modules.get('forien-armoury')?.api
+      if (!api) return;
+
+      return api.checkCareers.checkCareer(actor);
+    }
+
+    async #makeItemPile(token, activate = true) {
+      if (!game.modules.get('item-piles')?.active) return;
+      if (activate)
+        return game.itempiles?.API?.turnTokensIntoItemPiles([token])
+
+      return game.itempiles?.API?.revertTokensFromItemPiles([token])
     }
 
     #rollWeapon(actor, item) {
