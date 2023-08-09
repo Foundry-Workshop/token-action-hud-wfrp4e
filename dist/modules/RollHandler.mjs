@@ -24,7 +24,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const subActionType = payload[2] ?? null;
       const subActionId = payload[3] ?? null;
 
-      const renderable = ['item'];
+      const renderable = ['item', 'magic', 'skill', 'talent'];
 
       if (renderable.includes(actionTypeId) && this.isRenderItem()) {
         return this.doRenderItem(this.actor, actionId);
