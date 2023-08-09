@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.0.5
+* Small tweak to CSS
+* Updated module preview GIF
+
 ## v0.0.4
 * Initial release
 - Module currently offers: 
