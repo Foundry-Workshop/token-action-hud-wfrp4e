@@ -101,6 +101,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return this.#rollWeapon(actor, item);
         case 'spell':
           return actor.sheet.spellDialog(item);
+        case 'prayer':
+          return actor.setupPrayer(item).then(setupData => actor.prayerTest(setupData));
         case 'trait':
           return this.#handleRollableTrait(actor, item);
         default:
