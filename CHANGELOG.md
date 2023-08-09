@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.6
+* Tweaked CSS to fix background in the Customization Dialog
+* Allowed rendering of actions in talents, skills and magic tabs
+* Fixed Prayers not being rollable
+
 ## v0.0.5
 * Small tweak to CSS
 * Updated module preview GIF
