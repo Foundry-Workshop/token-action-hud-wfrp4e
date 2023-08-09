@@ -513,4 +513,15 @@
   min-width: 360px !important;
 }
 
+/** WFRP4e related. NOT PART OF THEME **/
+#token-action-hud-dialog .window-content {
+  background-image: url(/ui/parchment.jpg);
+}
+#token-action-hud-dialog .window-content form {
+  color: black;
+}
+#token-action-hud-dialog .window-content form .hint {
+  color: #222;
+}
+
 /*# sourceMappingURL=token-action-hud-wfrp4e.css.map */

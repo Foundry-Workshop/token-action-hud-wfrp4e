@@ -552,3 +552,18 @@
 .tah-actions {
   min-width: 360px !important;
 }
+
+
+/** WFRP4e related. NOT PART OF THEME **/
+
+#token-action-hud-dialog {
+  .window-content {
+    background-image: url(/ui/parchment.jpg);
+    form {
+      color: black;
+      .hint {
+        color: #222;
+      }
+    }
+  }
+}
