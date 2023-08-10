@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.0.7
+* Added translation keys for tooltips thanks to Txus
+* Added support for activatable traits
+
 ## v0.0.6
 * Tweaked CSS to fix background in the Customization Dialog
 * Allowed rendering of actions in talents, skills and magic tabs
