@@ -244,9 +244,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (game.wfrp4e?.config?.statusEffects)
         await this.#buildConditions();
 
+      if (this.talents.size > 0 || this.items.size > 0)
+        await this.#buildConsumables();
+
       if (this.items.size === 0) return;
       await this.#buildCombatWeapons();
-      await this.#buildConsumables();
       await this.#buildCombatArmour();
     }
 
@@ -330,7 +332,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const targetIcon = '<i class="fas fa-crosshairs"></i>'
       let values = [];
 
-      for (let [key, item] of this.items) {
+      const consumables = new Map([...this.items, ...this.talents]);
+
+      for (let [key, item] of consumables) {
         let [invokable, targetable] = this.#checkItemEffects(item);
         for (let invk of invokable) {
           if (invk.reduceQuantity && item.quantity.value < 1) continue;
