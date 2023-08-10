@@ -180,7 +180,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
         let encodedValue = ['characteristic', characteristic].join(this.delimiter);
         let info1 = {
-          class: '', text: this.actor.characteristics[characteristic].value, title: 'Characteristic Value'
+          class: '', text: this.actor.characteristics[characteristic].value, title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.CharacteristicValue')
         };
 
         actions.push({
@@ -376,17 +376,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           info1: {
             class: 'armour-ap',
             text: armour[location].value,
-            title: 'Armour Points'
+            title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.AP')
           },
           info2: {
             class: 'armour-shield',
             text: armour.shield,
-            title: 'Shield'
+            title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.Shield')
           },
           info3: {
             class: 'armour-tb',
             text: tb,
-            title: 'Toughness Bonus'
+            title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TB')
           },
           tooltip: armour[location].label
         });
@@ -768,7 +768,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         info1: {
           class: '',
           text: this.#getTestTarget(item),
-          title: 'Test Target'
+          title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TestTarget')
         },
         info2: {
           class: '',
@@ -809,7 +809,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           const {icon1, icon2, icon3} = this.#getItemIcons(itemData);
 
           const info1 = {
-            class: '', text: this.#getTestTarget(itemData), title: 'Test Target'
+            class: '', text: this.#getTestTarget(itemData), title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TestTarget')
           };
           const info2 = {
             class: '', text: this.#getItemValue(itemData), title: this.#getItemValueTooltip(itemData)
@@ -866,7 +866,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       return {
         class: '',
         text: effect?.flags.wfrp4e?.value ?? '0',
-        title: 'Condition Rating'
+        title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ConditionRating')
       }
     }
 
@@ -905,6 +905,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       switch (itemData.type) {
         case 'weapon':
           return '+' + itemData.Damage;
+        case 'trait':
+	  if (!itemData.Damage) break;
+          return '+' + itemData.Damage;
         case 'trapping':
         case 'ammunition':
           return itemData.quantity.value;
@@ -931,17 +934,18 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     #getItemValueTooltip(itemData) {
       switch (itemData.type) {
         case 'weapon':
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.WeaponDamage');
         case 'trait':
-          return 'Weapon Damage';
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TraitDamage');
         case 'trapping':
         case 'ammunition':
-          return 'Quantity';
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.Quantity');
         case 'container':
-          return 'Encumbrance';
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.Encumbrance');
         case 'armour':
-          return 'Highest AP';
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.HighestAP');
         case 'spell':
-          return `Spell's CN`;
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.CN');
         default:
           return null;
       }
@@ -959,7 +963,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     #getItemSecondaryValueTooltip(itemData) {
       switch (itemData.type) {
         case 'spell':
-          return `Spell's Damage`;
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.SpellDamage');
         default:
           return null;
       }

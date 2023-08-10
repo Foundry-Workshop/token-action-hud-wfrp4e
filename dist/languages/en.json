@@ -58,7 +58,23 @@
           "name": "Max Characters",
           "hint": "Maximum number of characters displayed in Action names. Set 0 to disable trimming."
         }
-      }
+      },
+
+      "tooltips": {
+        "CharacteristicValue": "Characteristic Value",
+	"AP": "Armour Points",
+	"Shield": "Shield",
+	"TB": "Toughness Bonus",
+	"TestTarget": "Test Target",
+	"ConditionRating": "Condition Rating",
+	"WeaponDamage": "Weapon Damage",
+	"TraitDamage": "Trait Damage",
+	"Quantity": "Quantity",
+	"Encumbrance": "Encumbrance",
+	"HighestAP": "Highest AP",
+	"CN": "Spell's CN",
+	"SpellDamage": "Spell's Damage"
+	}
     }
   }
 }
