@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.0.8
+* Added support for Extended Tests
+
 ## v0.0.7
 * Added translation keys for tooltips thanks to Txus
 * Added support for activatable traits

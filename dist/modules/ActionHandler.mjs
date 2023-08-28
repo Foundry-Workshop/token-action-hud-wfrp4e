@@ -1,5 +1,5 @@
 import Utility from "./utility/Utility.mjs";
-import {settings, tah} from "./constants.mjs";
+import {constants, settings, tah} from "./constants.mjs";
 
 export let ActionHandlerWfrp4e = null
 
@@ -67,12 +67,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let talents = this.actor.items.filter(i => i.type === 'talent' || i.type === 'trait');
         let magic = this.actor.items.filter(i => i.type === 'spell' || i.type === 'prayer');
         let items = this.actor.items.filter(i => !i.location?.value && this.#inventoryTypes.includes(i.type));
+        let extended = this.actor.items.filter(i => i.type === 'extendedTest');
         let itemsInContainers = this.actor.items.filter(i => !!i.location?.value && this.#inventoryTypes.includes(i.type));
 
         this.skills = coreModule.api.Utils.sortItemsByName(skills);
         this.talents = coreModule.api.Utils.sortItemsByName(talents);
         this.magic = coreModule.api.Utils.sortItemsByName(magic);
         this.items = coreModule.api.Utils.sortItemsByName(items);
+        this.extended = coreModule.api.Utils.sortItemsByName(extended);
         this.itemsInContainers = coreModule.api.Utils.sortItemsByName(itemsInContainers);
       }
 
@@ -93,6 +95,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #buildCharacterActions() {
       await this.#buildCharacteristics();
       await this.#buildSkills();
+      await this.#buildExtendedTests();
       await this.#buildTalents();
       await this.#buildCombat();
       await this.#buildMagic();
@@ -180,7 +183,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
         let encodedValue = ['characteristic', characteristic].join(this.delimiter);
         let info1 = {
-          class: '', text: this.actor.characteristics[characteristic].value, title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.CharacteristicValue')
+          class: '',
+          text: this.actor.characteristics[characteristic].value,
+          title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.CharacteristicValue')
         };
 
         actions.push({
@@ -219,6 +224,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
 
       return this.#addActionsFromMap(actionTypeId, inventoryMap);
+    };
+
+    async #buildExtendedTests() {
+      if (this.extended.size === 0) return;
+      const actions = [];
+      const actionType = 'extendedTest';
+      const actionTypeName = 'Extended Test';
+      const groupData = tah.groups.extendedTests;
+
+      for (let [key, item] of this.extended) {
+        if (item.system.hide.test && !game.user.isGM) continue;
+        let action = this.#makeActionFromItem(item, actionTypeName, actionType, {}, [], false);
+        actions.push(action);
+      }
+
+      await this.addActions(actions, groupData);
     };
 
     async #buildTalents() {
@@ -757,13 +778,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       icon1 = null,
       icon2 = null,
       icon3 = null
-    } = {}, values = []) {
+    } = {}, values = [], image = true) {
       values = [actionType, item._id, ...values];
 
       return {
         id: item._id,
         name: this.#getActionName(item.name),
-        img: coreModule.api.Utils.getImage(item),
+        img: image ? coreModule.api.Utils.getImage(item) : null,
         icon1,
         icon2,
         icon3,
@@ -813,7 +834,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           const {icon1, icon2, icon3} = this.#getItemIcons(itemData);
 
           const info1 = {
-            class: '', text: this.#getTestTarget(itemData), title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TestTarget')
+            class: '',
+            text: this.#getTestTarget(itemData),
+            title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TestTarget')
           };
           const info2 = {
             class: '', text: this.#getItemValue(itemData), title: this.#getItemValueTooltip(itemData)
@@ -910,7 +933,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'weapon':
           return '+' + itemData.Damage;
         case 'trait':
-	  if (!itemData.Damage) break;
+          if (!itemData.Damage) break;
           return '+' + itemData.Damage;
         case 'trapping':
         case 'ammunition':
@@ -930,6 +953,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             return `${itemData.cn.value}`;
           else
             return `${itemData.cn.SL}/${itemData.cn.value}`;
+        case 'extendedTest':
+          return itemData.test.value;
         default:
           return null;
       }
@@ -950,6 +975,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.HighestAP');
         case 'spell':
           return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.CN');
+        case 'extendedTest':
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.Skill');
         default:
           return null;
       }
@@ -959,6 +986,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       switch (itemData.type) {
         case 'spell':
           return (itemData.Damage > 0 || itemData.magicMissile?.value === true) ? '+' + itemData.Damage : null;
+        case 'extendedTest':
+          if (itemData.system.hide.progress)
+            return null;
+          else
+            return `${itemData.system.SL.current}/${itemData.system.SL.target}`;
         default:
           return null;
       }
@@ -968,6 +1000,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       switch (itemData.type) {
         case 'spell':
           return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.SpellDamage');
+        case 'extendedTest':
+          return game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ExtendedTestTarget');
         default:
           return null;
       }

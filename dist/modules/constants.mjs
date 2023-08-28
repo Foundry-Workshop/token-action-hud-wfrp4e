@@ -46,6 +46,7 @@ const tah = {
     conditions: {id: 'conditions', name: 'tokenActionHud.wfrp4e.conditions', type: 'system'},
     consumables: {id: 'consumables', name: 'tokenActionHud.wfrp4e.consumables', type: 'system'},
     containers: {id: 'containers', name: 'tokenActionHud.wfrp4e.containers', type: 'system'},
+    extendedTests: {id: 'extendedTests', name: 'tokenActionHud.wfrp4e.extendedTests', type: 'system'},
     prayersBlessings: {id: 'prayersBlessings', name: 'tokenActionHud.wfrp4e.prayersBlessings', type: 'system'},
     prayersMiracles: {id: 'prayersMiracles', name: 'tokenActionHud.wfrp4e.prayersMiracles', type: 'system'},
     skillsAdvanced: {id: 'skillsAdvanced', name: 'tokenActionHud.wfrp4e.skillsAdvanced', type: 'system'},

@@ -30,6 +30,7 @@ Hooks.once('setup', () => {
         id: 'categorySkills',
         name: game.i18n.localize('tokenActionHud.wfrp4e.skills'),
         groups: [
+          {...groups.extendedTests, nestId: 'categorySkills_extendedTests'},
           {...groups.skillsBasic, nestId: 'categorySkills_skillsBasic'},
           {...groups.skillsAdvanced, nestId: 'categorySkills_skillsAdvanced'},
         ]

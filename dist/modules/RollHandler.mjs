@@ -62,6 +62,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'characteristic':
           return this.#handleCharacteristicAction(actor, actionId);
         case 'skill':
+        case 'extendedTest':
         case 'talent':
         case 'item':
         case 'magic':
@@ -105,6 +106,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return actor.setupPrayer(item).then(setupData => actor.prayerTest(setupData));
         case 'trait':
           return this.#handleRollableTrait(actor, item);
+        case 'extendedTest':
+          return actor.setupExtendedTest(item);
         default:
           item.postItem(0);
       }
