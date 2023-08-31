@@ -34,7 +34,6 @@ For questions, feature requests or bug reports, please open an issue [here](http
 * Implement Apply-able Traits
 * Implement Active Effects
 * Implement handling of Item Damage directly via TAH
-* Implement Extended Tests
 
 You can **always** check current and up-to-date [planned and requested features here](https://github.com/https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 

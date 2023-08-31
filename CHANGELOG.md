@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.0.9
+* Removed talent duplicates
+
 ## v0.0.8
 * Added support for Extended Tests
 

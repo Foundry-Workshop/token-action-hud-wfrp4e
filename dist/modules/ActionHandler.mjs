@@ -64,7 +64,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       // than having to reconvert map to array to map every time I want to filter
       if (this.actor) {
         let skills = this.actor.items.filter(i => i.type === 'skill');
-        let talents = this.actor.items.filter(i => i.type === 'talent' || i.type === 'trait');
+        let talents = this.#getActorTalents();
         let magic = this.actor.items.filter(i => i.type === 'spell' || i.type === 'prayer');
         let items = this.actor.items.filter(i => !i.location?.value && this.#inventoryTypes.includes(i.type));
         let extended = this.actor.items.filter(i => i.type === 'extendedTest');
@@ -85,6 +85,16 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
 
+    #getActorTalents() {
+      let talents = this.actor.items.filter(i => i.type === 'talent' || i.type === 'trait');
+      let consolidated = [];
+      for (let talent of talents) {
+        let existing = consolidated.find(t => t.name === talent.name);
+        if (!existing)
+          consolidated.push(talent);
+      }
+      return consolidated;
+    }
 
     //#region Build Actions
 
