@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.0.10
+* Fixed the Condition names translation for WFRP4e 7.0.0
+
 ## v0.0.9
 * Removed talent duplicates
 

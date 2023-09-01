@@ -443,7 +443,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       const actions = conditions.map((condition) => {
         const id = condition.id;
-        const name = coreModule.api.Utils.i18n(condition.label) ?? condition.name;
+        const name = game.i18n.localize(condition.label) ?? game.i18n.localize(condition.name);
         const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
         const listName = `${actionTypeName}${name}`;
         const encodedValue = [actionType, id].join(this.delimiter);
