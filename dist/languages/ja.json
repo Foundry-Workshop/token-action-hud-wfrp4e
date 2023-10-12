@@ -1,0 +1,83 @@
+{
+  "tokenActionHud": {
+    "wfrp4e": {
+      "ammunition": "矢弾",
+      "armour": "鎧",
+      "basic": "基本",
+      "character": "キャラクタ",
+      "characteristic": "能力値",
+      "characteristics": "能力値",
+      "combat": "戦闘",
+      "conditions": "状態",
+      "consumables": "消耗品",
+      "containers": "容器",
+      "extendedTests": "継続テスト",
+      "inventory": "ｲﾝﾍﾞﾝﾄﾘ",
+      "item": "ｱｲﾃﾑ",
+      "magic": "魔法",
+      "prayersBlessings": "祝福",
+      "prayersMiracles": "奇跡",
+      "skills": "技能",
+      "skillsAdvanced": "上級技能",
+      "skillsBasic": "基本技能",
+      "spells": "呪文",
+      "spellsArcane": "秘術呪文",
+      "spellsPetty": "初級呪文",
+      "talents": "異能",
+      "token": "ﾄｰｸﾝ",
+      "traits": "ｸﾘｰﾁｬｰ特徴",
+      "trappings": "所持品",
+      "utility": "効果",
+      "weapons": "武器",
+
+      "actions": {
+        "rollInitiative": "イニシアチブロール",
+        "makeItemPile": "Item Pileに変換",
+        "makeItemPiles": "複数のItem Pileに変換",
+        "revertItemPile": "Item Pileから戻す",
+        "revertItemPiles": "複数のItem Pilesから戻す",
+        "checkCareer": "キャリアの進捗を確認",
+        "checkEquipment": "装備品を確認",
+        "restRecover": "休息",
+        "incomeRoll": "収入テスト"
+      },
+
+      "tooltips": {
+        "AP": "ｱｰﾏｰﾎﾟｲﾝﾄ",
+        "CN": "呪文のCN",
+        "CharacteristicValue": "能力値",
+        "ConditionRating": "品質",
+        "Encumbrance": "荷重点",
+        "ExtendedTestTarget": "現在 SL / 目標 SL",
+        "HighestAP": "最高AP",
+        "Quantity": "個数",
+        "Shield": "シールド",
+        "Skill": "テストした技能",
+        "SpellDamage": "呪文のダメージ",
+        "TB": "【頑+】",
+        "TestTarget": "テストの目標",
+        "TraitDamage": "特徴ダメージ",
+        "WeaponDamage": "武器ダメージ"
+      },
+
+      "settings": {
+        "displayUnequipped": {
+          "name": "未装備品を表示",
+          "hint": "戦闘タブに未装備の武器を表示するかどうか設定します。"
+        },
+        "groupLores": {
+          "name": "魔法体系でグループ化",
+          "hint": "魔法体系ごとにタブ分けするか設定します。無効にすると、体系がリスト化で表示されます。"
+        },
+        "groupTrappings": {
+          "name": "所持品をグループ化",
+          "hint": "所持品をカテゴリごとにグループ分けして表示するか設定します。無効にすると、所持品の種別がリスト化されます。"
+        },
+        "maxCharacters": {
+          "name": "最大文字数",
+          "hint": "アクション名に表示される最大文字数。0に設定すると省略しません。"
+        }
+      }
+    }
+  }
+}
