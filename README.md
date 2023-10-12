@@ -62,6 +62,7 @@ You can also [join my Discord – Foundry Workshop](https://discord.gg/XkTFv8DRD
 * Thanks to Russell (@Larkinabout) for creating the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core)!
 * Thank you to the Community Helpers on Foundry's Discord who provide tireless support for people seeking help with the HUD.
 * Thanks to Txus for quick reporting of common issues to help me keep this module relatively bug free as fast as possible :)
+* Thanks to doumoku for providing Japanese translations
 
 ## License
 

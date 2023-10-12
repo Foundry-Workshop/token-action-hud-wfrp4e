@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.0.11
+* Added Japanese localization (thanks to user doumoku for providing translation)
+
 ## v0.0.10
 * Fixed the Condition names translation for WFRP4e 7.0.0
 
