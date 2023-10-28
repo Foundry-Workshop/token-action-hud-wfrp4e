@@ -13,7 +13,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {object} event        The event
      * @param {string} encodedValue The encoded value
      */
-    async doHandleActionEvent(event, encodedValue) {
+    async handleActionClick(event, encodedValue) {
       const payload = encodedValue.split('|');
       if (payload.length < 2) {
         super.throwInvalidValueErr();
@@ -27,7 +27,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const renderable = ['item', 'magic', 'skill', 'talent'];
 
       if (renderable.includes(actionTypeId) && this.isRenderItem()) {
-        return this.doRenderItem(this.actor, actionId);
+        return this.renderItem(this.actor, actionId);
       }
 
       const knownCharacters = ['character', 'creature', 'npc'];
@@ -49,15 +49,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
      * Handle action
      * @private
-     * @param {object} event         The event
-     * @param {object} actor         The actor
-     * @param {object} token         The token
-     * @param {string} actionTypeId  The action type id
-     * @param {string} actionId      The actionId
-     * @param {string} subActionType The sub action type id
-     * @param {string} subActionId   The sub actionId
+     * @param {object} event              The event
+     * @param {object} actor              The actor
+     * @param {object} token              The token
+     * @param {string} actionTypeId       The action type id
+     * @param {string} actionId           The actionId
+     * @param {string|null} subActionType The sub action type id
+     * @param {string|null} subActionId   The sub actionId
      */
-    async #handleAction(event, actor, token, actionTypeId, actionId, subActionType, subActionId) {
+    async #handleAction(event, actor, token, actionTypeId, actionId, subActionType = null, subActionId = null) {
       switch (actionTypeId) {
         case 'characteristic':
           return this.#handleCharacteristicAction(actor, actionId);
@@ -88,7 +88,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
      * Handle item action
      * @private
-     * @param {object} event    The event
      * @param {object} actor    The actor
      * @param {string} actionId The action id
      */
@@ -210,7 +209,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {ActorWfrp4e} actor    The actor
      * @param {string}      actionId The action id
      */
-    async #handleUtilityAction(token, actor,  actionId) {
+    async #handleUtilityAction(token, actor, actionId) {
       switch (actionId) {
         case 'endTurn':
           return this.#endTurn(token);

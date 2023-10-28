@@ -1,4 +1,4 @@
-import { DEFAULTS } from './defaults.mjs'
+import {DEFAULTS} from './defaults.mjs'
 import {ActionHandlerWfrp4e} from "./ActionHandler.mjs";
 import {RollHandlerWfrp4e} from "./RollHandler.mjs";
 import {registerSettingsCoreUpdate} from "./settings.mjs";
@@ -6,6 +6,7 @@ import {registerSettingsCoreUpdate} from "./settings.mjs";
 export let SystemManagerWfrp4e = null
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
+
   /**
    * Extends Token Action HUD Core's SystemManager class
    * @extends SystemManager
@@ -17,8 +18,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @override
      * @returns {ActionHandler} The ActionHandler instance
      */
-    doGetActionHandler () {
-      return new ActionHandlerWfrp4e()
+    getActionHandler () {
+      return new ActionHandlerWfrp4e();
     }
 
     /**
@@ -29,9 +30,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @returns {object} The available roll handlers
      */
     getAvailableRollHandlers () {
-      const coreTitle = 'WFRP4e'
-      const choices = { core: coreTitle }
-      return choices
+      const coreTitle = 'WFRP4e';
+
+      return {core: coreTitle};
     }
 
     /**
@@ -41,15 +42,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} rollHandlerId The roll handler ID
      * @returns {rollHandler}        The RollHandler instance
      */
-    doGetRollHandler (rollHandlerId) {
-      let rollHandler
+    getRollHandler (rollHandlerId) {
+      let rollHandler;
+
       switch (rollHandlerId) {
         case 'wfrp4e':
         default:
-          rollHandler = new RollHandlerWfrp4e()
-          break
+          rollHandler = new RollHandlerWfrp4e();
+          break;
       }
-      return rollHandler
+
+      return rollHandler;
     }
 
     /**
@@ -58,7 +61,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @override
      * @param {function} coreUpdate The Token Action HUD Core update function
      */
-    doRegisterSettings (coreUpdate) {
+    registerSettings (coreUpdate) {
       registerSettingsCoreUpdate(coreUpdate);
     }
 
@@ -67,8 +70,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * Called by Token Action HUD Core
      * @returns {object} The default layout and groups
      */
-    async doRegisterDefaultFlags () {
-      return DEFAULTS
+    async registerDefaults () {
+      return DEFAULTS;
     }
   }
 })

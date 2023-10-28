@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.0.12
+* Updated code for TAH Core 1.5
+
 ## v0.0.11
 * Added Japanese localization (thanks to user doumoku for providing translation)
 
