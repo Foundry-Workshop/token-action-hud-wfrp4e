@@ -5,7 +5,7 @@ import {tah} from './constants.mjs'
  */
 export let DEFAULTS = null
 
-Hooks.once('setup', () => {
+Hooks.once('i18nInit', () => {
   const groups = tah.groups
 
   Object.values(groups).forEach(group => {
