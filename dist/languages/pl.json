@@ -1,0 +1,83 @@
+{
+  "tokenActionHud": {
+    "wfrp4e": {
+      "ammunition": "Amunicja",
+      "armour": "Pancerze",
+      "basic": "Podstawowe",
+      "character": "Postać",
+      "characteristic": "Cecha",
+      "characteristics": "Cechy",
+      "combat": "Walka",
+      "conditions": "Stany",
+      "consumables": "Przedmioty jednorazowe",
+      "containers": "Pojemniki",
+      "extendedTests": "Testy Wydłużone",
+      "inventory": "Ekwipunek",
+      "item": "Przedmiot",
+      "magic": "Magia",
+      "prayersBlessings": "Błogosławieństwa",
+      "prayersMiracles": "Cuda",
+      "skills": "Umiejętności",
+      "skillsAdvanced": "Umiejętności Zaawansowane",
+      "skillsBasic": "Umiejętności Podstawowe",
+      "spells": "Zaklęcia",
+      "spellsArcane": "Zaklęcia Magii Tajemnej",
+      "spellsPetty": "Zaklęcia Magii Prostej",
+      "talents": "Talenty",
+      "token": "Znacznik",
+      "traits": "Cechy Stworzeń",
+      "trappings": "Wyposażenie",
+      "utility": "Różne",
+      "weapons": "Bronie",
+
+      "actions": {
+        "rollInitiative": "Rzuć na inicjatywę",
+        "makeItemPile": "Konwertuj na stos przedmiotów",
+        "makeItemPiles": "Konwertuj na stosy przedmiotów",
+        "revertItemPile": "Odtwórz ze stosu przedmiotów",
+        "revertItemPiles": "Odtwórz ze stosów przedmiotów",
+        "checkCareer": "Sprawdź postęp rozwoju profesji",
+        "checkEquipment": "Sprawdź Wyposażenie",
+        "restRecover": "Odpocznij i odzyskaj żywotność",
+        "incomeRoll": "Rzuć do dochodu"
+      },
+
+      "tooltips": {
+        "AP": "Punkty pancerza",
+        "CN": "Poziom Zaklęcia",
+        "CharacteristicValue": "Wartość Cechy",
+        "ConditionRating": "Liczba Stanów",
+        "Encumbrance": "Obciążenie",
+        "ExtendedTestTarget": "Aktualne PS / Wymagane PS",
+        "HighestAP": "Najwyższe PP",
+        "Quantity": "Ilość",
+        "Shield": "Tarcza",
+        "Skill": "Umiejętność Testu",
+        "SpellDamage": "Obrażenia Zaklęcia",
+        "TB": "Bonus z Wytrzymałości",
+        "TestTarget": "Poziom Trudności Testu",
+        "TraitDamage": "Obrażenia Cechy Stworzenia",
+        "WeaponDamage": "Obrażenia Broni"
+      },
+
+      "settings": {
+        "displayUnequipped": {
+          "name": "Wyświetl niewyekwipowane przedmioty",
+          "hint": "Czy wyświetlić niewyposażoną broń na karcie walki, czy nie."
+        },
+        "groupLores": {
+          "name": "Grupuj Tradycje Zaklęć",
+          "hint": "Czy wyświetlić Tradycje Zaklęć pogrupowane w zakładki. Jeśli zaznaczone, zaklęcia poszczególnych tradycji będą wyświetlane jako listy."
+        },
+        "groupTrappings": {
+          "name": "Grupuj Wyposażenie",
+          "hint": "Czy wyświetlić Wyposażenie w zakładkach według kategorii. Jeśli zaznaczone, wyposażenie będzie wyświetlane jako listy."
+        },
+        "maxCharacters": {
+          "name": "Maksymalna liczba znaków",
+          "hint": "Maksymalna liczba znaków wyświetlanych w nazwach akcji. Ustaw 0, aby wyłączyć ucinanie tekstu."
+        }
+      }
+    }
+  }
+}

@@ -375,7 +375,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         }
         for (let trgt of targetable) {
           if (trgt.reduceQuantity && item.quantity.value < 1) continue;
-          values = ['invokable', trgt._id];
+          values = ['targetable', trgt._id];
           let action = this.#makeActionFromItem(item, actionTypeName, actionType, {icon1: targetIcon}, values);
           actionsData.push(action);
         }
