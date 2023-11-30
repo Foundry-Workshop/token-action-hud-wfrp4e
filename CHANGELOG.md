@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.0.13
+* Added Polish localization (thanks to silentmark for providing translation)
+* Fixed targetable traits being treated as invokable
+
 ## v0.0.12
 * Updated code for TAH Core 1.5
 
