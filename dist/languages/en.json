@@ -45,6 +45,7 @@
       "tooltips": {
         "AP": "Armour Points",
         "CN": "Spell's CN",
+        "ChannellingSL": "Channelling SL",
         "CharacteristicValue": "Characteristic Value",
         "ConditionRating": "Condition Rating",
         "Encumbrance": "Encumbrance",

@@ -244,15 +244,11 @@
 }
 
 .tah-button-content {
-  padding: 0;
+  padding: 0 10px;
 }
 
 .tah-group-button:hover:not(.disable-edit) .tah-button-content > :is(.fa, .fas, .far) {
   visibility: visible;
-}
-
-.tah-button-text {
-  padding: 0 10px;
 }
 
 .tah-button-content > :is(.fa, .fas, .far) {

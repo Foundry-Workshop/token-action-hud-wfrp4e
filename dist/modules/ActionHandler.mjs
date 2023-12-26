@@ -41,23 +41,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async buildSystemActions(groupIds) {
       // need to wait because WFRP4e changes conditions on `ready`...
-      if (ActionHandlerWfrp4e.#firstBuild) {
-        if (!game.wfrp4e?.config?.statusEffects) {
-          setTimeout(
-            () => Hooks.callAll('forceUpdateTokenActionHud'),
-            500
-          );
-        } else {
-          ActionHandlerWfrp4e.#firstBuild = false;
-        }
-      }
+      // if (ActionHandlerWfrp4e.#firstBuild) {
+      //   if (!game.wfrp4e?.config?.statusEffects) {
+      //     setTimeout(
+      //       () => Hooks.callAll('forceUpdateTokenActionHud'),
+      //       500
+      //     );
+      //   } else {
+      //     ActionHandlerWfrp4e.#firstBuild = false;
+      //   }
+      // }
 
       // Settings
       this.#displayUnequipped = Utility.getSetting(settings.displayUnequipped);
       this.#groupLores = Utility.getSetting(settings.groupLores);
       this.#groupTrappings = Utility.getSetting(settings.groupTrappings);
       this.#maxCharacters = parseInt(Utility.getSetting(settings.maxCharacters)) ?? 0;
-      this.#useWomChanneling = game.settings.get("wfrp4e", "useWoMChannelling")
+      this.#useWomChanneling = game.settings.get("wfrp4e", "useWoMChannelling");
 
       // Set items variables
       // Declaring multiple arrays, while taking more memory for sure, should be better
@@ -113,43 +113,43 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       await this.#buildUtility();
 
 
-      return;
       /**
        * Update Character tab to add Wounds
        * @type {unknown}
        */
-      let characterGroup = this.#findGroup({id: 'categoryCharacteristics'})
-      // @todo fix info1 to be object {class,text,title} when Core updates
-      // Also color the info text based on wound %
-      // characterGroup.info1 = {
-      //   class: '',
-      //   text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
-      //   title: ''
-      // }
-      characterGroup.info1 = `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`;
-      await this.updateGroup(characterGroup)
+      await this.addGroupInfo({
+        id: 'categoryCharacteristics',
+        info: {
+          info1: {
+            class: '',
+            text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
+            title: game.i18n.localize('Wounds')
+          }
+        }
+      });
 
       /**
        * Update Combat tab to add Advantage
        */
       if (game.combat?.combatants?.some(combatant => combatant.actorId === this.actor._id)) {
-        let combatGroup = this.#findGroup({id: 'categoryCombat'})
         let advantage;
         if (game.settings.get("wfrp4e", "useGroupAdvantage") === true) {
           let advantageSetting = game.settings.get("wfrp4e", "groupAdvantageValues");
-          advantage = advantageSetting[this.actor.advantageGroup] ?? 0;
+          advantage = advantageSetting[this.actor.advantageGroup] || ' 0';
         } else {
           advantage = `${this.actor.system.status.advantage.value}/${this.actor.system.status.advantage.max}`
         }
 
-        // @todo fix info1 to be object {class,text,title} when Core updates
-        combatGroup.info1 = advantage;
-        // combatGroup.info1 = {
-        //   class: '',
-        //   text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
-        //   title: ''
-        // }
-        await this.updateGroup(combatGroup)
+        await this.addGroupInfo({
+          id: 'categoryCombat',
+          info: {
+            info1: {
+              class: '',
+              text: advantage,
+              title: game.i18n.localize('Advantage')
+            }
+          }
+        });
       }
 
       /**
@@ -158,19 +158,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (this.#useWomChanneling) {
         for (let lore in this.#lores) {
           let group = this.#findGroup({id: this.#lores[lore]});
+          console.log('magic lores group', group)
           if (!group) continue;
           let action = group.actions[0] || null;
           if (!action) continue;
           let spell = this.actor.items.find(i => i.type === 'spell' && i._id === action.id);
           if (!spell) continue;
-          // @todo fix info1 to be object {class,text,title} when Core updates
-          // group.info1 = {
-          //   class: '',
-          //   text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
-          //   title: ''
-          // }
-          group.info1 = spell.cn.SL;
-          await this.updateGroup(group);
+
+          await this.addGroupInfo({
+            id: this.#lores[lore],
+            info: {
+              info1: {
+                class: '',
+                text: spell.cn.SL,
+                title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ChannellingSL')
+              }
+            }
+          });
         }
       }
     }
@@ -436,7 +440,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @private
      */
     async #buildConditions() {
-      if (!this.token) return;
       const actionType = 'condition';
       const conditions = game.wfrp4e.config.statusEffects.filter((condition) => condition.id !== '');
       if (conditions.length === 0) return;
