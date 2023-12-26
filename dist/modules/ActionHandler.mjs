@@ -117,11 +117,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
        * Update Character tab to add Wounds
        * @type {unknown}
        */
+      const percentage = Math.round((this.actor.system.status.wounds.value / this.actor.system.status.wounds.max) * 100);
+      let cls = '';
+
+      if (percentage <= 0)
+        cls = 'death';
+      else if (percentage <= 25)
+        cls = 'danger';
+      else if (percentage <= 70)
+        cls = 'medium';
+      else
+        cls = 'healthy';
+
       await this.addGroupInfo({
         id: 'categoryCharacteristics',
         info: {
           info1: {
-            class: '',
+            class: cls,
             text: `${this.actor.system.status.wounds.value}/${this.actor.system.status.wounds.max}`,
             title: game.i18n.localize('Wounds')
           }

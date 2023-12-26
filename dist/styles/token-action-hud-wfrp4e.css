@@ -509,6 +509,20 @@
   min-width: 360px !important;
 }
 
+.tah-info1.death, .tah-info2.death, .tah-info3.death {
+  text-shadow: 0 0 4px #600, 0 0 6px #800, 0 0 8px #900, 0 0 8px #900, 0 0 9px #a00, 0 0 9px #a00, 0 0 10px #b00, 0 0 10px #c00, 0 0 10px #c00;
+  color: #bbb;
+}
+.tah-info1.danger, .tah-info2.danger, .tah-info3.danger {
+  color: #f33;
+}
+.tah-info1.medium, .tah-info2.medium, .tah-info3.medium {
+  color: #bb0;
+}
+.tah-info1.healthy, .tah-info2.healthy, .tah-info3.healthy {
+  color: #3b3;
+}
+
 /** WFRP4e related. NOT PART OF THEME **/
 #token-action-hud-dialog .window-content {
   background-image: url(/ui/parchment.jpg);

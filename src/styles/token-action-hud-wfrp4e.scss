@@ -553,6 +553,34 @@
   min-width: 360px !important;
 }
 
+.tah-info1, .tah-info2, .tah-info3 {
+  &.death {
+    text-shadow:
+    0 0 4px #600,
+    0 0 6px #800,
+    0 0 8px #900,
+    0 0 8px #900,
+    0 0 9px #a00,
+    0 0 9px #a00,
+    0 0 10px #b00,
+    0 0 10px #c00,
+    0 0 10px #c00;
+    color: #bbb;
+  }
+
+  &.danger {
+    color: #f33;
+  }
+
+  &.medium {
+    color: #bb0;
+  }
+
+  &.healthy {
+    color: #3b3;
+  }
+}
+
 
 /** WFRP4e related. NOT PART OF THEME **/
 
