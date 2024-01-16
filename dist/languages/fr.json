@@ -1,0 +1,83 @@
+{
+  "tokenActionHud": {
+    "wfrp4e": {
+      "ammunition": "Munition",
+      "armour": "Armure",
+      "basic": "Basic",
+      "character": "Personnage",
+      "characteristic": "Caractérisque",
+      "characteristics": "Caractérisques",
+      "combat": "Combat",
+      "conditions": "Etats",
+      "consumables": "Consommables",
+      "containers": "Conteneurs",
+      "extendedTests": "Tests étendus",
+      "inventory": "Inventaire",
+      "item": "Objet",
+      "magic": "Magie",
+      "prayersBlessings": "Bénédictions",
+      "prayersMiracles": "Miracles",
+      "skills": "Compétences",
+      "skillsAdvanced": "Compétences avancées",
+      "skillsBasic": "Compétences de base",
+      "spells": "Sorts",
+      "spellsArcane": "Sorts d'Arcane",
+      "spellsPetty": "Magie Mineure",
+      "talents": "Talents",
+      "token": "Token",
+      "traits": "Traits",
+      "trappings": "Equipements",
+      "utility": "Utilitaire",
+      "weapons": "Armes",
+
+      "actions": {
+        "rollInitiative": "Lancer l'initiative",
+        "makeItemPile": "Convertir vers Item Pile",
+        "makeItemPiles": "Convertir vers Item Piles",
+        "revertItemPile": "Défaire de Item Pile",
+        "revertItemPiles": "Défaire de Item Piles",
+        "checkCareer": "Vérifier la progression de carrière",
+        "checkEquipment": "Vérifier l'équipement",
+        "restRecover": "Se reposer et récupérer",
+        "incomeRoll": "Lancer pour les revenus"
+      },
+
+      "tooltips": {
+        "AP": "Points d'armure",
+        "CN": "NI du Sort",
+        "CharacteristicValue": "Valeur de caractéristique",
+        "ConditionRating": "Niveau de l'état",
+        "Encumbrance": "Encombrement",
+        "ExtendedTestTarget": "DR courant / DR cible",
+        "HighestAP": "Plus haut AP",
+        "Quantity": "Quantité",
+        "Shield": "Bouclier",
+        "Skill": "Compétence testée",
+        "SpellDamage": "Dégâts du sort",
+        "TB": "Bonus d'Endurance",
+        "TestTarget": "Tester la cible",
+        "TraitDamage": "Dommage du Trait",
+        "WeaponDamage": "Dommage de l'arme"
+      },
+
+      "settings": {
+        "displayUnequipped": {
+          "name": "Afficher ce qui n'est pas équipé",
+          "hint": "Affiche ou pas les armes non équipées dans l'onglet de Combat."
+        },
+        "groupLores": {
+          "name": "Grouper les Domaines de Magie",
+          "hint": "Active/Désactive le regroupement des sorts par domaine de magie. Si désactivé, les sorts sont affichés en liste."
+        },
+        "groupTrappings": {
+          "name": "Grouper l'équipement",
+          "hint": "Active/Désactive le regroupement de l'équipement par catégorie. Si désactivé, l'équipement est affiché en liste."
+        },
+        "maxCharacters": {
+          "name": "Nombre maximum de caractères",
+          "hint": "Nombre maximum de caractères affichés dans les noms d'Actions. Mettre 0 pour désactiver."
+        }
+      }
+    }
+  }
+}
