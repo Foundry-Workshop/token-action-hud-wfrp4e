@@ -64,6 +64,7 @@ You can also [join my Discord – Foundry Workshop](https://discord.gg/XkTFv8DRD
 * Thanks to Txus for quick reporting of common issues to help me keep this module relatively bug free as fast as possible :)
 * Thanks to doumoku for providing Japanese translations
 * Thanks to silentmark for providing Polish translations
+* Thanks to LeRatierBretonnien for providing French translations
 
 ## License
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.0
+* Added French localization (thanks to LeRatierBretonnien for providing translation)
+* Added Wounds, Advantage and Channeling SL numbers to group buttons
+* Updated and added support for new WFRP4e's Active Effects
+
+
 ## v0.0.13
 * Added Polish localization (thanks to silentmark for providing translation)
 * Fixed targetable traits being treated as invokable
