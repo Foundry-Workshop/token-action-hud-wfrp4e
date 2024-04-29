@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.1
+* Added localization string for new setting
+
 ## v1.0.0
 * Added French localization (thanks to LeRatierBretonnien for providing translation)
 * Added Wounds, Advantage and Channeling SL numbers to group buttons

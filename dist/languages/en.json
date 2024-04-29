@@ -63,6 +63,10 @@
       },
 
       "settings": {
+        "shiftRollMode": {
+          "name": "Shift Roll Mode",
+          "hint": "Select which Roll Mode will be used when using Actions while holding Shift key."
+        },
         "displayUnequipped": {
           "name": "Display Unequipped",
           "hint": "Whether to display unequipped weapons on the Combat tab or not."
