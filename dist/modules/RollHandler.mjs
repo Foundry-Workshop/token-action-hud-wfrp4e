@@ -171,10 +171,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     async #handleCombatItemAction(event, actor, actionId) {
-      if (this.isRightClick(event)) {
-        return this.renderItem(actor, actionId);
-      }
-
       const item = actor.items.get(actionId);
 
       switch (item.type) {
@@ -183,6 +179,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'weapon':
           if (this.pressedControl)
             return this.#handleWeaponDamage(event, actor, item);
+          else if (this.isRightClick(event))
+            return this.renderItem(actor, actionId);
           else
             return this.#rollWeapon(actor, item);
         case 'consumable':
