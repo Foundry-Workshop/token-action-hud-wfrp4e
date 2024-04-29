@@ -10,6 +10,9 @@ Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token 
 ## Features
 - Make rolls directly from the HUD instead of opening your character sheet.
 - Use items from the HUD or right-click an item to open its sheet.
+- Fix and Damage your Armour and Weapons.
+- Easily trigger Manual Effect Scripts.
+- Make quick Blind GM rolls.
 - Move the HUD and choose to expand the menus up or down.
 - Unlock the HUD to customise layout and groups per user, and actions per actor.
 - Add your own macros, journal entries and roll table compendiums.
@@ -24,7 +27,32 @@ Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token 
 
 ## Usage FAQ
 
-For a guide on using Token Action HUD, go to: [How to Use Token Action HUD](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD)
+For a guide on using Token Action HUD, go to: [How to Use Token Action HUD](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD).
+
+---
+#### Does Right Click do anything?
+Yes, Right Click does several things, mostly depending on what you are clicking:
+* Skills, Talents, Spells, Prayers and Inventory — opens the Item's Sheet
+* Conditions — removes the Condition
+* Manual Effects — opens Sheet of the Item that has this effect
+
+Otherwise, Right Click behaves just like Left Click.
+
+---
+#### How can I damage or repair weapons and Armour?
+While holding `Control`, you can Left Click to repair, or Right Click to damage a Weapon or Armour. 
+This only works on the `Combat` tab.  
+
+Armour will be damaged "from top down", as ordered in Character Sheet.
+
+---
+
+#### How can I make test hidden?
+When holding `Shift` while triggering any Test from Token Action HUD, it will be forced to be Blind GM Roll.  
+
+This can be changed in Module's Settings.
+
+---
 
 For questions, feature requests or bug reports, please open an issue [here](https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues).
 
