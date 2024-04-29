@@ -74,6 +74,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return this.#handleCombatItemAction(actor, actionId);
         case 'consumable':
           return this.#handleCombatConsumableAction(actor, actionId, subActionType, subActionId);
+        case 'manualEffect':
+          return this.#handleManualEffectAction(event, actor, subActionType, subActionId);
         case 'condition':
           return this.#handleConditionAction(event, actor, actionId);
         case 'utility':
@@ -159,6 +161,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
 
       return item.postItem(0);
+    }
+
+    async #handleManualEffectAction(event, actor, subActionType, subActionId) {
+      let effect = await fromUuid(subActionType);
+
+      if (this.isRightClick(event)) {
+        return this.renderItem(actor, effect.item._id);
+      }
+
+      let script = effect.manualScripts[subActionId];
+      script.execute({actor: actor});
     }
 
     async #handleCombatConsumableAction(actor, actionId, subActionType, subActionId) {

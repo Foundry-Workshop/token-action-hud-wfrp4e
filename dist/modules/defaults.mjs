@@ -52,7 +52,7 @@ Hooks.once('i18nInit', () => {
           {...groups.combatBasic, nestId: 'categoryCombat_combatBasic'},
           {...groups.combatWeapons, nestId: 'categoryCombat_combatWeapons'},
           {...groups.combatTraits, nestId: 'categoryCombat_combatTraits'},
-          {...groups.consumables, nestId: 'categoryCombat_consumables'},
+          {...groups.manualEffects, nestId: 'categoryCombat_manualEffects'},
           {...groups.combatArmour, nestId: 'categoryCombat_combatArmour'},
         ]
       },

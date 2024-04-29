@@ -40,18 +40,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     async buildSystemActions(groupIds) {
-      // need to wait because WFRP4e changes conditions on `ready`...
-      // if (ActionHandlerWfrp4e.#firstBuild) {
-      //   if (!game.wfrp4e?.config?.statusEffects) {
-      //     setTimeout(
-      //       () => Hooks.callAll('forceUpdateTokenActionHud'),
-      //       500
-      //     );
-      //   } else {
-      //     ActionHandlerWfrp4e.#firstBuild = false;
-      //   }
-      // }
-
       // Settings
       this.#displayUnequipped = Utility.getSetting(settings.displayUnequipped);
       this.#groupLores = Utility.getSetting(settings.groupLores);
@@ -292,7 +280,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         await this.#buildConditions();
 
       if (this.talents.size > 0 || this.items.size > 0)
-        await this.#buildConsumables();
+        await this.#buildManualEffects();
 
       if (this.items.size === 0) return;
       await this.#buildCombatWeapons();
@@ -369,6 +357,55 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       return this.addActions(actionsData, groupData)
     };
+
+    async #buildManualEffects() {
+      const actionsData = [];
+      const actionType = 'manualEffect';
+      const actionTypeName = game.i18n.localize(tah.actions.manualEffect);
+      const groupData = tah.groups.manualEffects;
+      const invokeIcon = '<i class="fas fa-flask"></i>';
+      let values = [];
+
+      const itemsWithManualEffects = new Map([...this.items, ...this.talents]);
+
+      for (let [key, item] of itemsWithManualEffects) {
+        for (let script of item.manualScripts) {
+          let effect = script.effect;
+          values = [actionType, item._id, effect.uuid, script.index];
+
+          let action = {
+            id: `${effect._id}.${script.index}`,
+            name: this.#getActionName(script.Label),
+            img: effect.icon ?? null,
+            icon1: invokeIcon,
+            icon2: '',
+            icon3: '',
+            listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+            encodedValue: values.join(this.delimiter),
+            info1: {
+              class: '',
+              text: this.#getTestTarget(item),
+              title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvoke')
+            },
+            info2: {
+              class: '',
+              text: this.#getItemValue(item),
+              title: this.#getItemValueTooltip(item)
+            },
+            info3: {
+              class: '',
+              text: this.#getItemSecondaryValue(item),
+              title: this.#getItemSecondaryValueTooltip(item)
+            },
+            tooltip: effect.name
+          };
+
+          actionsData.push(action);
+        }
+      }
+
+      return this.addActions(actionsData, groupData)
+    }
 
     async #buildConsumables() {
       const actionsData = [];

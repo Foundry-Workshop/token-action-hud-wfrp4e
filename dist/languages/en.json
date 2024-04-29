@@ -51,6 +51,7 @@
         "Encumbrance": "Encumbrance",
         "ExtendedTestTarget": "Current SL / Target SL",
         "HighestAP": "Highest AP",
+        "ManualInvoke": "Invoke Effect",
         "Quantity": "Quantity",
         "Shield": "Shield",
         "Skill": "Tested Skill",
