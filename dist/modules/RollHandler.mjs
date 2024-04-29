@@ -1,3 +1,6 @@
+import Utility from "./utility/Utility.mjs";
+import {settings} from "./constants.mjs";
+
 export let RollHandlerWfrp4e = null
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
@@ -67,11 +70,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'item':
         case 'magic':
           return this.#handleItemAction(actor, actionId);
+        case 'combatArmour':
+          return this.#handleCombatArmour(event, actor, actionId);
         case 'combatBasic':
           return this.#handleCombatAction(actor, actionId);
         case 'combatWeapon':
         case 'combatTrait':
-          return this.#handleCombatItemAction(actor, actionId);
+          return this.#handleCombatItemAction(event, actor, actionId);
         case 'consumable':
           return this.#handleCombatConsumableAction(actor, actionId, subActionType, subActionId);
         case 'manualEffect':
@@ -84,7 +89,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     #handleCharacteristicAction(actor, actionId) {
-      return actor.setupCharacteristic(actionId).then(test => test.roll());
+      return actor.setupCharacteristic(actionId, this.options).then(test => test.roll());
     }
 
     /**
@@ -98,17 +103,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       switch (item.type) {
         case 'skill':
-          return actor.setupSkill(item).then(test => test.roll());
+          return actor.setupSkill(item, this.options).then(test => test.roll());
         case 'weapon':
           return this.#rollWeapon(actor, item);
         case 'spell':
-          return actor.sheet.spellDialog(item);
+          return actor.sheet.spellDialog(item, this.options);
         case 'prayer':
-          return actor.setupPrayer(item).then(setupData => actor.prayerTest(setupData));
+          return actor.setupPrayer(item, this.options).then(setupData => actor.prayerTest(setupData));
         case 'trait':
           return this.#handleRollableTrait(actor, item);
         case 'extendedTest':
-          return actor.setupExtendedTest(item);
+          return actor.setupExtendedTest(item, this.options);
         default:
           item.postItem(0);
       }
@@ -118,21 +123,21 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       switch (actionId) {
         case 'unarmed':
           let unarmed = game.wfrp4e.config.systemItems.unarmed
-          return actor.setupWeapon(unarmed).then(setupData => {
+          return actor.setupWeapon(unarmed, this.options).then(setupData => {
             actor.weaponTest(setupData)
           })
         case 'dodge':
-          return actor.setupSkill(game.i18n.localize("NAME.Dodge")).then(setupData => {
+          return actor.setupSkill(game.i18n.localize("NAME.Dodge"), this.options).then(setupData => {
             actor.basicTest(setupData)
           });
         case 'improv':
           let improv = game.wfrp4e.config.systemItems.improv;
-          return actor.setupWeapon(improv).then(setupData => {
+          return actor.setupWeapon(improv, this.options).then(setupData => {
             actor.weaponTest(setupData)
           })
         case 'stomp':
           let stomp = game.wfrp4e.config.systemItems.stomp;
-          return actor.setupTrait(stomp).then(setupData => {
+          return actor.setupTrait(stomp, this.options).then(setupData => {
             actor.traitTest(setupData)
           })
         default:
@@ -140,14 +145,46 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
 
-    async #handleCombatItemAction(actor, actionId) {
+    #handleCombatArmour(event, actor, actionId) {
+      let item, damage;
+      const rightClick = this.isRightClick(event);
+
+      if (!this.pressedControl) return;
+
+      if (rightClick) {
+        damage = 1;
+        item = actor.itemTypes.armour.find(a =>
+          a.system.AP[actionId] > 0 &&
+          a.system.APdamage[actionId] < a.system.AP[actionId]
+        );
+      } else {
+        damage = -1;
+        item = actor.itemTypes.armour.find(a =>
+          a.system.AP[actionId] > 0 &&
+          a.system.APdamage[actionId] > 0
+        );
+      }
+
+      if (!item) return;
+
+      return item.system.damageItem(damage, [actionId]);
+    }
+
+    async #handleCombatItemAction(event, actor, actionId) {
+      if (this.isRightClick(event)) {
+        return this.renderItem(actor, actionId);
+      }
+
       const item = actor.items.get(actionId);
 
       switch (item.type) {
         case 'trait':
           return this.#handleRollableTrait(actor, item);
         case 'weapon':
-          return this.#rollWeapon(actor, item);
+          if (this.pressedControl)
+            return this.#handleWeaponDamage(event, actor, item);
+          else
+            return this.#rollWeapon(actor, item);
         case 'consumable':
         default:
       }
@@ -155,7 +192,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     #handleRollableTrait(actor, item) {
       if (item.rollable?.value) {
-        return actor.setupTrait(item).then(setupData => {
+        return actor.setupTrait(item, this.options).then(setupData => {
           actor.traitTest(setupData)
         })
       }
@@ -257,7 +294,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #restRecover(actor) {
       let skill = actor.getItemTypes("skill").find(s => s.name === game.i18n.localize("NAME.Endurance"));
-      let options = {rest: true, tb: actor.characteristics.t.bonus}
+      let options = foundry.utils.mergeObject(this.options, {rest: true, tb: actor.characteristics.t.bonus});
       let setupData;
       if (skill)
         setupData = await actor.setupSkill(skill, options);
@@ -275,24 +312,24 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (!incomeSkill || !actor.items.some(i => i.type === 'skill' && i.name === incomeSkill))
         return ui.notifications.error(game.i18n.localize("SHEET.SkillMissingWarning"));
 
-      let options = {
+      const options = foundry.utils.mergeObject(this.options, {
         title: `${incomeSkill} - ${game.i18n.localize("Income")}`,
         income: actor.details.status,
         career: career.toObject()
-      };
+      });
       let setupData = await actor.setupSkill(incomeSkill, options);
       return actor.basicTest(setupData)
     }
 
     async #checkEquipment(actor) {
-      const api = game.modules.get('forien-armoury')?.api
+      const api = game.modules.get('forien-armoury')?.api;
       if (!api) return;
 
       return api.itemRepair.checkInventoryForDamage(actor);
     }
 
     async #checkCareer(actor) {
-      const api = game.modules.get('forien-armoury')?.api
+      const api = game.modules.get('forien-armoury')?.api;
       if (!api) return;
 
       return api.checkCareers.checkCareer(actor);
@@ -306,11 +343,38 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       return game.itempiles?.API?.revertTokensFromItemPiles([token])
     }
 
+    #handleWeaponDamage(event, actor, item) {
+      const rightClick = this.isRightClick(event);
+      const damage = rightClick ? 1 : -1;
+
+      return item.system.damageItem(damage);
+    }
+
     #rollWeapon(actor, item) {
-      return actor.setupWeapon(item).then(setupData => {
+      return actor.setupWeapon(item, this.options).then(setupData => {
         if (!setupData.abort)
           actor.weaponTest(setupData);
       });
+    }
+
+    get options() {
+      let options = {};
+
+      if (this.pressedShift) {
+        options.fields = {
+          rollMode: Utility.getSetting(settings.shiftRollMode)
+        }
+      }
+
+      return options;
+    }
+
+    get pressedShift() {
+      return game.keyboard.isModifierActive("Shift");
+    }
+
+    get pressedControl() {
+      return game.keyboard.isModifierActive(KeyboardManager.CONTROL_KEY_STRING);
     }
   }
 })

@@ -1,9 +1,15 @@
 # Changelog
 
-## v0.1.0
+## v1.0.0
 * Added French localization (thanks to LeRatierBretonnien for providing translation)
 * Added Wounds, Advantage and Channeling SL numbers to group buttons
 * Updated and added support for new WFRP4e's Active Effects
+  * Added section for Manual Scripts under the Combat tab.
+* Added option to damage/repair armour and weapons 
+  * While holding Control, Left Click repairs, Right Click damages
+* Right clicking on Weapon in Combat tab will now open its Sheet
+* Added Shift modifier. While holding Shift, the Roll Mode will be set to Blind GM Roll
+  * Roll Mode forced by holding Shift can be changed in Settings
 
 
 ## v0.0.13

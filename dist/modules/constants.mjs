@@ -14,6 +14,7 @@ const settings = {
   groupLores: 'groupLores',
   groupTrappings: 'groupTrappings',
   maxCharacters: 'maxCharacters',
+  shiftRollMode: 'shiftRollMode'
 }
 
 const tah = {
