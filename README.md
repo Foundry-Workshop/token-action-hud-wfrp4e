@@ -54,6 +54,16 @@ This can be changed in Module's Settings.
 
 ---
 
+#### How can I bypass Roll Dialog?
+By default, all Rolls display Dialog for user.  
+When holding `Alt` while triggering any Test from Token Action HUD, it will bypass the Dialog with default options.  
+
+This can be changed in Module's Settings so that bypass is default and `Alt` shows Dialog.
+
+*This works with `Shift` modifier*
+
+---
+
 For questions, feature requests or bug reports, please open an issue [here](https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues).
 
 

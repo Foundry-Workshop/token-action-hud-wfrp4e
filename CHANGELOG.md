@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.0
+* Added support for `Scrolls` item type from [Forien's Armoury](https://foundryvtt.com/packages/forien-armoury/) module
+* Added new setting for Default Bypass Mode
+  * With setting enabled, all Rolls made from Token Action HUD will bypass Dialog by default
+  * With setting disabled, all Rolls made from Token Action HUD will show Dialog by default
+  * Holding Alt while clicking on a Test, will do the opposite to the setting
+
 ## v1.0.1
 * Added localization string for new setting
 
