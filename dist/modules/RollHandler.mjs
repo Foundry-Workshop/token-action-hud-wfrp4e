@@ -114,6 +114,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return this.#handleRollableTrait(actor, item);
         case 'extendedTest':
           return actor.setupExtendedTest(item, this.options);
+        case 'forien-armoury.scroll':
+          return item.system.prepareScrollTest(this.options);
         default:
           item.postItem(0);
       }

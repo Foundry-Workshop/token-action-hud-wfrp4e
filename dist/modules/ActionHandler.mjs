@@ -18,7 +18,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      */
     #actorTypes = ['character', 'npc', 'creature'];
     #equippableTypes = ['weapon', 'armour'];
-    #inventoryTypes = ['weapon', 'armour', 'trapping', 'container', 'ammunition'];
+    #inventoryTypes = ['weapon', 'armour', 'trapping', 'container', 'ammunition', 'forien-armoury.scroll'];
     #displayUnequipped;
     #groupLores;
     #groupTrappings;
@@ -158,7 +158,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (this.#useWomChanneling) {
         for (let lore in this.#lores) {
           let group = this.#findGroup({id: this.#lores[lore]});
-          console.log('magic lores group', group)
           if (!group) continue;
           let action = group.actions[0] || null;
           if (!action) continue;
@@ -649,6 +648,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           case 'ammunition':
           case 'armour':
           case 'weapon':
+          case 'forien-armoury.scroll':
             break;
           case 'skill':
           case 'spell':
@@ -713,6 +713,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           case 'ammunition':
           case 'armour':
           case 'weapon':
+          case 'forien-armoury.scroll':
             break;
           default:
             continue;
