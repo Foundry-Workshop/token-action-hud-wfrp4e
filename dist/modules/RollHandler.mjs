@@ -366,7 +366,18 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         }
       }
 
+      let bypass = Utility.getSetting(settings.bypassDefault);
+
+      if (this.pressedAlt)
+        bypass = !bypass;
+
+      options.bypass = bypass;
+
       return options;
+    }
+
+    get pressedAlt() {
+      return game.keyboard.isModifierActive("Alt");
     }
 
     get pressedShift() {

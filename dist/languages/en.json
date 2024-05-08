@@ -67,6 +67,10 @@
           "name": "Shift Roll Mode",
           "hint": "Select which Roll Mode will be used when using Actions while holding Shift key."
         },
+        "bypassDefault": {
+          "name": "Default Bypass Mode",
+          "hint": "If checked, all Rolls will be Bypassed by default. If unchecked, all Rolls will show a Dialog by default. Pressing Alt key reverses the behaviour (for example, holding Alt while this setting is unchecked will bypass the Roll)."
+        },
         "displayUnequipped": {
           "name": "Display Unequipped",
           "hint": "Whether to display unequipped weapons on the Combat tab or not."
