@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.1.1
+* Added missing localization string for `Magic Scrolls` group 
+
 ## v1.1.0
 * Added support for `Scrolls` item type from [Forien's Armoury](https://foundryvtt.com/packages/forien-armoury/) module
 * Added new setting for Default Bypass Mode
