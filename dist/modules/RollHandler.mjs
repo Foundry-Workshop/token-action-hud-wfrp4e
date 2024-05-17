@@ -377,15 +377,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     get pressedAlt() {
-      return game.keyboard.isModifierActive("Alt");
+      return game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT);
     }
 
     get pressedShift() {
-      return game.keyboard.isModifierActive("Shift");
+      return game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT);
     }
 
     get pressedControl() {
-      return game.keyboard.isModifierActive(KeyboardManager.CONTROL_KEY_STRING);
+      return game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL);
     }
   }
 })
