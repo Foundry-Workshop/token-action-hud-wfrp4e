@@ -17,6 +17,7 @@
       "magic": "魔法",
       "prayersBlessings": "祝福",
       "prayersMiracles": "奇跡",
+      "scrolls": "Magic Scrolls",
       "skills": "技能",
       "skillsAdvanced": "上級技能",
       "skillsBasic": "基本技能",
@@ -45,11 +46,13 @@
       "tooltips": {
         "AP": "ｱｰﾏｰﾎﾟｲﾝﾄ",
         "CN": "呪文のCN",
+        "ChannellingSL": "魔風交信 SL",
         "CharacteristicValue": "能力値",
         "ConditionRating": "品質",
         "Encumbrance": "荷重点",
         "ExtendedTestTarget": "現在 SL / 目標 SL",
         "HighestAP": "最高AP",
+        "ManualInvoke": "効果呼び出し",
         "Quantity": "個数",
         "Shield": "シールド",
         "Skill": "テストした技能",
@@ -61,6 +64,14 @@
       },
 
       "settings": {
+        "shiftRollMode": {
+          "name": "Shiftロールモード",
+          "hint": "Shiftキー押下中、アクション実行時にどのロールモードを使用するか選べます。"
+        },
+        "bypassDefault": {
+          "name": "デフォルトでバイパスモード",
+          "hint": "チェックすると、すべてのロールが規定でバイパスされます。チェックを外すと、すべてのロールが規定でダイアログを表示します。Altキーで挙動を逆にします (例として、チェックを外してAlt押下中はロールをバイパスさせます)。"
+        },
         "displayUnequipped": {
           "name": "未装備品を表示",
           "hint": "戦闘タブに未装備の武器を表示するかどうか設定します。"
