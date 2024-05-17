@@ -46,13 +46,13 @@
       "tooltips": {
         "AP": "ｱｰﾏｰﾎﾟｲﾝﾄ",
         "CN": "呪文のCN",
-        "ChannellingSL": "Channelling SL",
+        "ChannellingSL": "魔風交信 SL",
         "CharacteristicValue": "能力値",
         "ConditionRating": "品質",
         "Encumbrance": "荷重点",
         "ExtendedTestTarget": "現在 SL / 目標 SL",
         "HighestAP": "最高AP",
-        "ManualInvoke": "Invoke Effect",
+        "ManualInvoke": "効果呼び出し",
         "Quantity": "個数",
         "Shield": "シールド",
         "Skill": "テストした技能",
@@ -65,11 +65,11 @@
 
       "settings": {
         "shiftRollMode": {
-          "name": "Shift Roll Mode",
-          "hint": "Select which Roll Mode will be used when using Actions while holding Shift key."
+          "name": "Shiftロールモード",
+          "hint": "Shiftキー押下中、アクション実行時にどのロールモードを使用するか選べます。"
         },
         "bypassDefault": {
-          "name": "Default Bypass Mode",
+          "name": "デフォルトでバイパスモード",
           "hint": "If checked, all Rolls will be Bypassed by default. If unchecked, all Rolls will show a Dialog by default. Pressing Alt key reverses the behaviour (for example, holding Alt while this setting is unchecked will bypass the Roll)."
         },
         "displayUnequipped": {
