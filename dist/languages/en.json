@@ -15,6 +15,7 @@
       "inventory": "Inventory",
       "item": "Item",
       "magic": "Magic",
+      "manualEffects": "Manual Effects",
       "prayersBlessings": "Blessings",
       "prayersMiracles": "Miracles",
       "scrolls": "Magic Scrolls",
