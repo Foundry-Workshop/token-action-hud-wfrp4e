@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.2
+* Hopefully fixed "control" key error on Mac?
+* Added missing ManualEffects label to English localization
+* Updated Japanese localization (thanks @doumoku!)
+
 ## v1.1.1
 * Added missing localization string for `Magic Scrolls` group 
 
