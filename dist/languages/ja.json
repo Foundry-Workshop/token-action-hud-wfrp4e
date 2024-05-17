@@ -70,7 +70,7 @@
         },
         "bypassDefault": {
           "name": "デフォルトでバイパスモード",
-          "hint": "If checked, all Rolls will be Bypassed by default. If unchecked, all Rolls will show a Dialog by default. Pressing Alt key reverses the behaviour (for example, holding Alt while this setting is unchecked will bypass the Roll)."
+          "hint": "チェックすると、すべてのロールが規定でバイパスされます。チェックを外すと、すべてのロールが規定でダイアログを表示します。Altキーで挙動を逆にします (例として、チェックを外してAlt押下中はロールをバイパスさせます)。"
         },
         "displayUnequipped": {
           "name": "未装備品を表示",
