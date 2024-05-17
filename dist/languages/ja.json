@@ -17,6 +17,7 @@
       "magic": "魔法",
       "prayersBlessings": "祝福",
       "prayersMiracles": "奇跡",
+      "scrolls": "Magic Scrolls",
       "skills": "技能",
       "skillsAdvanced": "上級技能",
       "skillsBasic": "基本技能",
@@ -45,11 +46,13 @@
       "tooltips": {
         "AP": "ｱｰﾏｰﾎﾟｲﾝﾄ",
         "CN": "呪文のCN",
+        "ChannellingSL": "Channelling SL",
         "CharacteristicValue": "能力値",
         "ConditionRating": "品質",
         "Encumbrance": "荷重点",
         "ExtendedTestTarget": "現在 SL / 目標 SL",
         "HighestAP": "最高AP",
+        "ManualInvoke": "Invoke Effect",
         "Quantity": "個数",
         "Shield": "シールド",
         "Skill": "テストした技能",
@@ -61,6 +64,14 @@
       },
 
       "settings": {
+        "shiftRollMode": {
+          "name": "Shift Roll Mode",
+          "hint": "Select which Roll Mode will be used when using Actions while holding Shift key."
+        },
+        "bypassDefault": {
+          "name": "Default Bypass Mode",
+          "hint": "If checked, all Rolls will be Bypassed by default. If unchecked, all Rolls will show a Dialog by default. Pressing Alt key reverses the behaviour (for example, holding Alt while this setting is unchecked will bypass the Roll)."
+        },
         "displayUnequipped": {
           "name": "未装備品を表示",
           "hint": "戦闘タブに未装備の武器を表示するかどうか設定します。"
