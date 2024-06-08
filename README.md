@@ -68,7 +68,7 @@ This can be changed in Module's Settings so that bypass is default and `Alt` sho
 #### I don't see Group Advantage Actions?
 Group Advantage actions require two things in order to work. 
 
-- First, you need to have purchased, installed and enable the official ["Up in Arms"](https://foundryvtt.com/packages/wfrp4e-up-in-arms) module.
+- First, you need to have purchased, installed and enabled the official ["Up in Arms"](https://foundryvtt.com/packages/wfrp4e-up-in-arms) module.
 - Second, you need to enable **Use Group Advantage** game setting in the WFRP4e's configuration.
 
 ---
