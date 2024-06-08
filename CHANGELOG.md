@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0
+* Added support for Group Advantage actions
+  * This feature requires purchased, installed, and activated official ["Up in Arms"](https://foundryvtt.com/packages/wfrp4e-up-in-arms) module.
+
 ## v1.1.2
 * Hopefully fixed "control" key error on Mac?
 * Added missing ManualEffects label to English localization

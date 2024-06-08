@@ -30,11 +30,15 @@ export default class GroupAdvantage {
     }
   }
 
+  /**
+   * @param {ActorWfrp4e} actor
+   * @returns {Promise<boolean>}
+   */
   static async batter(actor) {
     const name = game.i18n.localize(GroupAdvantage.actions.batter.name);
     const test = await actor.setupCharacteristic("s", {
       appendTitle: ` – ${name}`,
-      producesAdvantage: false,
+      preventAdvantage: true,
       tah: {isBatter: true},
     });
     await GroupAdvantage.postMessage(GroupAdvantage.actions.batter, actor);
@@ -43,6 +47,14 @@ export default class GroupAdvantage {
     return true;
   }
 
+  /**
+   * If attacker won Batter, the defender gets Prone.
+   * Defender gets 1 Advantage.
+   *
+   * @param {OpposedTest} opposedTest
+   * @param {TestWFRP} attackerTest
+   * @param {TestWFRP} defenderTest
+   */
   static finishBatter(opposedTest, attackerTest, defenderTest) {
     let message = game.i18n.localize("tokenActionHud.wfrp4e.groupAdvantage.Batter.DefenderWon");
 
@@ -57,11 +69,15 @@ export default class GroupAdvantage {
     defenderTest.actor.modifyAdvantage(1);
   }
 
+  /**
+   * @param {ActorWfrp4e} actor
+   * @returns {Promise<boolean>}
+   */
   static async trick(actor) {
     const name = game.i18n.localize(GroupAdvantage.actions.batter.name);
     const test = await actor.setupCharacteristic("ag", {
       appendTitle: ` – ${name}`,
-      producesAdvantage: false,
+      preventAdvantage: true,
       tah: {isTrick: true},
     });
     await GroupAdvantage.postMessage(GroupAdvantage.actions.trick, actor);
@@ -70,6 +86,14 @@ export default class GroupAdvantage {
     return true;
   }
 
+  /**
+   * Winner of Trick Opposed Test gets an advantage.
+   * If Attacker wins, message includes options for Conditions.
+   *
+   * @param {OpposedTest} opposedTest
+   * @param {TestWFRP} attackerTest
+   * @param {TestWFRP} defenderTest
+   */
   static finishTrick(opposedTest, attackerTest, defenderTest) {
     let message = '';
 
@@ -84,17 +108,97 @@ export default class GroupAdvantage {
     opposedTest.result.other.push(`<p>${message}</p>`);
   }
 
+  /**
+   * @param {ActorWfrp4e} actor
+   * @returns {Promise<boolean>}
+   */
   static async additionalEffort(actor) {
+    const action = GroupAdvantage.actions.additionalEffort;
+    const advantage = actor.system.status.advantage.value;
+    let cost = action.cost;
 
-    return true;
+    cost = await ValueDialog.create(
+      game.i18n.format("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.DialogText", {
+        min: cost,
+        max: advantage
+      }),
+      game.i18n.localize("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.DialogTitle"),
+      cost
+    );
+
+    if (!cost) return false;
+
+    if (cost > advantage) {
+      Utility.notify(game.i18n.format("tokenActionHud.wfrp4e.groupAdvantage.CannotUse", {
+        action: game.i18n.localize(action.name),
+        advantage,
+        cost
+      }), {type: "warning"});
+      return false;
+    }
+
+    if (cost < action.cost) {
+      Utility.notify(game.i18n.localize("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.CantSpendLess"), {type: "warning"});
+      return false;
+    }
+
+    await GroupAdvantage.postMessage(action, actor);
+    const modifier = 10 * (cost - 1);
+
+    const effect = {
+      name: "Additional Effort",
+      icon: "icons/skills/movement/arrows-up-trio-red.webp",
+      duration: {
+        rounds: 1
+      },
+      flags: {
+        wfrp4e: {
+          scriptData: [
+            {
+              label: "Additional Effort",
+              script: `args.fields.modifier += ${modifier};`,
+              trigger: "dialog",
+              options: {
+                dialog: {
+                  hideScript: "return false;",
+                  activateScript: "return true;",
+                  submissionScript: "this.effect.delete();"
+                }
+              }
+            },
+            {
+              label: "Prevent Advantage",
+              script: "args.test.data.preData.options.preventAdvantage = true;",
+              trigger: "rollTest"
+            }
+          ]
+        }
+      }
+    }
+
+    await GroupAdvantage.payAdvantage(actor, cost);
+    await actor.createEmbeddedDocuments("ActiveEffect", [effect]);
+
+    // we handle spending advantage within this function, so return false
+    return false;
   }
 
+  /**
+   * @param {ActorWfrp4e} actor
+   * @returns {Promise<boolean>}
+   */
   static async fleeFromHarm(actor) {
+    await GroupAdvantage.postMessage(GroupAdvantage.actions.fleeFromHarm, actor);
 
     return true;
   }
 
+  /**
+   * @param {ActorWfrp4e} actor
+   * @returns {Promise<boolean>}
+   */
   static async additionalAction(actor) {
+    await GroupAdvantage.postMessage(GroupAdvantage.actions.additionalAction, actor);
 
     return true;
   }
@@ -110,6 +214,8 @@ export default class GroupAdvantage {
   }
 
   /**
+   * Check if it is possible for given actor to use the Group Advantage Action and produce warning if not.
+   * Warning can be disabled by passing "silent" argument.
    *
    * @param {ActorWfrp4e} actor
    * @param {{cost: number, method: function, name: string}} action
@@ -135,6 +241,8 @@ export default class GroupAdvantage {
   }
 
   /**
+   * Try to use a specific Group Advantage Action. If used, spend the Advantage.
+   *
    * @param {ActorWfrp4e} actor
    * @param {{cost: number, method: function, name: string}} action
    */
@@ -150,10 +258,11 @@ export default class GroupAdvantage {
   }
 
   /**
+   * Check if opposed test was result of using one of the GA actions, if so, finish them up if necessary
    *
    * @param {OpposedTest} opposedTest
-   * @param {TestWfrp} attackerTest
-   * @param {TestWfrp} defenderTest
+   * @param {TestWFRP} attackerTest
+   * @param {TestWFRP} defenderTest
    */
   static opposedTestResult(opposedTest, attackerTest, defenderTest) {
     if (!attackerTest.data?.result?.options?.tah) return;
@@ -168,6 +277,14 @@ export default class GroupAdvantage {
 
   }
 
+  /**
+   * Post Message using Up in Arms' content for descriptions and effects.
+   *
+   * @param {{cost: number, method: function, name: string}} action
+   * @param {ActorWfrp4e} actor
+   *
+   * @returns {Promise<void>}
+   */
   static async postMessage(action, actor) {
     if (!Utility.getSetting(settings.advantageDesc)) return;
 

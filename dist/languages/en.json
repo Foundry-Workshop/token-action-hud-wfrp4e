@@ -86,6 +86,12 @@
         "Trick": {
           "DefenderWon": "Defender won the <em>Trick</em> and gains 1 Advantage!",
           "AttackerWon": "Attacker won the <em>Trick</em> and gains 1 Advantage! Additionally, if GM allows, they can apply a single Condition of choice to the enemy: @Condition[ablaze]{Ablaze}, @Condition[blinded]{Blinded} or @Condition[entangled]{Entangled}."
+        },
+
+        "AdditionalEffort": {
+          "DialogText": "Select how much Advantage you want to use. You can use any integer value between {min} and {max}.",
+          "DialogTitle": "How much Advantage to use?",
+          "CantSpendLess": "Cannot spend less Advantage on Additional Effort than minimum!"
         }
       },
 
