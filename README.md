@@ -13,6 +13,7 @@ Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token 
 - Fix and Damage your Armour and Weapons.
 - Easily trigger Manual Effect Scripts.
 - Make quick Blind GM rolls.
+- Use Group Advantage Actions.
 - Move the HUD and choose to expand the menus up or down.
 - Unlock the HUD to customise layout and groups per user, and actions per actor.
 - Add your own macros, journal entries and roll table compendiums.
@@ -61,6 +62,14 @@ When holding `Alt` while triggering any Test from Token Action HUD, it will bypa
 This can be changed in Module's Settings so that bypass is default and `Alt` shows Dialog.
 
 *This works with `Shift` modifier*
+
+---
+
+#### I don't see Group Advantage Actions?
+Group Advantage actions require two things in order to work. 
+
+- First, you need to have purchased, installed and enable the official ["Up in Arms"](https://foundryvtt.com/packages/wfrp4e-up-in-arms) module.
+- Second, you need to enable **Use Group Advantage** game setting in the WFRP4e's configuration.
 
 ---
 
