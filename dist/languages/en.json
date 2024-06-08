@@ -1,6 +1,7 @@
 {
   "tokenActionHud": {
     "wfrp4e": {
+      "advantage": "Advantage",
       "ammunition": "Ammunition",
       "armour": "Armour",
       "basic": "Basic",
@@ -41,7 +42,15 @@
         "checkCareer": "Check Career Progress",
         "checkEquipment": "Check Equipment",
         "restRecover": "Rest and Recover",
-        "incomeRoll": "Roll for Income"
+        "incomeRoll": "Roll for Income",
+
+        "advantage": {
+          "batter": "Batter",
+          "trick": "Trick",
+          "additionalEffort": "Additional Effort",
+          "fleeFromHarm": "Flee from Harm",
+          "additionalAction": "Additional Action"
+        }
       },
 
       "tooltips": {
@@ -64,6 +73,22 @@
         "WeaponDamage": "Weapon Damage"
       },
 
+      "groupAdvantage": {
+        "CannotUse": "Cannot use „{action}” Action. It costs {cost} Advantage and you only have {advantage}.",
+        "GroupAdvantage": "Group Advantage",
+
+        "Batter": {
+          "DefenderWon": "Defender won the <em>Batter</em>!",
+          "AttackerWon": "Attacker won the <em>Batter</em> and applied <b>Prone</b> to their enemy!",
+          "DefenderAdvantage": "Defender gains 1 Advantage."
+        },
+
+        "Trick": {
+          "DefenderWon": "Defender won the <em>Trick</em> and gains 1 Advantage!",
+          "AttackerWon": "Attacker won the <em>Trick</em> and gains 1 Advantage! Additionally, if GM allows, they can apply a single Condition of choice to the enemy: @Condition[ablaze]{Ablaze}, @Condition[blinded]{Blinded} or @Condition[entangled]{Entangled}."
+        }
+      },
+
       "settings": {
         "shiftRollMode": {
           "name": "Shift Roll Mode",
@@ -72,6 +97,10 @@
         "bypassDefault": {
           "name": "Default Bypass Mode",
           "hint": "If checked, all Rolls will be Bypassed by default. If unchecked, all Rolls will show a Dialog by default. Pressing Alt key reverses the behaviour (for example, holding Alt while this setting is unchecked will bypass the Roll)."
+        },
+        "advantageDesc": {
+          "name": "Show Advantage Descriptions",
+          "hint": "If checked, Group Advantage actions triggered via TAH will post their full descriptions to Chat. Using Group Advantage requires installed and enabled Up in Arms module."
         },
         "displayUnequipped": {
           "name": "Display Unequipped",

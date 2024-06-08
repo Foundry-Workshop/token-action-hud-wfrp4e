@@ -32,6 +32,14 @@ export function registerSettingsCoreUpdate(coreUpdate) {
       coreUpdate(value)
     }
   })
+  game.settings.register(constants.moduleId, settings.advantageDesc, {
+    name: game.i18n.localize('tokenActionHud.wfrp4e.settings.advantageDesc.name'),
+    hint: game.i18n.localize('tokenActionHud.wfrp4e.settings.advantageDesc.hint'),
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true
+  })
   game.settings.register(constants.moduleId, settings.displayUnequipped, {
     name: game.i18n.localize('tokenActionHud.wfrp4e.settings.displayUnequipped.name'),
     hint: game.i18n.localize('tokenActionHud.wfrp4e.settings.displayUnequipped.hint'),

@@ -15,7 +15,8 @@ const settings = {
   groupTrappings: 'groupTrappings',
   maxCharacters: 'maxCharacters',
   shiftRollMode: 'shiftRollMode',
-  bypassDefault: 'bypassDefault'
+  bypassDefault: 'bypassDefault',
+  advantageDesc: 'showAdvantageDescription'
 }
 
 const tah = {
@@ -46,6 +47,7 @@ const tah = {
     combatArmour: {id: 'combatArmour', name: 'tokenActionHud.wfrp4e.armour', type: 'system'},
     combatBasic: {id: 'combatBasic', name: 'tokenActionHud.wfrp4e.basic', type: 'system'},
     combatTraits: {id: 'combatTraits', name: 'tokenActionHud.wfrp4e.traits', type: 'system'},
+    combatAdvantage: {id: 'combatAdvantage', name: 'tokenActionHud.wfrp4e.advantage', type: 'system'},
     combatWeapons: {id: 'combatWeapons', name: 'tokenActionHud.wfrp4e.weapons', type: 'system'},
     conditions: {id: 'conditions', name: 'tokenActionHud.wfrp4e.conditions', type: 'system'},
     consumables: {id: 'consumables', name: 'tokenActionHud.wfrp4e.consumables', type: 'system'},

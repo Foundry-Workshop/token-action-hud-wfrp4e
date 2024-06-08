@@ -1,5 +1,6 @@
 import Utility from "./utility/Utility.mjs";
 import {settings} from "./constants.mjs";
+import GroupAdvantage from "./GroupAdvantage.js";
 
 export let RollHandlerWfrp4e = null
 
@@ -70,6 +71,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'item':
         case 'magic':
           return this.#handleItemAction(actor, actionId);
+        case 'combatAdvantage':
+          return this.#handleCombatAdvantage(event, actor, actionId);
         case 'combatArmour':
           return this.#handleCombatArmour(event, actor, actionId);
         case 'combatBasic':
@@ -145,6 +148,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         default:
           break;
       }
+    }
+
+    #handleCombatAdvantage(event, actor, actionId) {
+      const action = GroupAdvantage.actions[actionId];
+      if (!action) return;
+
+      GroupAdvantage.tryUse(actor, action);
     }
 
     #handleCombatArmour(event, actor, actionId) {

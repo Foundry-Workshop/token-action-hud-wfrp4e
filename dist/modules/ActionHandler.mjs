@@ -1,5 +1,6 @@
 import Utility from "./utility/Utility.mjs";
 import {constants, settings, tah} from "./constants.mjs";
+import GroupAdvantage from "./GroupAdvantage.js";
 
 export let ActionHandlerWfrp4e = null
 
@@ -272,6 +273,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #buildCombat() {
       await this.#buildCombatBasic();
 
+      if (
+        game.modules.get("wfrp4e-up-in-arms")?.protected &&
+        game.settings.get("wfrp4e", "useGroupAdvantage")
+      ) {
+        await this.#buildCombatGroupAdvantage();
+      }
+
       if (this.talents.size > 0)
         await this.#buildCombatTraits();
 
@@ -285,7 +293,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       await this.#buildCombatWeapons();
       await this.#buildCombatArmour();
     }
-
 
     async #buildCombatBasic() {
       const actionsData = [];
@@ -316,6 +323,24 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           id: action.value,
           name: action.name,
           encodedValue: [actionType, action.value].join(this.delimiter)
+        })
+      }
+
+      return this.addActions(actionsData, groupData)
+    }
+
+    async #buildCombatGroupAdvantage() {
+      const actionsData = [];
+      const actionType = 'combatAdvantage';
+      const groupData = {id: actionType, type: 'system'};
+
+      for (let [key, action] of Object.entries(GroupAdvantage.actions)) {
+        if (!GroupAdvantage.canUse(this.actor, action, {silent: true})) continue;
+
+        actionsData.push({
+          id: key,
+          name: game.i18n.localize(action.name),
+          encodedValue: [actionType, key].join(this.delimiter)
         })
       }
 

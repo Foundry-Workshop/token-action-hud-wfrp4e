@@ -1,6 +1,7 @@
 import {constants} from './constants.mjs';
 import Utility from './utility/Utility.mjs';
 import {SystemManagerWfrp4e} from "./SystemManager.mjs";
+import GroupAdvantage from "./GroupAdvantage.js";
 
 Hooks.once('init', () => {
   Hooks.callAll(`${constants.moduleId}:afterInit`);
@@ -27,3 +28,5 @@ Hooks.on('tokenActionHudCoreApiReady', async () => {
   Hooks.call('tokenActionHudSystemReady', module)
   Utility.notify(`${constants.moduleLabel} connected to TAH Core`, {consoleOnly: true});
 })
+
+Hooks.on("wfrp4e:opposedTestResult", GroupAdvantage.opposedTestResult.bind(GroupAdvantage))
