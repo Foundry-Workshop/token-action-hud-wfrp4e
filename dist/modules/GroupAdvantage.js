@@ -267,8 +267,6 @@ export default class GroupAdvantage {
   static opposedTestResult(opposedTest, attackerTest, defenderTest) {
     if (!attackerTest.data?.result?.options?.tah) return;
 
-    console.log("opposedTestResult", {opposedTest, attackerTest, defenderTest});
-
     if (attackerTest.data.result.options.tah.isBatter === true)
       GroupAdvantage.finishBatter(opposedTest, attackerTest, defenderTest);
 
