@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.1
+* Verified for Foundry v12
+
 ## v1.2.0
 * Added support for Group Advantage actions
   * This feature requires purchased, installed, and activated official ["Up in Arms"](https://foundryvtt.com/packages/wfrp4e-up-in-arms) module.
