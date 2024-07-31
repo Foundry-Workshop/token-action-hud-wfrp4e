@@ -286,8 +286,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (game.wfrp4e?.config?.statusEffects)
         await this.#buildConditions();
 
-      if (this.talents.size > 0 || this.items.size > 0)
+      if (this.talents.size > 0 || this.items.size > 0) {
         await this.#buildManualEffects();
+        await this.#buildTestIndependentEffects();
+      }
 
       if (this.items.size === 0) return;
       await this.#buildCombatWeapons();
@@ -381,6 +383,56 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       return this.addActions(actionsData, groupData)
     };
+
+    async #buildTestIndependentEffects() {
+      const actionsData = [];
+      const actionType = 'testIndependentEffect';
+      const actionTypeName = game.i18n.localize(tah.actions.testIndependentEffect);
+      const groupData = tah.groups.testIndependentEffects;
+      
+      let values = [];
+
+      const itemsWithTestIndependentEffects = new Map([...this.items, ...this.talents]);
+
+      for (let [key, item] of itemsWithTestIndependentEffects) {
+        for (let effect of item.system.testIndependentEffects) {
+          values = [actionType, item._id, effect.uuid];
+
+          const invokeIcon = effect.isTargetApplied ? '<i class="fas fa-crosshairs"></i>'  : '<i class="fas fa-ruler-combined"></i>';
+
+          let action = {
+            id: `${effect._id}`,
+            name: this.#getActionName(effect.name),
+            img: effect.icon ?? null,
+            icon1: invokeIcon,
+            icon2: '',
+            icon3: '',
+            listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+            encodedValue: values.join(this.delimiter),
+            info1: {
+              class: '',
+              text: this.#getTestTarget(item),
+              title: effect.isTargetApplied ? game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvokeTarget') : game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvokeArea')
+            },
+            info2: {
+              class: '',
+              text: this.#getItemValue(item),
+              title: this.#getItemValueTooltip(item)
+            },
+            info3: {
+              class: '',
+              text: this.#getItemSecondaryValue(item),
+              title: this.#getItemSecondaryValueTooltip(item)
+            },
+            tooltip: effect.name
+          };
+
+          actionsData.push(action);
+        }
+      }
+
+      return this.addActions(actionsData, groupData)
+    }
 
     async #buildManualEffects() {
       const actionsData = [];
