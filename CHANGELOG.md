@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.0
+* Re-added container's `carries` value
+* Added support for Test Independent Effects (thanks to silentmark)
+
 ## v2.0.0
 * Updated for Active Effects using Data Models (with [Warhammer Library](https://foundryvtt.com/packages/warhammer-lib)) and verified for WFRP4e 8.0.1
 * Added support for `Grimoires` item type from [Forien's Armoury](https://foundryvtt.com/packages/forien-armoury/) module

@@ -67,6 +67,7 @@
         "ManualInvoke": "Invoke Effect",
         "ManualInvokeTarget": "Invoke Target Effect",
         "ManualInvokeArea": "Invoke Area Effect",
+        "Radius": "Invoke Area Radius",
         "Quantity": "Quantity",
         "Shield": "Shield",
         "Skill": "Tested Skill",

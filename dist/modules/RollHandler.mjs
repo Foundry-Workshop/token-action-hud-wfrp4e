@@ -243,7 +243,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         if (!(await effect.runPreApplyScript())) {
           return
         }
-        let template = await AbilityTemplate.fromEffect(subActionType)
+        let template = await AreaTemplate.fromEffect(subActionType)
         await template.drawPreview(event);
       }
     }

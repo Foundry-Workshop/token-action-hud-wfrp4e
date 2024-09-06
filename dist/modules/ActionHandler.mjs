@@ -389,14 +389,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const actionType = 'testIndependentEffect';
       const actionTypeName = game.i18n.localize(tah.actions.testIndependentEffect);
       const groupData = tah.groups.testIndependentEffects;
-      
-      let values = [];
+      const itemsWithTestIndependentEffects = new Set([...this.items, ...this.talents]);
 
-      const itemsWithTestIndependentEffects = new Map([...this.items, ...this.talents]);
-
-      for (let [key, item] of itemsWithTestIndependentEffects) {
-        for (let effect of item.system.testIndependentEffects) {
-          values = [actionType, item._id, effect.uuid];
+      for (let [index, item] of itemsWithTestIndependentEffects) {
+        for (let effect of item.testIndependentEffects) {
+          const values = [actionType, item._id, effect.uuid];
 
           const invokeIcon = effect.isTargetApplied ? '<i class="fas fa-crosshairs"></i>'  : '<i class="fas fa-ruler-combined"></i>';
 
@@ -411,9 +408,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             encodedValue: values.join(this.delimiter),
             info1: {
               class: '',
-              text: this.#getTestTarget(item),
-              title: effect.isTargetApplied ? game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvokeTarget') : game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvokeArea')
-            },
+              text: effect.system.transferData.type === "area" ? effect.system.transferData.area.radius : '',
+              title: effect.system.transferData.type === "area" ? game.i18n.localize('tokenActionHud.wfrp4e.tooltips.Radius') : ''
+        },
             info2: {
               class: '',
               text: this.#getItemValue(item),
@@ -424,7 +421,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
               text: this.#getItemSecondaryValue(item),
               title: this.#getItemSecondaryValueTooltip(item)
             },
-            tooltip: effect.name
+            tooltip: item.name + ' — ' + (effect.isTargetApplied ? game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvokeTarget') : game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ManualInvokeArea'))
           };
 
           actionsData.push(action);
@@ -759,12 +756,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             image: coreModule.api.Utils.getImage(item),
             style: 'tab'
           },
-          // @todo container group info once it's fixed
-          // info2: {
-          //   class: '',
-          //   text: this.#getItemValue(item),
-          //   title: this.#getItemValueTooltip(item)
-          // }
+          info2: {
+            class: '',
+            text: this.#getItemValue(item),
+            title: this.#getItemValueTooltip(item)
+          }
         },
         parentGroupData: parentGroup
       };
