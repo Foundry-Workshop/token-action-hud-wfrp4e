@@ -84,6 +84,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return this.#handleCombatConsumableAction(actor, actionId, subActionType, subActionId);
         case 'manualEffect':
           return this.#handleManualEffectAction(event, actor, subActionType, subActionId);
+        case 'testIndependentEffect':
+            return this.#handletestIndependentEffectAction(event, actor, subActionType, subActionId);
         case 'condition':
           return this.#handleConditionAction(event, actor, actionId);
         case 'utility':
@@ -214,6 +216,36 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
 
       return item.postItem(0);
+    }
+
+    async #handletestIndependentEffectAction(event, actor, subActionType, subActionId) {
+      let effect = await fromUuid(subActionType);
+
+      if (this.isRightClick(event)) {
+        return this.renderItem(actor, effect.item._id);
+      }
+
+      if (effect.isTargetApplied) {
+        let applyData = {};
+        let targets = Array.from(game.user.targets).map(t => t.actor);
+        if (!(await effect.runPreApplyScript({targets}))) {
+          return
+        }
+        game.user.updateTokenTargets([]);
+        game.user.broadcastActivity({ targets: [] });
+
+        for (let target of targets) {
+          applyData = { effectData: [effect.convertToApplied(null, target)] }
+          await target.applyEffect(applyData);
+        }
+      }
+      else if (effect.isAreaApplied) {
+        if (!(await effect.runPreApplyScript())) {
+          return
+        }
+        let template = await AbilityTemplate.fromEffect(subActionType)
+        await template.drawPreview(event);
+      }
     }
 
     async #handleManualEffectAction(event, actor, subActionType, subActionId) {
