@@ -18,8 +18,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {array} groupIds
      */
     #actorTypes = ['character', 'npc', 'creature'];
-    #equippableTypes = ['weapon', 'armour'];
-    #inventoryTypes = ['weapon', 'armour', 'trapping', 'container', 'ammunition', 'forien-armoury.scroll'];
+    #equippableTypes = ['weapon', 'armour', 'forien-armoury.grimoire'];
+    #inventoryTypes = ['weapon', 'armour', 'trapping', 'container', 'ammunition', 'forien-armoury.scroll', 'forien-armoury.grimoire'];
     #displayUnequipped;
     #groupLores;
     #groupTrappings;
@@ -354,7 +354,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const groupData = tah.groups.combatWeapons;
 
       for (let [key, item] of this.items) {
-        if (item.type !== 'weapon') continue;
+        if (item.type !== 'weapon' && item.type !== 'forien-armoury.grimoire') continue;
         if (!this.#displayUnequipped && !item.equipped) continue;
 
         let icons = this.#getItemIcons(item);
@@ -390,9 +390,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const invokeIcon = '<i class="fas fa-flask"></i>';
       let values = [];
 
-      const itemsWithManualEffects = new Map([...this.items, ...this.talents]);
+      const itemsWithManualEffects = new Set([...this.items, ...this.talents]);
 
-      for (let [key, item] of itemsWithManualEffects) {
+      for (let [index, item] of itemsWithManualEffects) {
         for (let script of item.manualScripts) {
           let effect = script.effect;
           values = [actionType, item._id, effect.uuid, script.index];
@@ -650,7 +650,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let itemId = itemData._id;
         let type = itemData.type;
 
-        switch (itemData.type) {
+        switch (type) {
           case 'trapping':
             type = itemData.system.trappingType.value;
             if (!dynamicGroups.get(type))
@@ -674,6 +674,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           case 'armour':
           case 'weapon':
           case 'forien-armoury.scroll':
+          case 'forien-armoury.grimoire':
             break;
           case 'skill':
           case 'spell':
@@ -739,6 +740,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           case 'armour':
           case 'weapon':
           case 'forien-armoury.scroll':
+          case 'forien-armoury.grimoire':
             break;
           default:
             continue;
@@ -976,17 +978,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     #getConditionInfo(condition, effect) {
-      if (!condition.flags.wfrp4e.value) return null;
+      if (!condition.system.condition.value) return null;
 
       return {
         class: '',
-        text: effect?.flags.wfrp4e?.value ?? '0',
+        text: effect?.system.condition.value ?? '0',
         title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.ConditionRating')
       }
     }
 
     #getConditionIcon(condition, effect) {
-      if (condition.flags.wfrp4e.value) return null;
+      if (condition.system.condition.value) return null;
       const hasCondition = '<i class="far fa-circle-dot"></i>';
       const noCondition = '<i class="far fa-circle"></i>';
 
@@ -1115,6 +1117,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           icon1 = (item.equipped) ? iconWeaponEquipped : null;
           if (this.#isWeaponLoadable(item))
             icon2 = this.#isWeaponLoaded(item) ? iconWeaponLoaded : iconWeaponNotLoaded;
+          break;
+        case 'forien-armoury.grimoire':
+          icon1 = (item.equipped) ? iconWeaponEquipped : null;
           break;
         case 'armour':
         default:

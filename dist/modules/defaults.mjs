@@ -84,6 +84,7 @@ Hooks.once('i18nInit', () => {
           {...groups.weapons, nestId: 'categoryInventory_weapons'},
           {...groups.armour, nestId: 'categoryInventory_armour'},
           {...groups.ammunition, nestId: 'categoryInventory_ammunition'},
+          {...groups.grimoires, nestId: 'categoryInventory_grimoires'},
           {...groups.scrolls, nestId: 'categoryInventory_scrolls'},
           {...groups.trappings, nestId: 'categoryInventory_trapping'},
           {...groups.containers, nestId: 'categoryInventory_containers'},

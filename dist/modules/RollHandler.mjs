@@ -195,6 +195,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             return this.renderItem(actor, actionId);
           else
             return this.#rollWeapon(actor, item);
+        case 'forien-armoury.grimoire':
+          if (this.isRightClick(event))
+            return this.renderItem(actor, actionId);
+          else
+            this.#handleCombatAction(actor, 'improv');
+          break;
         case 'consumable':
         default:
       }
@@ -247,7 +253,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #handleConditionAction(event, actor, actionId) {
       const condition = game.wfrp4e.config.statusEffects.find(e => e.id === actionId);
 
-      if (condition.flags.wfrp4e.value == null) {
+      if (condition.system.condition.value == null) {
         if (this.actor.hasCondition(actionId))
           await this.actor.removeCondition(actionId)
         else
