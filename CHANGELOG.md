@@ -2,6 +2,7 @@
 
 ## v2.1.1
 * Fix displaying unequipped weapons with setting disabled.
+* Fix Additional Effort Value Dialog after it's API changed.
 
 ## v2.1.0
 * Re-added container's `carries` value

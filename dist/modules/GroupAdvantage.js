@@ -118,11 +118,13 @@ export default class GroupAdvantage {
     let cost = action.cost;
 
     cost = await ValueDialog.create(
-      game.i18n.format("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.DialogText", {
-        min: cost,
-        max: advantage
-      }),
-      game.i18n.localize("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.DialogTitle"),
+      {
+        text: game.i18n.format("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.DialogText", {
+          min: cost,
+          max: advantage
+        }),
+       title: game.i18n.localize("tokenActionHud.wfrp4e.groupAdvantage.AdditionalEffort.DialogTitle"),
+      },
       cost
     );
 
