@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.1.1
+* Fix displaying unequipped weapons with setting disabled.
+
 ## v2.1.0
 * Re-added container's `carries` value
 * Added support for Test Independent Effects (thanks to silentmark)

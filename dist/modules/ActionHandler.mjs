@@ -357,7 +357,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       for (let [key, item] of this.items) {
         if (item.type !== 'weapon' && item.type !== 'forien-armoury.grimoire') continue;
-        if (!this.#displayUnequipped && !item.equipped) continue;
+        if (!this.#displayUnequipped && !item.system.isEquipped) continue;
 
         let icons = this.#getItemIcons(item);
         let action = this.#makeActionFromItem(item, actionTypeName, actionType, icons);
@@ -1162,12 +1162,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       switch (item.type) {
         case 'weapon':
-          icon1 = (item.equipped) ? iconWeaponEquipped : null;
+          icon1 = (item.system.isEquipped) ? iconWeaponEquipped : null;
           if (this.#isWeaponLoadable(item))
             icon2 = this.#isWeaponLoaded(item) ? iconWeaponLoaded : iconWeaponNotLoaded;
           break;
         case 'forien-armoury.grimoire':
-          icon1 = (item.equipped) ? iconWeaponEquipped : null;
+          icon1 = (item.system.isEquipped) ? iconWeaponEquipped : null;
           break;
         case 'armour':
         default:
