@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.2
+* Added Effect for `Additional Action` to prevent advantage being added via GM Toolkit
+* Fixed `Additional Effort` applying outdated Effect (flags-based instead of Data Model based)
+* Fixed `Additional Effort` not preventing advantage
+
 ## v2.1.1
 * Fix displaying unequipped weapons with setting disabled.
 * Fix Additional Effort Value Dialog after it's API changed.

@@ -153,28 +153,24 @@ export default class GroupAdvantage {
       duration: {
         rounds: 1
       },
-      flags: {
-        wfrp4e: {
-          scriptData: [
-            {
-              label: "Additional Effort",
-              script: `args.fields.modifier += ${modifier};`,
-              trigger: "dialog",
-              options: {
-                dialog: {
-                  hideScript: "return false;",
-                  activateScript: "return true;",
-                  submissionScript: "this.effect.delete();"
-                }
-              }
-            },
-            {
-              label: "Prevent Advantage",
-              script: "args.test.data.preData.options.preventAdvantage = true;",
-              trigger: "rollTest"
+      system: {
+        scriptData: [
+          {
+            label: "Additional Effort",
+            script: `args.fields.modifier += ${modifier};`,
+            trigger: "dialog",
+            options: {
+              hideScript: "return false;",
+              activateScript: "return true;",
+              submissionScript: "this.effect.delete();"
             }
-          ]
-        }
+          },
+          {
+            label: "Prevent Advantage",
+            script: "args.test.data.preData.options.preventAdvantage = true;",
+            trigger: "preRollTest"
+          }
+        ]
       }
     }
 
@@ -201,6 +197,35 @@ export default class GroupAdvantage {
    */
   static async additionalAction(actor) {
     await GroupAdvantage.postMessage(GroupAdvantage.actions.additionalAction, actor);
+
+    const effect = {
+      name: "Additional Action",
+      icon: "icons/skills/movement/feet-winged-boots-brown.webp",
+      duration: {
+        rounds: 1
+      },
+      system: {
+        scriptData: [
+          {
+            label: "Additional Action",
+            script: `args.fields.modifier += 0;`,
+            trigger: "dialog",
+            options: {
+              hideScript: "return false;",
+              activateScript: "return true;",
+              submissionScript: "this.effect.delete();"
+            }
+          },
+          {
+            label: "Prevent Advantage",
+            script: "args.test.data.preData.options.preventAdvantage = true;",
+            trigger: "preRollTest"
+          }
+        ]
+      }
+    }
+
+    await actor.createEmbeddedDocuments("ActiveEffect", [effect]);
 
     return true;
   }
