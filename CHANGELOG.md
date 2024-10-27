@@ -4,11 +4,16 @@
 * Updated code for compatibility with TAH Core 2.0
 * Moved styling to separate Style called `WFRP4e Dark Red`
 * Added new style called `WFRP4e Brown`
+* Added new Utility Actions
+  * Token Action "Toggle Disposition" which will cycle dispositions for all selected Tokens
+  * Character Action "Award XP" which will award XP to all selected Characters
 * Added Multiple Token support for the following Actions:
   * Characteristics 
   * Basic Skills - skill appears if it's Basic and all selected Tokens have it
   * Extended Tests - test appears if all selected Tokens have an Extended Test of the same name
   * Basic Combat Actions
+  * Conditions
+  * Utility Actions - Rolling for Initiative, Rest & Recovery, Rolling for Income, actions from Forien's Armoury and Item Piles
 
 ## v2.1.2
 * Added Effect for `Additional Action` to prevent advantage being added via GM Toolkit

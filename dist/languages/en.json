@@ -42,6 +42,7 @@
         "revertItemPile": "Revert from Item Pile",
         "revertItemPiles": "Revert from Item Piles",
         "toggleItemPiles": "Toggle Item Piles",
+        "toggleDisposition": "Toggle Disposition",
         "checkCareer": "Check Career Progress",
         "checkEquipment": "Check Equipment",
         "restRecover": "Rest and Recover",
@@ -53,6 +54,16 @@
           "additionalEffort": "Additional Effort",
           "fleeFromHarm": "Flee from Harm",
           "additionalAction": "Additional Action"
+        },
+
+        "awardXP": {
+          "awardXP": "Award XP",
+          "DialogTitle": "",
+          "Amount": "Amount",
+          "Reason": "Reason",
+          "Award": "Award",
+          "XPNaN": "XP must be a number!",
+          "ReasonEmpty": "Reason must not be empty!"
         }
       },
 

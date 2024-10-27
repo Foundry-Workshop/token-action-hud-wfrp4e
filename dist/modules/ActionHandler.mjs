@@ -1,7 +1,7 @@
 import Utility from "./utility/Utility.mjs";
 import {constants, settings, tah} from "./constants.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
-import {testOptions} from "./actionHelpers.mjs";
+import {awardXP, testOptions} from "./actionHelpers.mjs";
 
 export let ActionHandlerWfrp4e = null
 
@@ -191,6 +191,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       await this.#buildMultipleBasicSkills();
       await this.#buildMultipleExtendedTests();
       await this.#buildCombatBasic();
+      await this.#buildConditions();
       await this.#buildUtility();
     }
 
@@ -685,28 +686,45 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       if (conditions.length === 0) return;
 
       const actions = conditions.map((condition) => {
-        const id = condition.id;
-        const name = game.i18n.localize(condition.label) ?? game.i18n.localize(condition.name);
         const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
-        const listName = `${actionTypeName}${name}`;
-        const encodedValue = [actionType, id].join(this.delimiter);
-        const effect = this.actor.effects.find(effect => effect.statuses.some(status => status === id) && !effect?.disabled);
-        const active = effect ? ' active' : '';
-        const info1 = this.#getConditionInfo(condition, effect);
-        const icon1 = this.#getConditionIcon(condition, effect);
-        const cssClass = `toggle${active}`;
-        const img = coreModule.api.Utils.getImage(condition);
-        const tooltip = this.#getConditionTooltipData(id);
+        let info1 = '';
+        let icon1 = ' ';
+        let cssClass = 'toggle';
+
+        if (this.actor) {
+          const effect = this.actor.effects.find(effect => effect.statuses.some(status => status === condition.id) && !effect?.disabled);
+          const active = effect ? ' active' : '';
+          info1 = this.#getConditionInfo(condition, effect);
+          icon1 = this.#getConditionIcon(condition, effect);
+          cssClass = `toggle${active}`;
+        }
+
         return {
-          id,
-          name,
-          encodedValue,
-          img,
+          id: condition.id,
+          name: game.i18n.localize(condition.label) ?? game.i18n.localize(condition.name),
+          img: coreModule.api.Utils.getImage(condition),
           cssClass,
-          listName,
-          tooltip,
+          listName: `${actionTypeName}${name}`,
+          tooltip: this.#getConditionTooltipData(condition.id),
           info1,
-          icon1
+          icon1,
+          onClick: async () => {
+            for (const actor of this.actors) {
+              if (condition.system.condition.value == null) {
+                if (actor.hasCondition(condition.id))
+                  await actor.removeCondition(condition.id)
+                else
+                  await actor.addCondition(condition.id)
+              } else {
+                if (this.isRightClick)
+                  await actor.removeCondition(condition.id)
+                else
+                  await actor.addCondition(condition.id)
+              }
+            }
+
+            return Hooks.callAll('forceUpdateTokenActionHud');
+          }
         }
       });
 
@@ -1067,6 +1085,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         };
       }
 
+      if (game.user.isGM && (this.actors.length > 1 || this.actor?.type === 'character')) {
+        characterTypes.awardXP = {
+          id: 'awardXP',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.awardXP.awardXP'),
+          onClick: () => awardXP(this.actors)
+        }
+      }
+
       return {'character': characterTypes};
     }
 
@@ -1115,6 +1141,24 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
               }
             }
           };
+        }
+      }
+
+      if (game.user.isGM) {
+        tokenTypes.toggleDisposition = {
+          id: 'toggleDisposition',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.toggleDisposition'),
+          onClick: () => {
+            const dispositions = Object.values(CONST.TOKEN_DISPOSITIONS);
+
+            for (const token of this.tokens) {
+              let disposition = token.document.disposition;
+              let index = dispositions.indexOf(disposition);
+              index = (index + 1) % dispositions.length
+              disposition = dispositions[index];
+              token.document.update({disposition});
+            }
+          }
         }
       }
 
