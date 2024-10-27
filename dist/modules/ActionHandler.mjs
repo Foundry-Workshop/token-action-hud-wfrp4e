@@ -190,6 +190,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       await this.#buildCharacteristics();
       await this.#buildMultipleBasicSkills();
       await this.#buildMultipleExtendedTests();
+      await this.#buildCombatBasic();
       await this.#buildUtility();
     }
 
@@ -399,18 +400,41 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         {
           name: game.i18n.localize('SHEET.Unarmed'),
           value: 'unarmed',
+          onClick: () => {
+            let unarmed = game.wfrp4e.config.systemItems.unarmed;
+            for (const actor of this.actors) {
+              actor.setupWeapon(unarmed, testOptions()).then(test => test.roll());
+            }
+          }
         },
         {
           name: game.i18n.localize('SHEET.Dodge'),
-          value: 'dodge'
+          value: 'dodge',
+          onClick: () => {
+            for (const actor of this.actors) {
+              actor.setupSkill(game.i18n.localize("NAME.Dodge"), testOptions()).then(test => test.roll());
+            }
+          }
         },
         {
           name: game.i18n.localize('SHEET.Improvised'),
-          value: 'improv'
+          value: 'improv',
+          onClick: () => {
+            let improv = game.wfrp4e.config.systemItems.improv;
+            for (const actor of this.actors) {
+              actor.setupWeapon(improv, testOptions()).then(test => test.roll());
+            }
+          }
         },
         {
           name: game.i18n.localize('SHEET.Stomp'),
-          value: 'stomp'
+          value: 'stomp',
+          onClick: () => {
+            let stomp = game.wfrp4e.config.systemItems.stomp;
+            for (const actor of this.actors) {
+              actor.setupTrait(stomp, testOptions()).then(test => test.roll());
+            }
+          }
         }
       ];
 
@@ -418,7 +442,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         actionsData.push({
           id: action.value,
           name: action.name,
-          encodedValue: [actionType, action.value].join(this.delimiter)
+          onClick: action.onClick
         })
       }
 

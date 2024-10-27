@@ -8,6 +8,7 @@
   * Characteristics 
   * Basic Skills - skill appears if it's Basic and all selected Tokens have it
   * Extended Tests - test appears if all selected Tokens have an Extended Test of the same name
+  * Basic Combat Actions
 
 ## v2.1.2
 * Added Effect for `Additional Action` to prevent advantage being added via GM Toolkit
