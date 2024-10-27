@@ -75,7 +75,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       return DEFAULTS;
     }
 
-    async registerStyles() {
+    /**
+     * @todo should be async, but async leads to errors
+     *
+     * @returns {{darkRed: {file: string, name: string, primaryColor: string, moduleId: string, class: string, tertiaryColor: string, secondaryColor: string}, brown: {file: string, name: string, primaryColor: string, moduleId: string, class: string, tertiaryColor: string, secondaryColor: string}}}
+     */
+    registerStyles() {
       return {
         darkRed: {
           class: "tah-style-wfrp4e-dark-red",
