@@ -29,9 +29,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     #findGroup(data = {}) {
       if (data?.nestId) {
-        return this.groups[data.nestId]
+        return this.groupHandler.groups[data.nestId]
       } else {
-        return Object.values(this.groups).find(
+        return Object.values(this.groupHandler.groups).find(
           group =>
             (!data.id || group.id === data.id) &&
             (!data.type || group.type === data.type) &&

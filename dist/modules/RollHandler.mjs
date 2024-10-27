@@ -161,11 +161,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     #handleCombatArmour(event, actor, actionId) {
       let item, damage;
-      const rightClick = this.isRightClick(event);
 
       if (!this.pressedControl) return;
 
-      if (rightClick) {
+      if (this.isRightClick) {
         damage = 1;
         item = actor.itemTypes.armour.find(a =>
           a.system.AP[actionId] > 0 &&
@@ -193,12 +192,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         case 'weapon':
           if (this.pressedControl)
             return this.#handleWeaponDamage(event, actor, item);
-          else if (this.isRightClick(event))
+          else if (this.isRightClick)
             return this.renderItem(actor, actionId);
           else
             return this.#rollWeapon(actor, item);
         case 'forien-armoury.grimoire':
-          if (this.isRightClick(event))
+          if (this.isRightClick)
             return this.renderItem(actor, actionId);
           else
             this.#handleCombatAction(actor, 'improv');
@@ -221,7 +220,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #handletestIndependentEffectAction(event, actor, subActionType, subActionId) {
       let effect = await fromUuid(subActionType);
 
-      if (this.isRightClick(event)) {
+      if (this.isRightClick) {
         return this.renderItem(actor, effect.item._id);
       }
 
@@ -251,7 +250,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #handleManualEffectAction(event, actor, subActionType, subActionId) {
       let effect = await fromUuid(subActionType);
 
-      if (this.isRightClick(event)) {
+      if (this.isRightClick) {
         return this.renderItem(actor, effect.item._id);
       }
 
@@ -291,7 +290,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         else
           await this.actor.addCondition(actionId)
       } else {
-        if (this.isRightClick(event))
+        if (this.isRightClick)
           await this.actor.removeCondition(actionId)
         else
           await this.actor.addCondition(actionId)
@@ -392,8 +391,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     #handleWeaponDamage(event, actor, item) {
-      const rightClick = this.isRightClick(event);
-      const damage = rightClick ? 1 : -1;
+      const damage = this.isRightClick ? 1 : -1;
 
       return item.system.damageItem(damage);
     }

@@ -2,7 +2,7 @@ const constants = {
   modulePath: 'modules/token-action-hud-wfrp4e',
   moduleId: 'token-action-hud-wfrp4e',
   moduleLabel: `Token Action HUD WFRP4e`,
-  requiredCoreModuleVersion: '1.5'
+  requiredCoreModuleVersion: '2.0'
 };
 
 const defaults = {}
