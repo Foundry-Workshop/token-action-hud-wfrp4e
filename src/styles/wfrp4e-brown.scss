@@ -1,0 +1,77 @@
+/*** Warhammer Button Red ***/
+:root {
+  --tah-background-color: #270C0B00;
+  --tah-border-radius: 0;
+  --tah-gap: 5px;
+  --tah-subtitle-disabled-color: #75683f;
+
+  --tah-button-background-color: #352516;
+  --tah-button-background-image: url("/ui/parchment.jpeg") repeat;
+  --tah-button-border: none;
+  --tah-button-box-shadow: 0 0 0 1px #736953a6,
+  0 0 0 2px #73695333, inset 0 0 8px 1px rgb(0 0 0 / 50%),
+  inset 0 0 1px 1px #736953;
+  --tah-button-disabled-text-color: #75683f;
+  --tah-button-text-color: #D3D2D2;
+  --tah-button-background: var(--tah-button-background-color);
+  --tah-button-box-font-weight: normal;
+  --tah-button-active-background-color: #541414;
+  --tah-button-active-border: none;
+  --tah-button-active-box-shadow: 0 0 0 1px #D8D69566,
+  inset 0 0 10px #D8D69566;
+  --tah-button-text-shadow: 1px 1px 1px #0b0a13, 1px 1px 1px #0b0a13, 1px 1px 3px #0b0a13, 1px 1px 5px #0b0a13;
+  --tah-button-hover-border: none;
+  --tah-button-hover-text-color: #D3D2D2;
+  --tah-button-hover-text-primary-color: #ffffff;
+  --tah-button-hover-text-secondary-color: var(--tah-text-hover-secondary-color);
+  --tah-button-hover-text-tertiary-color: var(--tah-text-hover-tertiary-color);
+  --tah-button-hover-background-color: #541414;
+  --tah-button-hover-box-shadow: 0 0 0 1px #f3e9ca, 0 0 0 1px #f3e9ca,
+  0 0 0 2px #a98f39, inset 0 0 8px 1px rgb(0 0 0 / 50%),
+  inset 0 0 1px 1px #a98f39;
+  --tah-button-active-text-color: #ffffff;
+  --tah-button-toggle-background-color: #000000b3;
+  --tah-button-toggle-hover-background-color: #d28c8c;
+  --tah-button-toggle-hover-border: none;
+  --tah-button-toggle-hover-box-shadow: 0 0 0 1px #D8D69566,
+  inset 0 0 10px #D8D69566;
+  --tah-button-toggle-active-background-color: #ca6b6b;
+  --tah-button-toggle-active-box-shadow: 0 0 0 1px #D8D69566,
+  inset 0 0 10px #D8D69566;
+  --tah-button-image-background-color: #00000080;
+  --tah-button-image-border-radius: var(--tah-border-radius);
+  --tah-button-image-height: var(--tah-button-height);
+  --tah-button-image-width: var(--tah-button-min-width);
+  --tah-button-image-shadow: rgba(200, 100, 0, 0.65) 0 0 20px;
+  --tah-button-image-shadow-hover: rgba(80, 120, 255, 0.75) 0 0 20px;
+  --tah-button-font-family: CaslonPro, CaslonAntique, Signika, sans-serif;
+  --tah-button-height: 32px;
+  --tah-button-min-width: 32px;
+
+  --tah-fancy-font-family: CaslonAntique, serif;
+
+  --tah-text-disabled-color: #75683f;
+  --tah-text-primary-color: #D8D695;
+  --tah-text-secondary-color: #D8D695;
+  --tah-text-tertiary-color: #D8D695;
+  --tah-text-hover-primary-color: var(--tah-text-primary-color);
+  --tah-text-hover-secondary-color: var(--tah-text-secondary-color);
+  --tah-text-hover-tertiary-color: var(--tah-text-tertiary-color);
+  --tah-text-shadow: 1px 1px 1px rgb(0 0 0), 0px 1px 3px rgb(0 0 0);
+
+  --tah-icon-color: var(--tah-text-primary-color);
+  --tah-icon-text-shadow: 1px 1px 1px #0b0a13, 1px 1px 1px #0b0a13, 1px 1px 3px #0b0a13, 1px 1px 5px #0b0a13;
+  --tah-icon-hover-color: #ffffff;
+  --tah-icon-hover-text-shadow: 0 0 8px var(--color-shadow-primary);
+
+  --tah-character-name-color: var(--tah-text-primary-color);
+  --tah-character-name-text-shadow: 1px 1px 1px #0b0a13, 1px 1px 1px #0b0a13, 1px 1px 3px #0b0a13, 1px 1px 5px #0b0a13;
+
+  --tah-list-subgroup-title-icon-color: var(--tah-text-primary-color);
+  --tah-list-subgroup-title-hover-icon-color: #ffffff;
+  --tah-list-subgroup-title-font-size: var(--font-size-16);
+
+  --tah-subgroups-background: none;
+}
+
+@import "base";

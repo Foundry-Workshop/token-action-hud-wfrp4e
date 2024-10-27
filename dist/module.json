@@ -72,7 +72,8 @@
     "./modules/token-action-hud-wfrp4e.mjs"
   ],
   "styles": [
-    "./styles/token-action-hud-wfrp4e.css"
+    "./styles/wfrp4e-dark-red.css",
+    "./styles/wfrp4e-brown.css"
   ],
   "flags": {
     "hotReload": {
