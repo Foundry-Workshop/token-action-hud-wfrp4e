@@ -187,7 +187,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @returns {object}
      */
     async #buildMultipleTokenActions() {
-      await this.#buildBasicSkills();
+      await this.#buildCharacteristics();
+      await this.#buildMultipleBasicSkills();
+      await this.#buildMultipleExtendedTests();
       await this.#buildUtility();
     }
 
@@ -199,19 +201,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let name = WFRP4E.characteristics[characteristic];
         let actionTypeName = game.i18n.localize(tah.actions.characteristic);
         let listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
-        let encodedValue = ['characteristic', characteristic].join(this.delimiter);
-        let info1 = {
+        let info1 = this.actor ? {
           class: '',
           text: this.actor.characteristics[characteristic].value,
           title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.CharacteristicValue')
-        };
+        } : '';
 
         actions.push({
           id: characteristic,
           name,
           listName,
-          encodedValue,
-          info1
+          info1,
+          onClick: () => {
+            for (const actor of this.actors) {
+              actor.setupCharacteristic(characteristic, testOptions()).then(test => test.roll());
+            }
+          }
         });
       }
 
@@ -244,7 +249,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       return this.#addActionsFromMap(actionTypeId, inventoryMap);
     };
 
-    async #buildBasicSkills() {
+    async #buildMultipleBasicSkills() {
       const skills = this.actors[0]?.itemTypes.skill || [];
       const actionTypeId = 'skill';
       const actions = [];
@@ -269,7 +274,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           onClick: () => {
             for (const actor of this.actors) {
               let skillToUse = actor.itemTypes.skill.find(s => s.name === skill.name);
-              let options = foundry.utils.mergeObject(testOptions(), {rest: true, tb: actor.characteristics.t.bonus});
+              let options = testOptions();
 
               if (skillToUse)
                 actor.setupSkill(skillToUse, options).then(test => test.roll());
@@ -292,6 +297,54 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         if (item.system.hide.test && !game.user.isGM) continue;
         let action = this.#makeActionFromItem(item, actionTypeName, actionType, {}, [], false);
         actions.push(action);
+      }
+
+      await this.addActions(actions, groupData);
+    };
+
+    async #buildMultipleExtendedTests() {
+      const tests = this.actors[0]?.itemTypes.extendedTest || [];
+      const actions = [];
+      const actionTypeName = 'Extended Test';
+      const groupData = tah.groups.extendedTests;
+
+      for (let item of tests) {
+        if (item.system.hide.test && !game.user.isGM) continue;
+
+        if (!this.actors.every(a => a.itemTypes.extendedTest.find(s => s.name === item.name)))
+          continue;
+
+        actions.push({
+          id: item._id,
+          name: this.#getActionName(item.name),
+          img: null,
+          listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+          info1: {
+            class: '',
+            text: this.#getTestTarget(item),
+            title: game.i18n.localize('tokenActionHud.wfrp4e.tooltips.TestTarget')
+          },
+          info2: {
+            class: '',
+            text: this.#getItemValue(item),
+            title: this.#getItemValueTooltip(item)
+          },
+          info3: {
+            class: '',
+            text: this.#getItemSecondaryValue(item),
+            title: this.#getItemSecondaryValueTooltip(item)
+          },
+          tooltip: item.name,
+          onClick: () => {
+            for (const actor of this.actors) {
+              let extendedTest = actor.itemTypes.extendedTest.find(e => e.name === item.name);
+              let options = testOptions();
+
+              if (extendedTest)
+                actor.setupExtendedTest(extendedTest, options);
+            }
+          }
+        });
       }
 
       await this.addActions(actions, groupData);

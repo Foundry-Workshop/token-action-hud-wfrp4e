@@ -4,6 +4,10 @@
 * Updated code for compatibility with TAH Core 2.0
 * Moved styling to separate Style called `WFRP4e Dark Red`
 * Added new style called `WFRP4e Brown`
+* Added Multiple Token support for the following Actions:
+  * Characteristics 
+  * Basic Skills - skill appears if it's Basic and all selected Tokens have it
+  * Extended Tests - test appears if all selected Tokens have an Extended Test of the same name
 
 ## v2.1.2
 * Added Effect for `Additional Action` to prevent advantage being added via GM Toolkit
