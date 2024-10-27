@@ -1,6 +1,5 @@
-import Utility from "./utility/Utility.mjs";
-import {settings} from "./constants.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
+import {pressedAlt, pressedControl, pressedShift, testOptions} from "./actionHelpers.mjs";
 
 export let RollHandlerWfrp4e = null
 
@@ -307,87 +306,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string}      actionId The action id
      */
     async #handleUtilityAction(token, actor, actionId) {
-      switch (actionId) {
-        case 'endTurn':
-          return this.#endTurn(token);
-        case 'initiative':
-          return this.#rollInitiative(actor);
-        case 'restRecover':
-          return this.#restRecover(actor);
-        case 'incomeRoll':
-          return this.#incomeRoll(actor);
-        case 'checkCareer':
-          return this.#checkCareer(actor);
-        case 'checkEquipment':
-          return this.#checkEquipment(actor);
-        case 'makeItemPile':
-          return this.#makeItemPile(token);
-        case 'revertItemPile':
-          return this.#makeItemPile(token, false);
-      }
-    }
 
-    async #endTurn(token) {
-      if (game.combat?.current?.tokenId === token.id)
-        return await game.combat?.nextTurn();
-    }
-
-    async #rollInitiative(actor) {
-      if (!actor) return;
-      await actor.rollInitiative({createCombatants: true});
-
-      return Hooks.callAll('forceUpdateTokenActionHud');
-    }
-
-    async #restRecover(actor) {
-      let skill = actor.getItemTypes("skill").find(s => s.name === game.i18n.localize("NAME.Endurance"));
-      let options = foundry.utils.mergeObject(this.options, {rest: true, tb: actor.characteristics.t.bonus});
-      let setupData;
-      if (skill)
-        setupData = await actor.setupSkill(skill, options);
-      else
-        setupData = await actor.setupCharacteristic("t", options)
-
-      return actor.basicTest(setupData)
-    }
-
-    async #incomeRoll(actor) {
-      const career = actor.currentCareer;
-      if (!career) return;
-      const incomeSkill = career.skills[career.incomeSkill[0]];
-
-      if (!incomeSkill || !actor.items.some(i => i.type === 'skill' && i.name === incomeSkill))
-        return ui.notifications.error(game.i18n.localize("SHEET.SkillMissingWarning"));
-
-      const options = foundry.utils.mergeObject(this.options, {
-        title: `${incomeSkill} - ${game.i18n.localize("Income")}`,
-        income: actor.details.status,
-        career: career.toObject()
-      });
-      let setupData = await actor.setupSkill(incomeSkill, options);
-      return actor.basicTest(setupData)
-    }
-
-    async #checkEquipment(actor) {
-      const api = game.modules.get('forien-armoury')?.api;
-      if (!api) return;
-
-      return api.itemRepair.checkInventoryForDamage(actor);
-    }
-
-    async #checkCareer(actor) {
-      const api = game.modules.get('forien-armoury')?.api;
-      if (!api) return;
-
-      return api.checkCareers.checkCareer(actor);
-    }
-
-    async #makeItemPile(token, activate = true) {
-      if (!game.modules.get('item-piles')?.active) return;
-      if (activate)
-        return game.itempiles?.API?.turnTokensIntoItemPiles([token])
-
-      return game.itempiles?.API?.revertTokensFromItemPiles([token])
     }
 
     #handleWeaponDamage(event, actor, item) {
@@ -404,34 +323,19 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     get options() {
-      let options = {};
-
-      if (this.pressedShift) {
-        options.fields = {
-          rollMode: Utility.getSetting(settings.shiftRollMode)
-        }
-      }
-
-      let bypass = Utility.getSetting(settings.bypassDefault);
-
-      if (this.pressedAlt)
-        bypass = !bypass;
-
-      options.bypass = bypass;
-
-      return options;
+      return testOptions()
     }
 
     get pressedAlt() {
-      return game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT);
+      return pressedAlt();
     }
 
     get pressedShift() {
-      return game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT);
+      return pressedShift();
     }
 
     get pressedControl() {
-      return game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL);
+      return pressedControl();
     }
   }
 })

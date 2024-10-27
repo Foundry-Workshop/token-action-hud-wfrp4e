@@ -1,6 +1,7 @@
 import Utility from "./utility/Utility.mjs";
 import {constants, settings, tah} from "./constants.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
+import {testOptions} from "./actionHelpers.mjs";
 
 export let ActionHandlerWfrp4e = null
 
@@ -11,6 +12,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
    */
   ActionHandlerWfrp4e = class ActionHandlerWfrp4e extends coreModule.api.ActionHandler {
     static #firstBuild = true;
+
     /**
      * Build system actions
      * Called by Token Action HUD Core
@@ -185,6 +187,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @returns {object}
      */
     async #buildMultipleTokenActions() {
+      await this.#buildBasicSkills();
+      await this.#buildUtility();
     }
 
     async #buildCharacteristics() {
@@ -238,6 +242,43 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
 
       return this.#addActionsFromMap(actionTypeId, inventoryMap);
+    };
+
+    async #buildBasicSkills() {
+      const skills = this.actors[0]?.itemTypes.skill || [];
+      const actionTypeId = 'skill';
+      const actions = [];
+      const type = 'skillBasic';
+
+      const groupId = tah.items[type]?.groupId ?? this.#findGroup({id: type})?.id;
+      if (!groupId) return;
+      const groupData = {id: groupId, type: 'system'};
+
+      for (let skill of skills) {
+        const actionTypeName = game.i18n.localize(tah.actions[actionTypeId]);
+
+        if (!this.actors.every(a => a.itemTypes.skill.find(s => s.name === skill.name)))
+          continue;
+
+        actions.push({
+          id: skill.id,
+          name: this.#getActionName(skill.name),
+          img: coreModule.api.Utils.getImage(skill),
+          listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${skill.name}`,
+          tooltip: game.wfrp4e.config.characteristics[skill.system.characteristic.value],
+          onClick: () => {
+            for (const actor of this.actors) {
+              let skillToUse = actor.itemTypes.skill.find(s => s.name === skill.name);
+              let options = foundry.utils.mergeObject(testOptions(), {rest: true, tb: actor.characteristics.t.bonus});
+
+              if (skillToUse)
+                actor.setupSkill(skillToUse, options).then(test => test.roll());
+            }
+          }
+        })
+      }
+
+      this.addActions(actions, groupData);
     };
 
     async #buildExtendedTests() {
@@ -807,22 +848,20 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const char = await this.#buildUtilityCharacter();
       const token = await this.#buildUtilityToken();
       const actionType = 'utility';
-      let actionData = mergeObject(combat, char);
-      actionData = mergeObject(actionData, token);
-
+      const actionData = {...combat, ...char, ...token};
 
       for (let group in actionData) {
         const types = actionData[group];
-        const actions = Object.entries(types).map((type) => {
-          const id = type[1].id;
-          const name = type[1].name;
+        const actions = Object.values(types).map(action => {
+          const id = action.id;
+          const name = action.name;
+          const onClick = action.onClick;
           const actionTypeName = `${coreModule.api.Utils.i18n(tah.actions[actionType])}: ` ?? '';
           const listName = `${actionTypeName}${name}`;
-          const encodedValue = [actionType, id].join(this.delimiter);
           const info1 = {};
           let cssClass = '';
 
-          if (type[0] === 'initiative' && game.combat) {
+          if (id === 'initiative' && game.combat) {
             const tokenIds = canvas.tokens.controlled.map((token) => token.id);
             const combatants = game.combat.combatants.filter((combatant) => tokenIds.includes(combatant.tokenId));
 
@@ -840,7 +879,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           return {
             id,
             name,
-            encodedValue,
+            onClick,
             info1,
             cssClass,
             listName
@@ -854,11 +893,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #buildUtilityCombat() {
       const combatTypes = {
-        initiative: {id: 'initiative', name: game.i18n.localize('tokenActionHud.wfrp4e.actions.rollInitiative')},
-        endTurn: {id: 'endTurn', name: game.i18n.localize('tokenActionHud.endTurn')}
+        initiative: {
+          id: 'initiative',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.rollInitiative'),
+          onClick: async () => {
+            for (const actor of this.actors) {
+              await actor.rollInitiative({createCombatants: true});
+            }
+
+            return Hooks.callAll('forceUpdateTokenActionHud');
+          }
+        },
+        endTurn: {
+          id: 'endTurn',
+          name: game.i18n.localize('tokenActionHud.endTurn'),
+          onClick: () => {
+            if (game.combat?.current?.tokenId === this.token?.id)
+              return game.combat?.nextTurn();
+          }
+        }
       }
 
-      if (!game.combat || game.combat?.current?.tokenId !== this.token?.id) delete combatTypes.endTurn
+      if (!this.actor || !game.combat || game.combat?.current?.tokenId !== this.token?.id) delete combatTypes.endTurn
 
       return {'combat': combatTypes};
     }
@@ -866,18 +922,71 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #buildUtilityCharacter() {
       const characterTypes = {
-        restRecover: {id: 'restRecover', name: game.i18n.localize('tokenActionHud.wfrp4e.actions.restRecover')},
-        incomeRoll: {id: 'incomeRoll', name: game.i18n.localize('tokenActionHud.wfrp4e.actions.incomeRoll')},
+        restRecover: {
+          id: 'restRecover',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.restRecover'),
+          onClick: async () => {
+            for (const actor of this.actors) {
+              let skill = actor.itemTypes.skill.find(s => s.name === game.i18n.localize("NAME.Endurance"));
+              let options = foundry.utils.mergeObject(testOptions(), {rest: true, tb: actor.characteristics.t.bonus});
+
+              if (skill)
+                actor.setupSkill(skill, options).then(setupData => actor.basicTest(setupData));
+              else
+                actor.setupCharacteristic("t", options).then(setupData => actor.basicTest(setupData))
+            }
+          }
+        },
+        incomeRoll: {
+          id: 'incomeRoll',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.incomeRoll'),
+          onClick: async () => {
+            for (const actor of this.actors) {
+              const career = actor.currentCareer;
+              if (!career) continue;
+              const incomeSkill = career.skills[career.incomeSkill[0]];
+
+              if (!incomeSkill || !actor.items.some(i => i.type === 'skill' && i.name === incomeSkill)) {
+                ui.notifications.error(game.i18n.localize("SHEET.SkillMissingWarning"));
+                continue;
+              }
+
+              const options = foundry.utils.mergeObject(testOptions(), {
+                title: `${incomeSkill} - ${game.i18n.localize("Income")}`,
+                income: actor.details.status,
+                career: career.toObject()
+              });
+
+              actor.setupSkill(incomeSkill, options).then(setupData => {actor.basicTest(setupData)});
+            }
+          }
+        },
       }
 
       if (game.modules.get('forien-armoury')?.active) {
         characterTypes.checkCareer = {
           id: 'checkCareer',
-          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.checkCareer')
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.checkCareer'),
+          onClick: () => {
+            const api = game.modules.get('forien-armoury')?.api;
+            if (!api) return;
+
+            for (const actor of this.actors) {
+              api.checkCareers.checkCareer(actor);
+            }
+          }
         };
         characterTypes.checkEquipment = {
           id: 'checkEquipment',
-          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.checkEquipment')
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.checkEquipment'),
+          onClick: () => {
+            const api = game.modules.get('forien-armoury')?.api;
+            if (!api) return;
+
+            for (const actor of this.actors) {
+              api.itemRepair.checkInventoryForDamage(actor);
+            }
+          }
         };
       }
 
@@ -887,16 +996,47 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     async #buildUtilityToken() {
       const tokenTypes = {}
 
-      if (this.token && game.modules.get('item-piles')?.active && game.user.isGM) {
-        if (this.token.document.flags && this.token.document.flags['item-piles']?.data.enabled) {
-          tokenTypes.makeItemPile = {
-            id: 'revertItemPile',
-            name: game.i18n.localize('tokenActionHud.wfrp4e.actions.revertItemPile')
-          };
+      if (game.modules.get('item-piles')?.active && game.user.isGM) {
+        if (this.token) {
+          if (this.token.document.flags && this.token.document.flags['item-piles']?.data.enabled) {
+            tokenTypes.makeItemPile = {
+              id: 'revertItemPile',
+              name: game.i18n.localize('tokenActionHud.wfrp4e.actions.revertItemPile'),
+              onClick: () => {
+                if (!game.modules.get('item-piles')?.active) return;
+
+                for (const token of this.tokens) {
+                  game.itempiles?.API?.revertTokensFromItemPiles([token]);
+                }
+              }
+            };
+          } else {
+            tokenTypes.makeItemPile = {
+              id: 'makeItemPile',
+              name: game.i18n.localize('tokenActionHud.wfrp4e.actions.makeItemPile'),
+              onClick: () => {
+                if (!game.modules.get('item-piles')?.active) return;
+
+                for (const token of this.tokens) {
+                  game.itempiles?.API?.turnTokensIntoItemPiles([token]);
+                }
+              }
+            };
+          }
         } else {
-          tokenTypes.makeItemPile = {
-            id: 'makeItemPile',
-            name: game.i18n.localize('tokenActionHud.wfrp4e.actions.makeItemPile')
+          tokenTypes.toggleItemPiles = {
+            id: 'toggleItemPiles',
+            name: game.i18n.localize('tokenActionHud.wfrp4e.actions.toggleItemPiles'),
+            onClick: () => {
+              if (!game.modules.get('item-piles')?.active) return;
+
+              for (const token of this.tokens) {
+                if (token.document.flags['item-piles']?.data.enabled)
+                  game.itempiles?.API?.revertTokensFromItemPiles([token]);
+                else
+                  game.itempiles?.API?.turnTokensIntoItemPiles([token]);
+              }
+            }
           };
         }
       }

@@ -41,6 +41,7 @@
         "makeItemPiles": "Convert to Item Piles",
         "revertItemPile": "Revert from Item Pile",
         "revertItemPiles": "Revert from Item Piles",
+        "toggleItemPiles": "Toggle Item Piles",
         "checkCareer": "Check Career Progress",
         "checkEquipment": "Check Equipment",
         "restRecover": "Rest and Recover",
