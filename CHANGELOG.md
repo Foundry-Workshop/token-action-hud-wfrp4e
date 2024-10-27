@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.2.0
+## v3.0.0
 * Updated code for compatibility with TAH Core 2.0
 * Moved styling to separate Style called `WFRP4e Dark Red`
 * Added new style called `WFRP4e Brown`
