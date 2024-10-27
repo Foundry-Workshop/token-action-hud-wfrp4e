@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.2.0
+* Updated code for compatibility with TAH Core 2.0
+* Moved styling to separate Style called `WFRP4e Dark Red`
+* Added new style called `WFRP4e Brown`
+
 ## v2.1.2
 * Added Effect for `Additional Action` to prevent advantage being added via GM Toolkit
 * Fixed `Additional Effort` applying outdated Effect (flags-based instead of Data Model based)

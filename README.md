@@ -27,6 +27,11 @@ Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token 
 
 **IMPORTANT** — Token Action HUD WFRP 4e requires the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) module to be installed.
 
+**Required Core version:**
+- TAH WFRP4e v2.2.0 and newer: Core v2.0
+- TAH WFRP4e v0.0.12 – v2.1.2: Core v1.5
+- TAH WFRP4e v0.0.11 and older: Core v1.4
+
 ## Recommended Modules
 * Token Action HUD uses the [Color Picker](https://foundryvtt.com/packages/color-picker) library module for its color picker settings.
 * Token Action HUD WFRP4e supports several actions from the [Forien's Armoury](https://foundryvtt.com/packages/forien-armoury/) and [Item Piles](https://foundryvtt.com/packages/item-piles) modules
