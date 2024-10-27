@@ -7,6 +7,7 @@
 * Added new Utility Actions
   * Token Action "Toggle Disposition" which will cycle dispositions for all selected Tokens
   * Character Action "Award XP" which will award XP to all selected Characters
+  * 2 Combat Actions to modify Advantage of selected Actors
 * Added Multiple Token support for the following Actions:
   * Characteristics 
   * Basic Skills - skill appears if it's Basic and all selected Tokens have it

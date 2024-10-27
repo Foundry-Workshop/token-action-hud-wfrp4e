@@ -47,6 +47,8 @@
         "checkEquipment": "Check Equipment",
         "restRecover": "Rest and Recover",
         "incomeRoll": "Roll for Income",
+        "increaseAdvantage": "Increase Advantage",
+        "decreaseAdvantage": "Decrease Advantage",
 
         "advantage": {
           "batter": "Batter",

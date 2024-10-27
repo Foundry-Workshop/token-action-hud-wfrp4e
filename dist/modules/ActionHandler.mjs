@@ -1006,6 +1006,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             if (game.combat?.current?.tokenId === this.token?.id)
               return game.combat?.nextTurn();
           }
+        },
+        increaseAdvantage: {
+          id: 'increaseAdvantage',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.increaseAdvantage'),
+          onClick: () => {
+            for (const actor of this.actors)
+              actor.modifyAdvantage(1);
+          }
+        },
+        decreaseAdvantage: {
+          id: 'decreaseAdvantage',
+          name: game.i18n.localize('tokenActionHud.wfrp4e.actions.decreaseAdvantage'),
+          onClick: () => {
+            for (const actor of this.actors)
+              actor.modifyAdvantage(-1);
+          }
         }
       }
 
@@ -1098,6 +1114,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #buildUtilityToken() {
       const tokenTypes = {}
+
+      if (!this.tokens)
+        return tokenTypes;
 
       if (game.modules.get('item-piles')?.active && game.user.isGM) {
         if (this.token) {
