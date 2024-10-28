@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.0.1
+* Inactive Traits are now no longer added to Combat Actions
+
 ## v3.0.0
 * Updated code for compatibility with TAH Core 2.0
 * Moved styling to separate Style called `WFRP4e Dark Red`

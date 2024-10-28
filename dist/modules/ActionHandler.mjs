@@ -495,6 +495,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       for (let [key, item] of this.talents) {
         if (item.type !== 'trait') continue;
         if (!item.rollable?.value) continue;
+        if (!item.system.enabled) continue;
 
         let action = this.#makeActionFromItem(item, actionTypeName, actionType);
         actionsData.push(action);
