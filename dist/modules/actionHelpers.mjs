@@ -116,16 +116,23 @@ export async function askMagicMethod(actor, spell) {
         label: game.i18n.localize("Channel"),
       },
     ],
-    submit: (method) => castOrChannel(actor, spell, method)
+    submit: (method) => {
+      castOrChannel(actor, spell, method);
+    }
   });
 }
 
 export async function castOrChannel(actor, spell, method = "cast") {
+  let test;
   if (method === "cast")
-    return castSpell(actor, spell);
+    test = await castSpell(actor, spell);
 
   if (method === "channel")
-    return channelSpell(actor, spell);
+    test = await channelSpell(actor, spell);
+
+  await test.roll();
+
+  return test;
 }
 
 async function castSpell(actor, spell) {
@@ -133,5 +140,5 @@ async function castSpell(actor, spell) {
 }
 
 async function channelSpell(actor, spell) {
-  return actor.setupChannell(spell, testOptions());
+  return actor.setupChannell(spell, testOptions())
 }
