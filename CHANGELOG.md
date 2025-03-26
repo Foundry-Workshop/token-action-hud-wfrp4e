@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.1.0
+* Refactored Spell Action activation to not rely on Actor Sheet anymore
+  * Added configurable Setting that allows users to set preferred Action (Cast, Channel or Prompt) with CTRL reversing that selection
+* Added Help window
+
 ## v3.0.1
 * Inactive Traits are now no longer added to Combat Actions
 

@@ -1,7 +1,8 @@
 import Utility from "./utility/Utility.mjs";
-import {constants, settings, tah} from "./constants.mjs";
+import {settings, tah} from "./constants.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
 import {awardXP, testOptions} from "./actionHelpers.mjs";
+import Help from "./apps/Help.mjs";
 
 export let ActionHandlerWfrp4e = null
 
@@ -943,8 +944,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const combat = await this.#buildUtilityCombat();
       const char = await this.#buildUtilityCharacter();
       const token = await this.#buildUtilityToken();
+      const misc = await this.#buildUtilityMiscellaneous();
       const actionType = 'utility';
-      const actionData = {...combat, ...char, ...token};
+      const actionData = {...combat, ...char, ...token, ...misc};
 
       for (let group in actionData) {
         const types = actionData[group];
@@ -1183,6 +1185,20 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
 
       return {'token': tokenTypes};
+    }
+
+    async #buildUtilityMiscellaneous() {
+      const actions = {};
+
+      actions.help = {
+        id: "help",
+        name: game.i18n.localize("tokenActionHud.wfrp4e.actions.showHelp"),
+        onClick: async () => {
+          Help.render(true);
+        },
+      };
+
+      return {"utility": actions};
     }
 
 //#endregion

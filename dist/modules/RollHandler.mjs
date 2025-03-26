@@ -38,7 +38,7 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
 
       const renderable = ["item", "magic", "skill", "talent"];
 
-      if (renderable.includes(actionTypeId) && this.isRenderItem()) {
+      if (renderable.includes(actionTypeId) && this.isRightClick) {
         return this.renderItem(this.actor, actionId);
       }
 

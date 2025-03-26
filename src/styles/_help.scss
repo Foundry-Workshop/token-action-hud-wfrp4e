@@ -1,0 +1,142 @@
+.token-action-hud-wfrp4e.help {
+  .window-header button.header-control {
+    font-family: var(--font-primary);
+    font-weight: normal;
+    white-space: nowrap;
+    font-size: var(--font-size-12);
+
+    &::before {
+      font-family: var(--font-awesome);
+      font-weight: 900;
+      font-size: var(--font-size-14);
+      padding-right: 4px;
+    }
+  }
+
+  #tah-wfrp4e-cheatsheet {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    --border: 1px dashed var(--color-text-primary);
+    gap: 1px;
+    overflow-y: auto;
+    height: 100%;
+
+    > * {
+      height: 100%;
+      padding: 1rem;
+      justify-content: center;
+      border-top: var(--border);
+    }
+
+    .cheatsheet-header {
+      font-size: var(--font-size-16);
+      font-weight: bold;
+      text-align: center;
+      border-top: none;
+
+      &:nth-child(2) {
+        border-left: var(--border);
+        border-right: var(--border);
+      }
+    }
+
+    .cheatsheet-left {
+      border-left: var(--border);
+      border-right: var(--border);
+    }
+
+    .cheatsheet-action, .cheatsheet-left, .cheatsheet-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cheatsheet-mod {
+      line-height: 1.5rem;
+    }
+  }
+
+  [data-application-part="cheatsheet"] {
+    overflow: hidden;
+  }
+
+  [data-application-part="wiki"] {
+    overflow-y: auto;
+    height: 100%;
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-bottom: 0;
+      margin-top: 1rem;
+    }
+
+    .wiki-link {
+      height: 30px;
+    }
+
+    .loader-wrapper {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+    // via https://cssloaders.github.io/
+    .loader {
+      font-size: 10px;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      position: relative;
+      text-indent: -9999em;
+      animation: mulShdSpin 1.1s infinite ease;
+      transform: translateZ(0);
+    }
+    @keyframes mulShdSpin {
+      0%,
+      100% {
+        box-shadow: 0em -2.6em 0em 0em #ffffff, 1.8em -1.8em 0 0em rgba(255,255,255, 0.2), 2.5em 0em 0 0em rgba(255,255,255, 0.2), 1.75em 1.75em 0 0em rgba(255,255,255, 0.2), 0em 2.5em 0 0em rgba(255,255,255, 0.2), -1.8em 1.8em 0 0em rgba(255,255,255, 0.2), -2.6em 0em 0 0em rgba(255,255,255, 0.5), -1.8em -1.8em 0 0em rgba(255,255,255, 0.7);
+      }
+      12.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.7), 1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255,255,255, 0.2), 1.75em 1.75em 0 0em rgba(255,255,255, 0.2), 0em 2.5em 0 0em rgba(255,255,255, 0.2), -1.8em 1.8em 0 0em rgba(255,255,255, 0.2), -2.6em 0em 0 0em rgba(255,255,255, 0.2), -1.8em -1.8em 0 0em rgba(255,255,255, 0.5);
+      }
+      25% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.5), 1.8em -1.8em 0 0em rgba(255,255,255, 0.7), 2.5em 0em 0 0em #ffffff, 1.75em 1.75em 0 0em rgba(255,255,255, 0.2), 0em 2.5em 0 0em rgba(255,255,255, 0.2), -1.8em 1.8em 0 0em rgba(255,255,255, 0.2), -2.6em 0em 0 0em rgba(255,255,255, 0.2), -1.8em -1.8em 0 0em rgba(255,255,255, 0.2);
+      }
+      37.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.2), 1.8em -1.8em 0 0em rgba(255,255,255, 0.5), 2.5em 0em 0 0em rgba(255,255,255, 0.7), 1.75em 1.75em 0 0em #ffffff, 0em 2.5em 0 0em rgba(255,255,255, 0.2), -1.8em 1.8em 0 0em rgba(255,255,255, 0.2), -2.6em 0em 0 0em rgba(255,255,255, 0.2), -1.8em -1.8em 0 0em rgba(255,255,255, 0.2);
+      }
+      50% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.2), 1.8em -1.8em 0 0em rgba(255,255,255, 0.2), 2.5em 0em 0 0em rgba(255,255,255, 0.5), 1.75em 1.75em 0 0em rgba(255,255,255, 0.7), 0em 2.5em 0 0em #ffffff, -1.8em 1.8em 0 0em rgba(255,255,255, 0.2), -2.6em 0em 0 0em rgba(255,255,255, 0.2), -1.8em -1.8em 0 0em rgba(255,255,255, 0.2);
+      }
+      62.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.2), 1.8em -1.8em 0 0em rgba(255,255,255, 0.2), 2.5em 0em 0 0em rgba(255,255,255, 0.2), 1.75em 1.75em 0 0em rgba(255,255,255, 0.5), 0em 2.5em 0 0em rgba(255,255,255, 0.7), -1.8em 1.8em 0 0em #ffffff, -2.6em 0em 0 0em rgba(255,255,255, 0.2), -1.8em -1.8em 0 0em rgba(255,255,255, 0.2);
+      }
+      75% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.2), 1.8em -1.8em 0 0em rgba(255,255,255, 0.2), 2.5em 0em 0 0em rgba(255,255,255, 0.2), 1.75em 1.75em 0 0em rgba(255,255,255, 0.2), 0em 2.5em 0 0em rgba(255,255,255, 0.5), -1.8em 1.8em 0 0em rgba(255,255,255, 0.7), -2.6em 0em 0 0em #ffffff, -1.8em -1.8em 0 0em rgba(255,255,255, 0.2);
+      }
+      87.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255,255,255, 0.2), 1.8em -1.8em 0 0em rgba(255,255,255, 0.2), 2.5em 0em 0 0em rgba(255,255,255, 0.2), 1.75em 1.75em 0 0em rgba(255,255,255, 0.2), 0em 2.5em 0 0em rgba(255,255,255, 0.2), -1.8em 1.8em 0 0em rgba(255,255,255, 0.5), -2.6em 0em 0 0em rgba(255,255,255, 0.7), -1.8em -1.8em 0 0em #ffffff;
+      }
+    }
+  }
+
+  .promo {
+    display: flex;
+    gap: 4px;
+
+    a {
+      cursor: pointer;
+      display: inline-block;
+      height: 30px;
+
+      img {
+        border: none;
+      }
+
+      &.button {
+        height: 28px;
+        align-content: center;
+      }
+    }
+  }
+}
+

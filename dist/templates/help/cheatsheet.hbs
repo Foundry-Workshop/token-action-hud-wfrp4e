@@ -1,0 +1,127 @@
+{{~#*inline "SHIFT"~}}
+    <kbd>{{localize "tokenActionHud.Help.Mods.SHIFT"}}</kbd>
+{{~/inline~}}
+
+{{~#*inline "CTRL"~}}
+    <kbd>{{localize "tokenActionHud.Help.Mods.CTRL"}}</kbd>
+{{~/inline~}}
+
+{{~#*inline "ALT"~}}
+    <kbd>{{localize "tokenActionHud.Help.Mods.ALT"}}</kbd>
+{{~/inline~}}
+
+{{~#*inline "item"~}}
+    {{localize "tokenActionHud.wfrp4e.item"}}
+{{~/inline~}}
+
+{{~#*inline "combat"~}}
+    {{localize "tokenActionHud.wfrp4e.combat"}}
+{{~/inline~}}
+
+{{~#*inline "magic"~}}
+    {{localize "tokenActionHud.wfrp4e.magic"}}
+{{~/inline~}}
+
+{{~#*inline "utility"~}}
+    {{localize "tokenActionHud.wfrp4e.utility"}}
+{{~/inline~}}
+
+{{#*inline "roll-dialog"}}
+    <span class="cheatsheet-mod">
+        {{localize "tokenActionHud.Help.RollDialog"}}
+    </span>
+    <span class="cheatsheet-mod">
+        {{> SHIFT}}: {{localize "tokenActionHud.Help.ShiftMode"}}
+    </span>
+    <span class="cheatsheet-mod">
+        {{> ALT}}: {{localize "tokenActionHud.Help.BypassDialog"}}
+    </span>
+{{/inline}}
+
+<section class="tab {{tab.cssClass}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+    <div id="tah-wfrp4e-cheatsheet">
+        <div class="cheatsheet-header">{{localize "tokenActionHud.Help.Action"}}</div>
+        <div class="cheatsheet-header">{{{tahw-icon "mouse_left"}}}</div>
+        <div class="cheatsheet-header">{{{tahw-icon "mouse_right"}}}</div>
+
+        <div class="cheatsheet-action">
+            <span>{{localize "tokenActionHud.wfrp4e.characteristic"}}</span>
+            <span>{{> combat}}: {{localize "tokenActionHud.wfrp4e.basic"}}</span>
+            <span>{{> utility}}: {{localize "tokenActionHud.wfrp4e.actions.restRecover"}}</span>
+            <span>{{> utility}}: {{localize "tokenActionHud.wfrp4e.actions.incomeRoll"}}</span>
+        </div>
+        <div class="cheatsheet-left">{{> roll-dialog}}</div>
+        <div class="cheatsheet-right">{{> roll-dialog}}</div>
+
+        <div class="cheatsheet-action">
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.extendedTest"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.scroll"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.prayer"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.skill"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.trait"}} ({{localize "tokenActionHud.Help.Rollable"}})</span>
+        </div>
+        <div class="cheatsheet-left">{{> roll-dialog}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.ItemSheet"}}</div>
+
+        <div class="cheatsheet-action">
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.weapon"}}</span>
+        </div>
+        <div class="cheatsheet-left">
+            {{> roll-dialog}}
+            <span class="cheatsheet-mod">
+                {{> CTRL}}: {{localize "tokenActionHud.Help.RepairItem"}}
+            </span>
+        </div>
+        <div class="cheatsheet-right">
+            {{localize "tokenActionHud.Help.ItemSheet"}}
+            <span class="cheatsheet-mod">
+                {{> CTRL}}: {{localize "tokenActionHud.Help.DamageItem"}}
+            </span>
+        </div>
+
+        <div class="cheatsheet-action">{{> magic}}: {{localize "tokenActionHud.wfrp4e.spell"}}</div>
+        <div class="cheatsheet-left">
+            {{> roll-dialog}}
+            <span class="cheatsheet-mod">{{> CTRL}}: {{localize "tokenActionHud.Help.AltMagicMethod"}}</span>
+        </div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.PostChat"}}</div>
+
+        <div class="cheatsheet-action">
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.ammunition"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.armour"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.grimoire"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.talent"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.trait"}}</span>
+            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.trapping"}}</span>
+        </div>
+        <div class="cheatsheet-left">{{localize "tokenActionHud.Help.PostChat"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.ItemSheet"}}</div>
+
+        <div class="cheatsheet-action">{{> combat}}: {{localize "tokenActionHud.wfrp4e.armour"}}</div>
+        <div class="cheatsheet-left"><span class="cheatsheet-mod">{{> CTRL}}: {{localize "tokenActionHud.Help.RepairItem"}}</span></div>
+        <div class="cheatsheet-right"><span class="cheatsheet-mod">{{> CTRL}}: {{localize "tokenActionHud.Help.DamageItem"}}</span></div>
+
+        <div class="cheatsheet-action">
+            <span>{{> combat}}: {{localize "tokenActionHud.wfrp4e.manualEffect"}}</span>
+            <span>{{> combat}}: {{localize "tokenActionHud.wfrp4e.testIndependentEffect"}}</span>
+        </div>
+        <div class="cheatsheet-left">{{localize "tokenActionHud.Help.TriggerEffect"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.ParentItemSheet"}}</div>
+
+        <div class="cheatsheet-action">{{> combat}}: {{localize "tokenActionHud.wfrp4e.advantage"}}</div>
+        <div class="cheatsheet-left">{{localize "tokenActionHud.Help.UseAdvantageAction"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.UseAdvantageAction"}}</div>
+
+        <div class="cheatsheet-action">{{localize "tokenActionHud.wfrp4e.condition"}} ({{localize "tokenActionHud.Help.Stackable"}})</div>
+        <div class="cheatsheet-left">{{localize "tokenActionHud.Help.ApplyCondition"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.RemoveCondition"}}</div>
+
+        <div class="cheatsheet-action">{{localize "tokenActionHud.wfrp4e.condition"}}</div>
+        <div class="cheatsheet-left">{{localize "tokenActionHud.Help.ToggleCondition"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.ToggleCondition"}}</div>
+
+        <div class="cheatsheet-action">{{localize "tokenActionHud.wfrp4e.utility"}}</div>
+        <div class="cheatsheet-left">{{localize "tokenActionHud.Help.PerformUtilityAction"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.PerformUtilityAction"}}</div>
+    </div>
+</section>

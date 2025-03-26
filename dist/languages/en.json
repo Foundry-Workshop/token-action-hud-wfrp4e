@@ -9,30 +9,47 @@
       "characteristic": "Characteristic",
       "characteristics": "Characteristics",
       "combat": "Combat",
+      "condition": "Condition",
       "conditions": "Conditions",
+      "consumable": "Consumable",
       "consumables": "Consumables",
+      "container": "Container",
       "containers": "Containers",
+      "extendedTest": "Extended Test",
       "extendedTests": "Extended Tests",
+      "grimoire": "Grimoire",
       "grimoires": "Grimoires",
       "inventory": "Inventory",
       "item": "Item",
       "magic": "Magic",
+      "manualEffect": "Manual Effect",
       "manualEffects": "Manual Effects",
+      "testIndependentEffect": "Test Independent Effect",
       "testIndependentEffects": "Test Independent Effects",
+      "prayer": "Prayer",
+      "prayersBlessing": "Blessing",
       "prayersBlessings": "Blessings",
+      "prayersMiracle": "Miracle",
       "prayersMiracles": "Miracles",
+      "scroll": "Magic Scroll",
       "scrolls": "Magic Scrolls",
+      "skill": "Skill",
       "skills": "Skills",
       "skillsAdvanced": "Advanced Skills",
       "skillsBasic": "Basic Skills",
+      "spell": "Spell",
       "spells": "Spells",
       "spellsArcane": "Arcane Spells",
       "spellsPetty": "Petty Spells",
+      "talent": "Talent",
       "talents": "Talents",
       "token": "Token",
+      "trait": "Trait",
       "traits": "Traits",
+      "trapping": "Trapping",
       "trappings": "Trappings",
       "utility": "Utility",
+      "weapon": "Weapon",
       "weapons": "Weapons",
 
       "actions": {
@@ -153,6 +170,46 @@
           "channel": "Channel by default, Cast with CTRL"
         }
       }
+    },
+
+    "Help": {
+      "Tabs": {
+        "Cheatsheet": "Cheatsheet",
+        "Wiki": "TAH Core Wiki"
+      },
+      "Mods": {
+        "CTRL": "CTRL",
+        "SHIFT": "SHIFT",
+        "ALT": "ALT"
+      },
+      "Header": {
+        "ModuleOn": "Module on Foundry VTT",
+        "ProjectOn": "Project on GitHub",
+        "CheckOtherModules": "Check my FVTT profile for other modules",
+        "CoreSettings": "TAH Core Settings",
+        "Settings": "TAH WFRP4e Settings"
+      },
+      "LoadingWiki": "Loading Wiki…",
+      "Wiki": "Wiki loaded from",
+      "Action": "Action",
+      "Modifiers": "Key Modifiers",
+      "Rollable": "Rollable",
+      "Stackable": "Stackable",
+      "RollDialog": "Open Roll Dialog",
+      "ItemSheet": "Display Item Sheet",
+      "ParentItemSheet": "Display Parent Item Sheet",
+      "PostChat": "Post Item to Chat",
+      "BypassDialog": "Bypasses Dialog",
+      "ShiftMode": "Uses Shift Roll Mode (check Settings)",
+      "DamageItem": "Damages Item",
+      "RepairItem": "Repairs Item",
+      "TriggerEffect": "Trigger Effect",
+      "UseAdvantageAction": "Use Advantage Action",
+      "ApplyCondition": "Apply 1 level of Condition",
+      "RemoveCondition": "Remove 1 level of Condition",
+      "ToggleCondition": "Toggle Condition",
+      "AltMagicMethod": "Use Alternative Magic Behaviour, if setting is not \"Always Ask\"",
+      "PerformUtilityAction": "Perform Utility Action"
     }
   }
 }

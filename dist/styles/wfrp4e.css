@@ -1,0 +1,142 @@
+.token-action-hud-wfrp4e.help .window-header button.header-control {
+  font-family: var(--font-primary);
+  font-weight: normal;
+  white-space: nowrap;
+  font-size: var(--font-size-12);
+}
+.token-action-hud-wfrp4e.help .window-header button.header-control::before {
+  font-family: var(--font-awesome);
+  font-weight: 900;
+  font-size: var(--font-size-14);
+  padding-right: 4px;
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  --border: 1px dashed var(--color-text-primary);
+  gap: 1px;
+  overflow-y: auto;
+  height: 100%;
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet > * {
+  height: 100%;
+  padding: 1rem;
+  justify-content: center;
+  border-top: var(--border);
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-header {
+  font-size: var(--font-size-16);
+  font-weight: bold;
+  text-align: center;
+  border-top: none;
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-header:nth-child(2) {
+  border-left: var(--border);
+  border-right: var(--border);
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-left {
+  border-left: var(--border);
+  border-right: var(--border);
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-action, .token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-left, .token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.token-action-hud-wfrp4e.help #tah-wfrp4e-cheatsheet .cheatsheet-mod {
+  line-height: 1.5rem;
+}
+.token-action-hud-wfrp4e.help [data-application-part=cheatsheet] {
+  overflow: hidden;
+}
+.token-action-hud-wfrp4e.help [data-application-part=wiki] {
+  overflow-y: auto;
+  height: 100%;
+}
+.token-action-hud-wfrp4e.help [data-application-part=wiki] h1, .token-action-hud-wfrp4e.help [data-application-part=wiki] h2, .token-action-hud-wfrp4e.help [data-application-part=wiki] h3, .token-action-hud-wfrp4e.help [data-application-part=wiki] h4, .token-action-hud-wfrp4e.help [data-application-part=wiki] h5, .token-action-hud-wfrp4e.help [data-application-part=wiki] h6 {
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+.token-action-hud-wfrp4e.help [data-application-part=wiki] .wiki-link {
+  height: 30px;
+}
+.token-action-hud-wfrp4e.help [data-application-part=wiki] .loader-wrapper {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.token-action-hud-wfrp4e.help [data-application-part=wiki] .loader {
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  animation: mulShdSpin 1.1s infinite ease;
+  transform: translateZ(0);
+}
+@keyframes mulShdSpin {
+  0%, 100% {
+    box-shadow: 0em -2.6em 0em 0em #ffffff, 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.5), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+  }
+  12.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7), 1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+  }
+  25% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff, 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  37.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5), 2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff, 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.5), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff, -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  62.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5), 0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff, -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  75% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.5), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff, -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  87.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
+  }
+}
+.token-action-hud-wfrp4e.help .promo {
+  display: flex;
+  gap: 4px;
+}
+.token-action-hud-wfrp4e.help .promo a {
+  cursor: pointer;
+  display: inline-block;
+  height: 30px;
+}
+.token-action-hud-wfrp4e.help .promo a img {
+  border: none;
+}
+.token-action-hud-wfrp4e.help .promo a.button {
+  height: 28px;
+  align-content: center;
+}
+
+.token-action-hud-wfrp4e .input-icon {
+  --size: 1.5rem;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: var(--size);
+  height: var(--size);
+  vertical-align: middle;
+  display: inline-block;
+  margin: -8px -3px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--size);
+}
+.token-action-hud-wfrp4e kbd {
+  border: 1px solid var(--color-text-primary);
+  padding: 0 4px;
+  margin: 0 2px 0 0;
+  border-radius: 6px;
+}
+
+/*# sourceMappingURL=wfrp4e.css.map */
