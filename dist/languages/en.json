@@ -49,6 +49,8 @@
         "incomeRoll": "Roll for Income",
         "increaseAdvantage": "Increase Advantage",
         "decreaseAdvantage": "Decrease Advantage",
+        "showHelp": "Help",
+        "showHelpTooltip": "Display TAH Help",
 
         "advantage": {
           "batter": "Batter",
@@ -142,6 +144,13 @@
         "maxCharacters": {
           "name": "Max Characters",
           "hint": "Maximum number of characters displayed in Action names. Set 0 to disable trimming."
+        },
+        "magicBehaviour": {
+          "name": "Magic Behaviour",
+          "hint": "How clicking on the spells should be handled?",
+          "ask": "Always Ask",
+          "cast": "Cast by default, Channel with CTRL",
+          "channel": "Channel by default, Cast with CTRL"
         }
       }
     }

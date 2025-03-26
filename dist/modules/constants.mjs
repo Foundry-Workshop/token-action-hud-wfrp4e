@@ -2,7 +2,12 @@ const constants = {
   modulePath: 'modules/token-action-hud-wfrp4e',
   moduleId: 'token-action-hud-wfrp4e',
   moduleLabel: `Token Action HUD WFRP4e`,
-  requiredCoreModuleVersion: '2.0'
+  requiredCoreModuleVersion: '2.0',
+  magicBehaviour: {
+    ask: 'ask',
+    cast: 'cast',
+    channel: 'channel',
+  }
 };
 
 const defaults = {}
@@ -16,7 +21,8 @@ const settings = {
   maxCharacters: 'maxCharacters',
   shiftRollMode: 'shiftRollMode',
   bypassDefault: 'bypassDefault',
-  advantageDesc: 'showAdvantageDescription'
+  advantageDesc: 'showAdvantageDescription',
+  magicBehaviour: 'magicBehaviour',
 }
 
 const tah = {

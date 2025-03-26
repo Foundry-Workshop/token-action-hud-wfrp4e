@@ -6,8 +6,8 @@ export function testOptions() {
 
   if (pressedShift()) {
     options.fields = {
-      rollMode: Utility.getSetting(settings.shiftRollMode)
-    }
+      rollMode: Utility.getSetting(settings.shiftRollMode),
+    };
   }
 
   let bypass = Utility.getSetting(settings.bypassDefault);
@@ -60,14 +60,14 @@ export function awardXP(actors) {
             return Utility.notify(game.i18n.localize("tokenActionHud.wfrp4e.actions.awardXP.ReasonEmpty"), {type: "warning"});
 
           return updateActorsWithXP(actors, xp, reason);
-        }
+        },
       },
       no: {
         icon: "<i class='fas fa-times'></i>",
-        label: game.i18n.localize("Cancel")
-      }
+        label: game.i18n.localize("Cancel"),
+      },
     },
-    default: "yes"
+    default: "yes",
   }).render(true);
 }
 
@@ -80,7 +80,7 @@ function prepareActorUpdate(actor, amount, reason) {
   return {
     _id: actor._id,
     "system.details.experience": experience,
-  }
+  };
 }
 
 
@@ -88,11 +88,50 @@ async function updateActorsWithXP(actors, amount, reason) {
   let updates = [];
 
   for (let actor of actors) {
-    if (actor.type !== 'character') continue;
+    if (actor.type !== "character") continue;
 
     let update = prepareActorUpdate(actor, amount, reason);
     updates.push(update);
   }
 
   await Actor.updateDocuments(updates);
+}
+
+export async function askMagicMethod(actor, spell) {
+  return foundry.applications.api.DialogV2.wait({
+    window: {
+      title: game.i18n.localize("DIALOG.CastOrChannel"),
+    },
+    content: `<div class="cast-channel-dialog selection"> 
+                <p>${game.i18n.localize("DIALOG.CastChannel")}</p> 
+              </div>`,
+    buttons: [
+      {
+        action: "cast",
+        label: game.i18n.localize("Cast"),
+        default: true
+      },
+      {
+        action: "channel",
+        label: game.i18n.localize("Channel"),
+      },
+    ],
+    submit: (method) => castOrChannel(actor, spell, method)
+  });
+}
+
+export async function castOrChannel(actor, spell, method = "cast") {
+  if (method === "cast")
+    return castSpell(actor, spell);
+
+  if (method === "channel")
+    return channelSpell(actor, spell);
+}
+
+async function castSpell(actor, spell) {
+  return actor.setupCast(spell, testOptions());
+}
+
+async function channelSpell(actor, spell) {
+  return actor.setupChannell(spell, testOptions());
 }

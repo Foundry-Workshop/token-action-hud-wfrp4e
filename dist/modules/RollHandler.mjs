@@ -1,9 +1,18 @@
 import GroupAdvantage from "./GroupAdvantage.js";
-import {pressedAlt, pressedControl, pressedShift, testOptions} from "./actionHelpers.mjs";
+import {
+  askMagicMethod,
+  castOrChannel,
+  pressedAlt,
+  pressedControl,
+  pressedShift,
+  testOptions,
+} from "./actionHelpers.mjs";
+import Utility from "./utility/Utility.mjs";
+import {constants, settings} from "./constants.mjs";
 
-export let RollHandlerWfrp4e = null
+export let RollHandlerWfrp4e = null;
 
-Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
+Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
   /**
    * Extends Token Action HUD Core's RollHandler class and handles action events triggered when an action is clicked
    * @extends RollHandler
@@ -17,7 +26,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @param {string} encodedValue The encoded value
      */
     async handleActionClick(event, encodedValue) {
-      const payload = encodedValue.split('|');
+      const payload = encodedValue.split("|");
       if (payload.length < 2) {
         super.throwInvalidValueErr();
       }
@@ -27,13 +36,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const subActionType = payload[2] ?? null;
       const subActionId = payload[3] ?? null;
 
-      const renderable = ['item', 'magic', 'skill', 'talent'];
+      const renderable = ["item", "magic", "skill", "talent"];
 
       if (renderable.includes(actionTypeId) && this.isRenderItem()) {
         return this.renderItem(this.actor, actionId);
       }
 
-      const knownCharacters = ['character', 'creature', 'npc'];
+      const knownCharacters = ["character", "creature", "npc"];
 
       // If single actor is selected
       if (this.actor) {
@@ -62,32 +71,32 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      */
     async #handleAction(event, actor, token, actionTypeId, actionId, subActionType = null, subActionId = null) {
       switch (actionTypeId) {
-        case 'characteristic':
+        case "characteristic":
           return this.#handleCharacteristicAction(actor, actionId);
-        case 'skill':
-        case 'extendedTest':
-        case 'talent':
-        case 'item':
-        case 'magic':
+        case "skill":
+        case "extendedTest":
+        case "talent":
+        case "item":
+        case "magic":
           return this.#handleItemAction(actor, actionId);
-        case 'combatAdvantage':
+        case "combatAdvantage":
           return this.#handleCombatAdvantage(event, actor, actionId);
-        case 'combatArmour':
+        case "combatArmour":
           return this.#handleCombatArmour(event, actor, actionId);
-        case 'combatBasic':
+        case "combatBasic":
           return this.#handleCombatAction(actor, actionId);
-        case 'combatWeapon':
-        case 'combatTrait':
+        case "combatWeapon":
+        case "combatTrait":
           return this.#handleCombatItemAction(event, actor, actionId);
-        case 'consumable':
+        case "consumable":
           return this.#handleCombatConsumableAction(actor, actionId, subActionType, subActionId);
-        case 'manualEffect':
+        case "manualEffect":
           return this.#handleManualEffectAction(event, actor, subActionType, subActionId);
-        case 'testIndependentEffect':
-            return this.#handletestIndependentEffectAction(event, actor, subActionType, subActionId);
-        case 'condition':
+        case "testIndependentEffect":
+          return this.#handletestIndependentEffectAction(event, actor, subActionType, subActionId);
+        case "condition":
           return this.#handleConditionAction(event, actor, actionId);
-        case 'utility':
+        case "utility":
           return this.#handleUtilityAction(token, actor, actionId);
       }
     }
@@ -106,19 +115,19 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const item = actor.items.get(actionId);
 
       switch (item.type) {
-        case 'skill':
+        case "skill":
           return actor.setupSkill(item, this.options).then(test => test.roll());
-        case 'weapon':
+        case "weapon":
           return this.#rollWeapon(actor, item);
-        case 'spell':
-          return actor.sheet.spellDialog(item, this.options);
-        case 'prayer':
+        case "spell":
+          return this.#handleMagicClick(actor, item);
+        case "prayer":
           return actor.setupPrayer(item, this.options).then(setupData => actor.prayerTest(setupData));
-        case 'trait':
+        case "trait":
           return this.#handleRollableTrait(actor, item);
-        case 'extendedTest':
+        case "extendedTest":
           return actor.setupExtendedTest(item, this.options);
-        case 'forien-armoury.scroll':
+        case "forien-armoury.scroll":
           return item.system.prepareScrollTest(this.options);
         default:
           item.postItem(0);
@@ -127,25 +136,25 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #handleCombatAction(actor, actionId) {
       switch (actionId) {
-        case 'unarmed':
-          let unarmed = game.wfrp4e.config.systemItems.unarmed
+        case "unarmed":
+          let unarmed = game.wfrp4e.config.systemItems.unarmed;
           return actor.setupWeapon(unarmed, this.options).then(setupData => {
-            actor.weaponTest(setupData)
-          })
-        case 'dodge':
-          return actor.setupSkill(game.i18n.localize("NAME.Dodge"), this.options).then(setupData => {
-            actor.basicTest(setupData)
+            actor.weaponTest(setupData);
           });
-        case 'improv':
+        case "dodge":
+          return actor.setupSkill(game.i18n.localize("NAME.Dodge"), this.options).then(setupData => {
+            actor.basicTest(setupData);
+          });
+        case "improv":
           let improv = game.wfrp4e.config.systemItems.improv;
           return actor.setupWeapon(improv, this.options).then(setupData => {
-            actor.weaponTest(setupData)
-          })
-        case 'stomp':
+            actor.weaponTest(setupData);
+          });
+        case "stomp":
           let stomp = game.wfrp4e.config.systemItems.stomp;
           return actor.setupTrait(stomp, this.options).then(setupData => {
-            actor.traitTest(setupData)
-          })
+            actor.traitTest(setupData);
+          });
         default:
           break;
       }
@@ -167,13 +176,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         damage = 1;
         item = actor.itemTypes.armour.find(a =>
           a.system.AP[actionId] > 0 &&
-          a.system.APdamage[actionId] < a.system.AP[actionId]
+          a.system.APdamage[actionId] < a.system.AP[actionId],
         );
       } else {
         damage = -1;
         item = actor.itemTypes.armour.find(a =>
           a.system.AP[actionId] > 0 &&
-          a.system.APdamage[actionId] > 0
+          a.system.APdamage[actionId] > 0,
         );
       }
 
@@ -186,22 +195,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const item = actor.items.get(actionId);
 
       switch (item.type) {
-        case 'trait':
+        case "trait":
           return this.#handleRollableTrait(actor, item);
-        case 'weapon':
+        case "weapon":
           if (this.pressedControl)
             return this.#handleWeaponDamage(event, actor, item);
           else if (this.isRightClick)
             return this.renderItem(actor, actionId);
           else
             return this.#rollWeapon(actor, item);
-        case 'forien-armoury.grimoire':
+        case "forien-armoury.grimoire":
           if (this.isRightClick)
             return this.renderItem(actor, actionId);
           else
-            this.#handleCombatAction(actor, 'improv');
+            this.#handleCombatAction(actor, "improv");
           break;
-        case 'consumable':
+        case "consumable":
         default:
       }
     }
@@ -209,8 +218,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     #handleRollableTrait(actor, item) {
       if (item.rollable?.value) {
         return actor.setupTrait(item, this.options).then(setupData => {
-          actor.traitTest(setupData)
-        })
+          actor.traitTest(setupData);
+        });
       }
 
       return item.postItem(0);
@@ -227,21 +236,20 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let applyData = {};
         let targets = Array.from(game.user.targets).map(t => t.actor);
         if (!(await effect.runPreApplyScript({targets}))) {
-          return
+          return;
         }
         game.user.updateTokenTargets([]);
-        game.user.broadcastActivity({ targets: [] });
+        game.user.broadcastActivity({targets: []});
 
         for (let target of targets) {
-          applyData = { effectData: [effect.convertToApplied(null, target)] }
+          applyData = {effectData: [effect.convertToApplied(null, target)]};
           await target.applyEffect(applyData);
         }
-      }
-      else if (effect.isAreaApplied) {
+      } else if (effect.isAreaApplied) {
         if (!(await effect.runPreApplyScript())) {
-          return
+          return;
         }
-        let template = await AreaTemplate.fromEffect(subActionType)
+        let template = await AreaTemplate.fromEffect(subActionType);
         await template.drawPreview(event);
       }
     }
@@ -259,23 +267,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     async #handleCombatConsumableAction(actor, actionId, subActionType, subActionId) {
       switch (subActionType) {
-        case 'invokable':
-          return game.wfrp4e.utility.invokeEffect(actor, subActionId, actionId)
-        case 'targetable':
-          let effect = actor.populateEffect(subActionId, actionId)
-          let item = actor.items.get(actionId)
+        case "invokable":
+          return game.wfrp4e.utility.invokeEffect(actor, subActionId, actionId);
+        case "targetable":
+          let effect = actor.populateEffect(subActionId, actionId);
+          let item = actor.items.get(actionId);
 
           if (effect.flags.wfrp4e?.reduceQuantity && game.user.targets.size > 0) {
             if (item.quantity.value > 0)
-              item.update({"system.quantity.value": item.quantity.value - 1})
+              item.update({"system.quantity.value": item.quantity.value - 1});
             else
-              throw ui.notifications.error(game.i18n.localize("EFFECT.QuantityError"))
+              throw ui.notifications.error(game.i18n.localize("EFFECT.QuantityError"));
           }
 
           if ((item.range && item.range.value.toLowerCase() === game.i18n.localize("You").toLowerCase())
             && (item.target && item.target.value.toLowerCase() === game.i18n.localize("You").toLowerCase()))
-            return await game.wfrp4e.utility.applyEffectToTarget(effect, [{actor: this.actor}]) // Apply to caster (self)
-          return await game.wfrp4e.utility.applyEffectToTarget(effect)
+            return await game.wfrp4e.utility.applyEffectToTarget(effect, [{actor: this.actor}]); // Apply to caster (self)
+          return await game.wfrp4e.utility.applyEffectToTarget(effect);
         default:
       }
     }
@@ -285,17 +293,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       if (condition.system.condition.value == null) {
         if (this.actor.hasCondition(actionId))
-          await this.actor.removeCondition(actionId)
+          await this.actor.removeCondition(actionId);
         else
-          await this.actor.addCondition(actionId)
+          await this.actor.addCondition(actionId);
       } else {
         if (this.isRightClick)
-          await this.actor.removeCondition(actionId)
+          await this.actor.removeCondition(actionId);
         else
-          await this.actor.addCondition(actionId)
+          await this.actor.addCondition(actionId);
       }
 
-      return Hooks.callAll('forceUpdateTokenActionHud');
+      return Hooks.callAll("forceUpdateTokenActionHud");
     }
 
     /**
@@ -322,8 +330,25 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       });
     }
 
+    #handleMagicClick(actor, spell) {
+      let method = "cast";
+      switch (Utility.getSetting(settings.magicBehaviour)) {
+        case constants.magicBehaviour.cast:
+          method = this.pressedControl ? "channel" : "cast";
+          break;
+        case constants.magicBehaviour.channel:
+          method = this.pressedControl ? "cast" : "channel";
+          break;
+        case constants.magicBehaviour.ask:
+        default:
+          return askMagicMethod(actor, spell);
+      }
+
+      return castOrChannel(actor, spell, method);
+    }
+
     get options() {
-      return testOptions()
+      return testOptions();
     }
 
     get pressedAlt() {
@@ -337,5 +362,5 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     get pressedControl() {
       return pressedControl();
     }
-  }
-})
+  };
+});

@@ -32,6 +32,19 @@ export function registerSettingsCoreUpdate(coreUpdate) {
       coreUpdate(value)
     }
   })
+  game.settings.register(constants.moduleId, settings.magicBehaviour, {
+    name: game.i18n.localize('tokenActionHud.wfrp4e.settings.magicBehaviour.name'),
+    hint: game.i18n.localize('tokenActionHud.wfrp4e.settings.magicBehaviour.hint'),
+    scope: 'client',
+    config: true,
+    type: String,
+    choices: {
+      [constants.magicBehaviour.ask]: 'tokenActionHud.wfrp4e.settings.magicBehaviour.ask',
+      [constants.magicBehaviour.cast]: 'tokenActionHud.wfrp4e.settings.magicBehaviour.cast',
+      [constants.magicBehaviour.channel]: 'tokenActionHud.wfrp4e.settings.magicBehaviour.channel'
+    },
+    default: constants.magicBehaviour.ask
+  })
   game.settings.register(constants.moduleId, settings.advantageDesc, {
     name: game.i18n.localize('tokenActionHud.wfrp4e.settings.advantageDesc.name'),
     hint: game.i18n.localize('tokenActionHud.wfrp4e.settings.advantageDesc.hint'),
