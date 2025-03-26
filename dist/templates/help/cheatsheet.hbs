@@ -26,12 +26,16 @@
     <span class="cheatsheet-mod">
         {{localize "tokenActionHud.Help.RollDialog"}}
     </span>
-    <span class="cheatsheet-mod">
-        {{> SHIFT}}: {{localize "tokenActionHud.Help.ShiftMode"}}
-    </span>
-    <span class="cheatsheet-mod">
-        {{> ALT}}: {{localize "tokenActionHud.Help.BypassDialog"}}
-    </span>
+    {{#unless noShift}}
+        <span class="cheatsheet-mod">
+            {{> SHIFT}}: {{localize "tokenActionHud.Help.ShiftMode"}}
+        </span>
+    {{/unless}}
+    {{#unless noAlt}}
+        <span class="cheatsheet-mod">
+            {{> ALT}}: {{localize "tokenActionHud.Help.BypassDialog"}}
+        </span>
+    {{/unless}}
 {{/inline}}
 
 <section class="tab {{tab.cssClass}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
@@ -50,7 +54,6 @@
         <div class="cheatsheet-right">{{> roll-dialog}}</div>
 
         <div class="cheatsheet-action">
-            <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.extendedTest"}}</span>
             <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.scroll"}}</span>
             <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.prayer"}}</span>
             <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.skill"}}</span>
@@ -58,6 +61,10 @@
         </div>
         <div class="cheatsheet-left">{{> roll-dialog}}</div>
         <div class="cheatsheet-right">{{localize "tokenActionHud.Help.ItemSheet"}}</div>
+
+        <div class="cheatsheet-action">{{> item}}: {{localize "tokenActionHud.wfrp4e.extendedTest"}}</div>
+        <div class="cheatsheet-left">{{> roll-dialog noShift=true}}</div>
+        <div class="cheatsheet-right">{{> roll-dialog noShift=true}}</div>
 
         <div class="cheatsheet-action">
             <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.weapon"}}</span>

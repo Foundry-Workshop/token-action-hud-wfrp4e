@@ -3,6 +3,7 @@
 ## v3.1.1
 * Improve spell casting/channelling to ensure roll execution
 * Help: Removed "magic" inline helper and updated spell references
+* Help: Updated cheatsheet references for Extended Tests
 
 ## v3.1.0
 * Refactored Spell Action activation to not rely on Actor Sheet anymore
