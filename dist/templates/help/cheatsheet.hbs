@@ -18,10 +18,6 @@
     {{localize "tokenActionHud.wfrp4e.combat"}}
 {{~/inline~}}
 
-{{~#*inline "magic"~}}
-    {{localize "tokenActionHud.wfrp4e.magic"}}
-{{~/inline~}}
-
 {{~#*inline "utility"~}}
     {{localize "tokenActionHud.wfrp4e.utility"}}
 {{~/inline~}}
@@ -79,12 +75,12 @@
             </span>
         </div>
 
-        <div class="cheatsheet-action">{{> magic}}: {{localize "tokenActionHud.wfrp4e.spell"}}</div>
+        <div class="cheatsheet-action">{{> item}}: {{localize "tokenActionHud.wfrp4e.spell"}}</div>
         <div class="cheatsheet-left">
             {{> roll-dialog}}
             <span class="cheatsheet-mod">{{> CTRL}}: {{localize "tokenActionHud.Help.AltMagicMethod"}}</span>
         </div>
-        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.PostChat"}}</div>
+        <div class="cheatsheet-right">{{localize "tokenActionHud.Help.ItemSheet"}}</div>
 
         <div class="cheatsheet-action">
             <span>{{> item}}: {{localize "tokenActionHud.wfrp4e.ammunition"}}</span>
