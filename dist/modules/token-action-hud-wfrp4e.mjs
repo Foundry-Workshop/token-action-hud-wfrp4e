@@ -15,7 +15,6 @@ Hooks.once('setup', () => {
 Hooks.once('ready', () => {
   Hooks.callAll(`${constants.moduleId}:afterReady`);
   Utility.notify(`${constants.moduleLabel} ready`, {consoleOnly: true});
-  Help.render(true);
 });
 
 Hooks.on('tokenActionHudCoreApiReady', async () => {

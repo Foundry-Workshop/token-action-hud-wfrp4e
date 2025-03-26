@@ -173,6 +173,7 @@
     },
 
     "Help": {
+      "Title": "Token Action HUD WFRP4e — Help",
       "Tabs": {
         "Cheatsheet": "Cheatsheet",
         "Wiki": "TAH Core Wiki"

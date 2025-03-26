@@ -33,6 +33,7 @@ export default class Help extends HandlebarsApplicationMixin(ApplicationV2) {
       height: 600,
     },
     window: {
+      title: "tokenActionHud.Help.Title",
       resizable: true,
     },
     actions: {
