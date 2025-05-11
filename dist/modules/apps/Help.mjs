@@ -132,12 +132,12 @@ export default class Help extends HandlebarsApplicationMixin(ApplicationV2) {
               data-module="token-action-hud-wfrp4e"
               data-tooltip="tokenActionHud.Help.Header.Settings"
               aria-label="${label}"
-            >${label}</button>
+            ></button>
         <button type="button" class="header-control fas fa-cog icon" data-action="settings" 
               data-module="token-action-hud-core"
               data-tooltip="tokenActionHud.Help.Header.CoreSettings"
               aria-label="${coreLabel}"
-            >${coreLabel}</button>
+            ></button>
       `);
 
     return frame;
@@ -180,9 +180,13 @@ export default class Help extends HandlebarsApplicationMixin(ApplicationV2) {
     return button + html;
   }
 
-  static _onSettings(event) {
+  static async _onSettings(event) {
     const module = event.target.dataset.module;
 
-    game.settings.sheet.render(true, {activeCategory: module});
+    if (game.version.startsWith("12"))
+      return await game.settings.sheet.render(true, {activeCategory: module});
+
+    const sheet = await game.settings.sheet.render({force: true});
+    sheet.changeTab(module, "categories");
   }
 }

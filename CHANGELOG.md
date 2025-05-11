@@ -1,8 +1,10 @@
 # Changelog
 
-## v3.1.2
+## v3.2.0
 * Verified for v13.342
 * Ensured pointer events for actions with `disabled` class (armour in combat tab)
+* Added registration of all System Effects (based on `game.wfrp4e.config.systemEffects`) and a `System Effects` group. 
+  * Those actions are not assigned a group, and group is not assigned a parent by default. They can be added manually by users should they choose to.  
 
 ## v3.1.1
 * Improve spell casting/channelling to ensure roll execution

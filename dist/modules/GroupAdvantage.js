@@ -31,7 +31,7 @@ export default class GroupAdvantage {
   }
 
   /**
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @returns {Promise<boolean>}
    */
   static async batter(actor) {
@@ -70,7 +70,7 @@ export default class GroupAdvantage {
   }
 
   /**
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @returns {Promise<boolean>}
    */
   static async trick(actor) {
@@ -109,7 +109,7 @@ export default class GroupAdvantage {
   }
 
   /**
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @returns {Promise<boolean>}
    */
   static async additionalEffort(actor) {
@@ -182,7 +182,7 @@ export default class GroupAdvantage {
   }
 
   /**
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @returns {Promise<boolean>}
    */
   static async fleeFromHarm(actor) {
@@ -192,7 +192,7 @@ export default class GroupAdvantage {
   }
 
   /**
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @returns {Promise<boolean>}
    */
   static async additionalAction(actor) {
@@ -231,10 +231,10 @@ export default class GroupAdvantage {
   }
 
   /**
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @param {number} value
    *
-   * @returns {Promise<ActorWfrp4e>}
+   * @returns {Promise<ActorWFRP4e>}
    */
   static async payAdvantage(actor, value) {
     return await actor.modifyAdvantage(-value);
@@ -244,7 +244,7 @@ export default class GroupAdvantage {
    * Check if it is possible for given actor to use the Group Advantage Action and produce warning if not.
    * Warning can be disabled by passing "silent" argument.
    *
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @param {{cost: number, method: function, name: string}} action
    * @param {boolean} silent
    *
@@ -270,7 +270,7 @@ export default class GroupAdvantage {
   /**
    * Try to use a specific Group Advantage Action. If used, spend the Advantage.
    *
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    * @param {{cost: number, method: function, name: string}} action
    */
   static async tryUse(actor, action) {
@@ -306,7 +306,7 @@ export default class GroupAdvantage {
    * Post Message using Up in Arms' content for descriptions and effects.
    *
    * @param {{cost: number, method: function, name: string}} action
-   * @param {ActorWfrp4e} actor
+   * @param {ActorWFRP4e} actor
    *
    * @returns {Promise<void>}
    */

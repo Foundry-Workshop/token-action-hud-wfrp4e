@@ -95,6 +95,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @private
      */
     async #buildCharacterActions() {
+      // Build default character actions
       await this.#buildCharacteristics();
       await this.#buildSkills();
       await this.#buildExtendedTests();
@@ -103,6 +104,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       await this.#buildMagic();
       await this.#buildInventory();
       await this.#buildUtility();
+
+      // Build reserve Actions
+      await this.#buildEffects();
 
 
       /**
@@ -739,34 +743,26 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @private
      */
     async #buildEffects() {
-      // const actionType = 'effect'
-      //
-      // // Get effects
-      // const effects = this.actor.effects
-      //
-      // // Exit if no effects exist
-      // if (effects.size === 0) return
-      //
-      // // Map passive and temporary effects to new maps
-      // const passiveEffects = new Map()
-      // const temporaryEffects = new Map()
-      //
-      // // Iterate effects and add to a map based on the isTemporary value
-      // for (const [effectId, effect] of effects.entries()) {
-      //   const isTemporary = effect.isTemporary
-      //   if (isTemporary) {
-      //     temporaryEffects.set(effectId, effect)
-      //   } else {
-      //     passiveEffects.set(effectId, effect)
-      //   }
-      // }
-      //
-      // await Promise.all([
-      //   // Build passive effects
-      //   this.#buildActions(passiveEffects, { id: 'passive-effects', type: 'system' }, actionType),
-      //   // Build temporary effects
-      //   this.#buildActions(temporaryEffects, { id: 'temporary-effects', type: 'system' }, actionType)
-      // ])
+      const actionType = 'systemEffect'
+      const actionTypeName = game.i18n.localize(tah.actions.systemEffect);
+      const effects = game.wfrp4e.config.systemEffects;
+
+      const actions = [];
+      for (const [id, effect] of Object.entries(effects)) {
+        const active = this.actor.hasSystemEffect(id);
+
+        actions.push({
+          id: id,
+          name: this.#getActionName(effect.name),
+          img: effect.img || null,
+          encodedValue: [actionType, id].join(this.delimiter),
+          listName: `${actionTypeName}: ${effect.name}`,
+          cssClass: `toggle ${active ? 'active' : ''}`,
+        });
+      }
+
+      await this.addGroup(tah.groups.systemEffects);
+      await this.addActions(actions, {});
     }
 
     async #buildMagic() {

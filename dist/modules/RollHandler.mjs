@@ -98,6 +98,8 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
           return this.#handleConditionAction(event, actor, actionId);
         case "utility":
           return this.#handleUtilityAction(token, actor, actionId);
+        case "systemEffect":
+          return this.#handleSystemEffectAction(actor, actionId);
       }
     }
 
@@ -310,11 +312,27 @@ Hooks.once("tokenActionHudCoreApiReady", async (coreModule) => {
      * Handle utility action
      * @private
      * @param {object}      token    The token
-     * @param {ActorWfrp4e} actor    The actor
+     * @param {ActorWFRP4e} actor    The actor
      * @param {string}      actionId The action id
      */
     async #handleUtilityAction(token, actor, actionId) {
 
+    }
+
+    /**
+     * Handle systemEffect action, toggling the effect on or off.
+     *
+     * @private
+     * @param {ActorWFRP4e} actor    The actor
+     * @param {string}      actionId The action id
+     */
+    async #handleSystemEffectAction(actor, actionId) {
+      const effect = actor.hasSystemEffect(actionId);
+      if (effect) {
+        return await effect.delete();
+      }
+
+      await actor.addSystemEffect(actionId);
     }
 
     #handleWeaponDamage(event, actor, item) {
