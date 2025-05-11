@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.2
+* Verified for v13.342
+* Ensured pointer events for actions with `disabled` class (armour in combat tab)
+
 ## v3.1.1
 * Improve spell casting/channelling to ensure roll execution
 * Help: Removed "magic" inline helper and updated spell references

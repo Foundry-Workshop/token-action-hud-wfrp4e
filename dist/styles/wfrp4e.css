@@ -139,4 +139,8 @@
   border-radius: 6px;
 }
 
+.tah-action-button.tah-button-box.disabled {
+  pointer-events: all;
+}
+
 /*# sourceMappingURL=wfrp4e.css.map */
