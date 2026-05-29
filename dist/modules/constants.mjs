@@ -2,7 +2,7 @@ const constants = {
   modulePath: 'modules/token-action-hud-wfrp4e',
   moduleId: 'token-action-hud-wfrp4e',
   moduleLabel: `Token Action HUD WFRP4e`,
-  requiredCoreModuleVersion: '2.0',
+  requiredCoreModuleVersion: '2.1',
   magicBehaviour: {
     ask: 'ask',
     cast: 'cast',

@@ -18,7 +18,7 @@
   "version": "<<autoreplaced>>",
   "compatibility": {
     "minimum": "12",
-    "verified": "13.342"
+    "verified": "14.360"
   },
   "relationships": {
     "systems": [
@@ -28,7 +28,7 @@
         "compatibility": [
           {
             "minimum": "8.0.0",
-            "verified": "9.0.5"
+            "verified": "9.6.1"
           }
         ]
       }
@@ -39,8 +39,8 @@
         "type": "module",
         "compatibility": [
           {
-            "minimum": "2.0.0",
-            "verified": "2.0.12"
+            "minimum": "2.1.0",
+            "verified": "2.1.1"
           }
         ]
       }
