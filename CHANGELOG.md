@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+* Migrated all actions from the deprecated `encodedValue` API to `onClick` closures (TAH Core 2.x)
+* Fixed System Effects group — actions were not being added to the group due to an empty group reference
+
 ## v3.2.1
 * Restored bypassing Test Dialog by holding ALT
 * Allowed for Public Roll mode in the **Shift Roll Mode** setting.

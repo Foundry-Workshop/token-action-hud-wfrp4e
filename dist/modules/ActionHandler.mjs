@@ -1,7 +1,7 @@
 import Utility from "./utility/Utility.mjs";
-import {settings, tah} from "./constants.mjs";
+import {constants, settings, tah} from "./constants.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
-import {awardXP, testOptions} from "./actionHelpers.mjs";
+import {awardXP, askMagicMethod, castOrChannel, pressedControl, testOptions} from "./actionHelpers.mjs";
 import Help from "./apps/Help.mjs";
 
 export let ActionHandlerWfrp4e = null
@@ -302,7 +302,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       for (let [key, item] of this.extended) {
         if (item.system.hide.test && !game.user.isGM) continue;
-        let action = this.#makeActionFromItem(item, actionTypeName, actionType, {}, [], false);
+        let action = this.#makeActionFromItem(item, actionTypeName, {}, () => this.actor.setupExtendedTest(item, testOptions()), false);
         actions.push(action);
       }
 
@@ -466,7 +466,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         actionsData.push({
           id: key,
           name: game.i18n.localize(action.name),
-          encodedValue: [actionType, key].join(this.delimiter)
+          onClick: () => GroupAdvantage.tryUse(this.actor, action)
         })
       }
 
@@ -484,7 +484,22 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         if (!this.#displayUnequipped && !item.system.isEquipped) continue;
 
         let icons = this.#getItemIcons(item);
-        let action = this.#makeActionFromItem(item, actionTypeName, actionType, icons);
+        let action = this.#makeActionFromItem(item, actionTypeName, icons, (() => {
+          const capturedItem = item;
+          if (capturedItem.type === 'weapon') {
+            return () => {
+              if (pressedControl()) return capturedItem.system.damageItem(this.isRightClick ? 1 : -1);
+              return this.actor.setupWeapon(capturedItem, testOptions()).then(setupData => {
+                if (!setupData.abort) this.actor.weaponTest(setupData);
+              });
+            };
+          }
+          // forien-armoury.grimoire
+          return () => {
+            const improv = game.wfrp4e.config.systemItems.improv;
+            return this.actor.setupWeapon(improv, testOptions()).then(setupData => this.actor.weaponTest(setupData));
+          };
+        })());
         actionsData.push(action);
       }
 
@@ -502,7 +517,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         if (!item.rollable?.value) continue;
         if (!item.system.enabled) continue;
 
-        let action = this.#makeActionFromItem(item, actionTypeName, actionType);
+        let action = this.#makeActionFromItem(item, actionTypeName, {}, (() => {
+          const capturedItem = item;
+          return () => {
+            if (capturedItem.rollable?.value) {
+              return this.actor.setupTrait(capturedItem, testOptions()).then(setupData => this.actor.traitTest(setupData));
+            }
+            return capturedItem.postItem(0);
+          };
+        })());
         actionsData.push(action);
       }
 
@@ -518,7 +541,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       for (let [index, item] of itemsWithTestIndependentEffects) {
         for (let effect of item.testIndependentEffects) {
-          const values = [actionType, item._id, effect.uuid];
+          const effectUuid = effect.uuid;
 
           const invokeIcon = effect.isTargetApplied ? '<i class="fas fa-crosshairs"></i>'  : '<i class="fas fa-ruler-combined"></i>';
 
@@ -530,7 +553,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             icon2: '',
             icon3: '',
             listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
-            encodedValue: values.join(this.delimiter),
+            system: { actionType, effectUuid },
+            onClick: async (event) => {
+              const eff = await fromUuid(effectUuid);
+              if (eff.isTargetApplied) {
+                const targets = Array.from(game.user.targets).map(t => t.actor);
+                if (!(await eff.runPreApplyScript({targets}))) return;
+                game.user.updateTokenTargets([]);
+                game.user.broadcastActivity({targets: []});
+                for (const target of targets) {
+                  await target.applyEffect({effectData: [eff.convertToApplied(null, target)]});
+                }
+              } else if (eff.isAreaApplied) {
+                if (!(await eff.runPreApplyScript())) return;
+                const template = await AreaTemplate.fromEffect(effectUuid);
+                await template.drawPreview(event);
+              }
+            },
             info1: {
               class: '',
               text: effect.system.transferData.type === "area" ? effect.system.transferData.area.radius : '',
@@ -562,14 +601,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const actionTypeName = game.i18n.localize(tah.actions.manualEffect);
       const groupData = tah.groups.manualEffects;
       const invokeIcon = '<i class="fas fa-flask"></i>';
-      let values = [];
 
       const itemsWithManualEffects = new Set([...this.items, ...this.talents]);
 
       for (let [index, item] of itemsWithManualEffects) {
         for (let script of item.manualScripts) {
           let effect = script.effect;
-          values = [actionType, item._id, effect.uuid, script.index];
+          const effectUuid = effect.uuid;
+          const scriptIndex = script.index;
 
           let action = {
             id: `${effect._id}.${script.index}`,
@@ -579,7 +618,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             icon2: '',
             icon3: '',
             listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
-            encodedValue: values.join(this.delimiter),
+            system: { actionType, effectUuid, scriptIndex },
+            onClick: async () => {
+              const eff = await fromUuid(effectUuid);
+              eff.manualScripts[scriptIndex].execute({actor: this.actor});
+            },
             info1: {
               class: '',
               text: this.#getTestTarget(item),
@@ -612,7 +655,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       const groupData = tah.groups.consumables;
       const invokeIcon = '<i class="fas fa-flask"></i>'
       const targetIcon = '<i class="fas fa-crosshairs"></i>'
-      let values = [];
 
       const consumables = new Map([...this.items, ...this.talents]);
 
@@ -620,14 +662,31 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         let [invokable, targetable] = this.#checkItemEffects(item);
         for (let invk of invokable) {
           if (invk.reduceQuantity && item.quantity.value < 1) continue;
-          values = ['invokable', invk._id];
-          let action = this.#makeActionFromItem(item, actionTypeName, actionType, {icon1: invokeIcon}, values);
+          const invkId = invk._id;
+          const itemId = item._id;
+          let action = this.#makeActionFromItem(item, actionTypeName, {icon1: invokeIcon},
+            () => game.wfrp4e.utility.invokeEffect(this.actor, invkId, itemId));
           actionsData.push(action);
         }
         for (let trgt of targetable) {
           if (trgt.reduceQuantity && item.quantity.value < 1) continue;
-          values = ['targetable', trgt._id];
-          let action = this.#makeActionFromItem(item, actionTypeName, actionType, {icon1: targetIcon}, values);
+          const trgtId = trgt._id;
+          const capturedItem = item;
+          let action = this.#makeActionFromItem(item, actionTypeName, {icon1: targetIcon},
+            async () => {
+              const eff = this.actor.populateEffect(trgtId, capturedItem._id);
+              const itm = this.actor.items.get(capturedItem._id);
+              if (eff.flags.wfrp4e?.reduceQuantity && game.user.targets.size > 0) {
+                if (itm.quantity.value > 0)
+                  await itm.update({'system.quantity.value': itm.quantity.value - 1});
+                else
+                  throw ui.notifications.error(game.i18n.localize('EFFECT.QuantityError'));
+              }
+              if ((itm.range && itm.range.value.toLowerCase() === game.i18n.localize('You').toLowerCase())
+                && (itm.target && itm.target.value.toLowerCase() === game.i18n.localize('You').toLowerCase()))
+                return await game.wfrp4e.utility.applyEffectToTarget(eff, [{actor: this.actor}]);
+              return await game.wfrp4e.utility.applyEffectToTarget(eff);
+            });
           actionsData.push(action);
         }
       }
@@ -658,7 +717,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           icon2,
           cssClass: 'disabled',
           listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${armour[location].label}`,
-          encodedValue: [actionType, location].join(this.delimiter),
+          onClick: (() => {
+            const loc = location;
+            return () => {
+              if (!pressedControl()) return;
+              let item, damage;
+              if (this.isRightClick) {
+                damage = 1;
+                item = this.actor.itemTypes.armour.find(a =>
+                  a.system.AP[loc] > 0 && a.system.APdamage[loc] < a.system.AP[loc]);
+              } else {
+                damage = -1;
+                item = this.actor.itemTypes.armour.find(a =>
+                  a.system.AP[loc] > 0 && a.system.APdamage[loc] > 0);
+              }
+              if (item) return item.system.damageItem(damage, [loc]);
+            };
+          })(),
           info1: {
             class: 'armour-ap',
             text: armour[location].value,
@@ -755,14 +830,19 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           id: id,
           name: this.#getActionName(effect.name),
           img: effect.img || null,
-          encodedValue: [actionType, id].join(this.delimiter),
           listName: `${actionTypeName}: ${effect.name}`,
           cssClass: `toggle ${active ? 'active' : ''}`,
+          system: { actionType },
+          onClick: async () => {
+            const existing = this.actor.hasSystemEffect(id);
+            if (existing) return existing.delete();
+            await this.actor.addSystemEffect(id);
+          },
         });
       }
 
       await this.addGroup(tah.groups.systemEffects);
-      await this.addActions(actions, {});
+      await this.addActions(actions, tah.groups.systemEffects);
     }
 
     async #buildMagic() {
@@ -1205,13 +1285,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
 
-    #makeActionFromItem(item, actionTypeName, actionType, {
+    #makeActionFromItem(item, actionTypeName, {
       icon1 = null,
       icon2 = null,
       icon3 = null
-    } = {}, values = [], image = true) {
-      values = [actionType, item._id, ...values];
-
+    } = {}, onClick = null, image = true) {
       return {
         id: item._id,
         name: this.#getActionName(item.name),
@@ -1220,7 +1298,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         icon2,
         icon3,
         listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
-        encodedValue: values.join(this.delimiter),
+        onClick,
         info1: {
           class: '',
           text: this.#getTestTarget(item),
@@ -1259,7 +1337,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           const name = this.#getActionName(itemData.name);
           const actionTypeName = game.i18n.localize(tah.actions[actionTypeId]);
           const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${itemData.name}`;
-          const encodedValue = [actionTypeId, id].join(this.delimiter);
           const img = coreModule.api.Utils.getImage(itemData);
           const tooltip = itemData.name;
           const {icon1, icon2, icon3} = this.#getItemIcons(itemData);
@@ -1283,7 +1360,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             name,
             img,
             listName,
-            encodedValue,
+            system: { actionType: actionTypeId },
+            onClick: this.#itemOnClick(itemData),
             icon1,
             icon2,
             icon3,
@@ -1295,6 +1373,48 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         })
 
         this.addActions(actions, groupData);
+      }
+    }
+
+    #itemOnClick(item) {
+      switch (item.type) {
+        case 'skill':
+          return () => this.actor.setupSkill(item, testOptions()).then(test => test.roll());
+        case 'weapon':
+          return () => this.actor.setupWeapon(item, testOptions()).then(setupData => {
+            if (!setupData.abort) this.actor.weaponTest(setupData);
+          });
+        case 'spell':
+          return () => {
+            let method = 'cast';
+            switch (Utility.getSetting(settings.magicBehaviour)) {
+              case constants.magicBehaviour.cast:
+                method = pressedControl() ? 'channel' : 'cast';
+                break;
+              case constants.magicBehaviour.channel:
+                method = pressedControl() ? 'cast' : 'channel';
+                break;
+              case constants.magicBehaviour.ask:
+              default:
+                return askMagicMethod(this.actor, item);
+            }
+            return castOrChannel(this.actor, item, method);
+          };
+        case 'prayer':
+          return () => this.actor.setupPrayer(item, testOptions()).then(setupData => this.actor.prayerTest(setupData));
+        case 'trait':
+          return () => {
+            if (item.rollable?.value) {
+              return this.actor.setupTrait(item, testOptions()).then(setupData => this.actor.traitTest(setupData));
+            }
+            return item.postItem(0);
+          };
+        case 'extendedTest':
+          return () => this.actor.setupExtendedTest(item, testOptions());
+        case 'forien-armoury.scroll':
+          return () => item.system.prepareScrollTest(testOptions());
+        default:
+          return () => item.postItem(0);
       }
     }
 
