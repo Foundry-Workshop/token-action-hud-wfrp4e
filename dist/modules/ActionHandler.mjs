@@ -302,7 +302,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       for (let [key, item] of this.extended) {
         if (item.system.hide.test && !game.user.isGM) continue;
-        let action = this.#makeActionFromItem(item, actionTypeName, {}, () => this.actor.setupExtendedTest(item, testOptions()), false);
+        let action = this.#makeActionFromItem(item, actionTypeName, {}, () => this.actor.setupExtendedTest(item, testOptions()), false, { actionType });
         actions.push(action);
       }
 
@@ -499,7 +499,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             const improv = game.wfrp4e.config.systemItems.improv;
             return this.actor.setupWeapon(improv, testOptions()).then(setupData => this.actor.weaponTest(setupData));
           };
-        })());
+        })(), true, { actionType });
         actionsData.push(action);
       }
 
@@ -525,7 +525,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
             return capturedItem.postItem(0);
           };
-        })());
+        })(), true, { actionType });
         actionsData.push(action);
       }
 
@@ -553,6 +553,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             icon2: '',
             icon3: '',
             listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+            hasContextMenu: true,
             system: { actionType, effectUuid },
             onClick: async (event) => {
               const eff = await fromUuid(effectUuid);
@@ -618,6 +619,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             icon2: '',
             icon3: '',
             listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+            hasContextMenu: true,
             system: { actionType, effectUuid, scriptIndex },
             onClick: async () => {
               const eff = await fromUuid(effectUuid);
@@ -665,7 +667,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           const invkId = invk._id;
           const itemId = item._id;
           let action = this.#makeActionFromItem(item, actionTypeName, {icon1: invokeIcon},
-            () => game.wfrp4e.utility.invokeEffect(this.actor, invkId, itemId));
+            () => game.wfrp4e.utility.invokeEffect(this.actor, invkId, itemId), true, { actionType });
           actionsData.push(action);
         }
         for (let trgt of targetable) {
@@ -686,7 +688,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 && (itm.target && itm.target.value.toLowerCase() === game.i18n.localize('You').toLowerCase()))
                 return await game.wfrp4e.utility.applyEffectToTarget(eff, [{actor: this.actor}]);
               return await game.wfrp4e.utility.applyEffectToTarget(eff);
-            });
+            }, true, { actionType });
           actionsData.push(action);
         }
       }
@@ -1289,7 +1291,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       icon1 = null,
       icon2 = null,
       icon3 = null
-    } = {}, onClick = null, image = true) {
+    } = {}, onClick = null, image = true, system = null) {
       return {
         id: item._id,
         name: this.#getActionName(item.name),
@@ -1298,6 +1300,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         icon2,
         icon3,
         listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
+        hasContextMenu: true,
+        system,
         onClick,
         info1: {
           class: '',
@@ -1360,6 +1364,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             name,
             img,
             listName,
+            hasContextMenu: true,
             system: { actionType: actionTypeId },
             onClick: this.#itemOnClick(itemData),
             icon1,

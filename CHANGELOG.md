@@ -3,6 +3,7 @@
 ## Unreleased
 * Migrated all actions from the deprecated `encodedValue` API to `onClick` closures (TAH Core 2.x)
 * Fixed System Effects group — actions were not being added to the group due to an empty group reference
+* Right-clicking actions now opens a context menu (TAH Core 2.1); "Open Item Sheet" and "Open Parent Item Sheet" entries available for relevant action types
 
 ## v3.2.1
 * Restored bypassing Test Dialog by holding ALT
