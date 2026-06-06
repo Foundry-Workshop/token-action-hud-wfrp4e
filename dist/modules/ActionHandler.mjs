@@ -488,7 +488,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           const capturedItem = item;
           if (capturedItem.type === 'weapon') {
             return () => {
-              if (pressedControl()) return capturedItem.system.damageItem(this.isRightClick ? 1 : -1);
+              if (pressedControl()) return capturedItem.system.damageItem(1);
               return this.actor.setupWeapon(capturedItem, testOptions()).then(setupData => {
                 if (!setupData.abort) this.actor.weaponTest(setupData);
               });
