@@ -6,6 +6,7 @@
 * Right-clicking actions now opens a context menu (TAH Core 2.1); "Open Item Sheet" and "Open Parent Item Sheet" entries available for relevant action types
 * Ctrl+click on a Combat Weapon now damages it (consistent with ctrl+click not distinguishing left/right once right-click opens the context menu)
 * Emptied RollHandler — all action logic now lives in ActionHandler `onClick` closures
+* Refactored ActionHandler, RollHandler, and SystemManager to factory functions
 
 ## v3.2.1
 * Restored bypassing Test Dialog by holding ALT

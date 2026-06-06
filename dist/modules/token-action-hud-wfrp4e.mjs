@@ -1,6 +1,8 @@
 import {constants} from './constants.mjs';
 import Utility from './utility/Utility.mjs';
-import {SystemManagerWfrp4e} from "./SystemManager.mjs";
+import {createSystemManager} from "./SystemManager.mjs";
+import {createActionHandler} from "./ActionHandler.mjs";
+import {createRollHandler} from "./RollHandler.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
 import Help from "./apps/Help.mjs";
 
@@ -17,14 +19,13 @@ Hooks.once('ready', () => {
   Utility.notify(`${constants.moduleLabel} ready`, {consoleOnly: true});
 });
 
-Hooks.on('tokenActionHudCoreApiReady', async () => {
-  /**
-   * Return the SystemManager and requiredCoreModuleVersion to Token Action HUD Core
-   */
+Hooks.on('tokenActionHudCoreApiReady', async (coreModule) => {
+  const ActionHandler = createActionHandler(coreModule)
+  const RollHandler = createRollHandler(coreModule)
   const module = game.modules.get(constants.moduleId)
   module.api = {
     requiredCoreModuleVersion: constants.requiredCoreModuleVersion,
-    SystemManager: SystemManagerWfrp4e
+    SystemManager: createSystemManager(coreModule, ActionHandler, RollHandler)
   }
   Hooks.call('tokenActionHudSystemReady', module)
   Utility.notify(`${constants.moduleLabel} connected to TAH Core`, {consoleOnly: true});

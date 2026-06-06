@@ -4,14 +4,8 @@ import GroupAdvantage from "./GroupAdvantage.js";
 import {awardXP, askMagicMethod, castOrChannel, pressedControl, testOptions} from "./actionHelpers.mjs";
 import Help from "./apps/Help.mjs";
 
-export let ActionHandlerWfrp4e = null
-
-Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
-  /**
-   * Extends Token Action HUD Core's ActionHandler class and builds system-defined actions for the HUD
-   * @extends ActionHandler
-   */
-  ActionHandlerWfrp4e = class ActionHandlerWfrp4e extends coreModule.api.ActionHandler {
+export function createActionHandler(coreModule) {
+  return class ActionHandlerWfrp4e extends coreModule.api.ActionHandler {
     static #firstBuild = true;
 
     /**
@@ -1611,4 +1605,4 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
   }
-})
+}
