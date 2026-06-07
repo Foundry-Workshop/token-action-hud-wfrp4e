@@ -1,0 +1,13 @@
+{
+  "name": "token-action-hud-wfrp4e",
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_ENV=development rollup --config rollup.config.mjs --watch",
+    "release": "cross-env NODE_ENV=production rollup --config rollup.config.mjs"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "rollup": "^3.3.0",
+    "rollup-plugin-copy-watch": "^0.0.1"
+  }
+}
