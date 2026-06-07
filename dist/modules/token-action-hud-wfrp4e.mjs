@@ -34,7 +34,7 @@ Hooks.on('tokenActionHudCoreApiReady', async (coreModule) => {
 Hooks.on('tokenActionHudCoreActionContextMenu', (items, hudManager) => {
   const getAction = target => hudManager.actionHandler.availableActions?.get(target.dataset.actionId)
 
-  const itemTypes = new Set(['combatWeapon', 'combatTrait', 'extendedTest', 'consumable', 'item', 'magic', 'skill', 'talent'])
+  const itemTypes = new Set(['combatTrait', 'extendedTest', 'consumable', 'item', 'magic', 'skill', 'talent'])
   const effectTypes = new Set(['testIndependentEffect', 'manualEffect'])
 
   items.push({

@@ -477,12 +477,13 @@ export function createActionHandler(coreModule) {
         if (item.type !== 'weapon' && item.type !== 'forien-armoury.grimoire') continue;
         if (!this.#displayUnequipped && !item.system.isEquipped) continue;
 
-        let icons = this.#getItemIcons(item);
+        let icons = { ...this.#getItemIcons(item), hasContextMenu: false };
         let action = this.#makeActionFromItem(item, actionTypeName, icons, (() => {
           const capturedItem = item;
           if (capturedItem.type === 'weapon') {
             return () => {
-              if (pressedControl()) return capturedItem.system.damageItem(1);
+              if (pressedControl()) return capturedItem.system.damageItem(this.isRightClick ? 1 : -1);
+              if (this.isRightClick) return capturedItem.sheet.render(true);
               return this.actor.setupWeapon(capturedItem, testOptions()).then(setupData => {
                 if (!setupData.abort) this.actor.weaponTest(setupData);
               });
@@ -1284,7 +1285,8 @@ export function createActionHandler(coreModule) {
     #makeActionFromItem(item, actionTypeName, {
       icon1 = null,
       icon2 = null,
-      icon3 = null
+      icon3 = null,
+      hasContextMenu = true
     } = {}, onClick = null, image = true, system = null) {
       return {
         id: item._id,
@@ -1294,7 +1296,7 @@ export function createActionHandler(coreModule) {
         icon2,
         icon3,
         listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${item.name}`,
-        hasContextMenu: true,
+        hasContextMenu,
         system,
         onClick,
         info1: {

@@ -14,7 +14,7 @@ Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token 
 
 ## Features
 - Make rolls directly from the HUD instead of opening your character sheet.
-- Use items from the HUD or right-click an item to open its sheet.
+- Use items from the HUD or right-click an action to open a context menu with quick access to item sheets.
 - Fix and Damage your Armour and Weapons.
 - Easily trigger Manual Effect Scripts.
 - Make quick Blind GM rolls.
@@ -43,18 +43,21 @@ For a guide on using Token Action HUD, go to: [How to Use Token Action HUD](http
 
 ---
 #### Does Right Click do anything?
-Yes, Right Click does several things, mostly depending on what you are clicking:
-* Skills, Talents, Spells, Prayers and Inventory — opens the Item's Sheet
-* Conditions — removes the Condition
-* Manual Effects — opens Sheet of the Item that has this effect
+Yes, Right Click does several things depending on what you are clicking:
+* Most action types (Skills, Talents, Spells, Prayers, Inventory, Traits, Extended Tests, Consumables) — opens a context menu with **Open Item Sheet**
+* Combat Weapons — opens the Item Sheet directly (no context menu; `Ctrl` + Right Click damages instead)
+* Effects (Manual Effects, Test Independent Effects) — opens a context menu with **Open Parent Item Sheet**
+* Conditions — removes the Condition (stackable) or toggles it (non-stackable)
 
-Otherwise, Right Click behaves just like Left Click.
+For actions that don't have a context menu, Right Click behaves just like Left Click.
 
 ---
 #### How can I damage or repair weapons and Armour?
-While holding `Control`, you can Left Click to repair, or Right Click to damage a Weapon or Armour. 
-This only works on the `Combat` tab.  
+This only works on the `Combat` tab.
 
+**Weapons:** hold `Control` and Left Click to repair, or Right Click to damage. Plain Right Click opens the Item Sheet.
+
+**Armour:** hold `Control` and Left Click to repair, or Right Click to damage.  
 Armour will be damaged "from top down", as ordered in Character Sheet.
 
 ---
@@ -91,9 +94,8 @@ For questions, feature requests or bug reports, please open an issue [here](http
 
 * Implement Apply-able Traits
 * Implement Active Effects
-* Implement handling of Item Damage directly via TAH
 
-You can **always** check current and up-to-date [planned and requested features here](https://github.com/https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+You can **always** check current and up-to-date [planned and requested features here](https://github.com/Foundry-Workshop/token-action-hud-wfrp4e/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 *If you have **any** suggestion or idea on new contents, hit me up on Discord!*
 
