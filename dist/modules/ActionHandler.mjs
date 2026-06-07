@@ -1338,7 +1338,7 @@ export function createActionHandler(coreModule) {
           const actionTypeName = game.i18n.localize(tah.actions[actionTypeId]);
           const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${itemData.name}`;
           const img = coreModule.api.Utils.getImage(itemData);
-          const tooltip = itemData.name;
+          const tooltip = this.#getItemTooltip(itemData);
           const {icon1, icon2, icon3} = this.#getItemIcons(itemData);
 
           const info1 = {
@@ -1455,6 +1455,14 @@ export function createActionHandler(coreModule) {
       const noCondition = '<i class="far fa-circle"></i>';
 
       return effect ? hasCondition : noCondition;
+    }
+
+    #getItemTooltip(itemData) {
+      const description = (itemData.type === 'talent' || itemData.type === 'spell') ? itemData.system.description?.value : null;
+      if (!description) return itemData.name;
+      const regex = /@[a-zA-Z]+\[[a-zA-Z0-9._-]+]{([^}]+)}/g;
+      const regexShort = /@[a-zA-Z]+\[([a-zA-Z0-9._-]+)](?!{)/g;
+      return `<h2>${itemData.name}</h2>` + description.replaceAll(regex, '<strong>$1</strong>').replaceAll(regexShort, '<strong>$1</strong>');
     }
 
     /**

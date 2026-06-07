@@ -15,6 +15,7 @@ Token Action HUD WFRP4e is a repositionable HUD of actions for a selected token 
 ## Features
 - Make rolls directly from the HUD instead of opening your character sheet.
 - Use items from the HUD or right-click an action to open a context menu with quick access to item sheets.
+- Hover over Talents and Spells to read their description without opening the item sheet.
 - Fix and Damage your Armour and Weapons.
 - Easily trigger Manual Effect Scripts.
 - Make quick Blind GM rolls.
