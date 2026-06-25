@@ -1,0 +1,117 @@
+{
+  "tokenActionHud": {
+    "wfrp4e": {
+      "advantage": "Vorteil",
+      "ammunition": "Munition",
+      "armour": "Rüstung",
+      "basic": "Basis",
+      "character": "Charakter",
+      "characteristic": "Attribut",
+      "characteristics": "Attribute",
+      "combat": "Kampf",
+      "condition": "Zustand",
+      "conditions": "Zustände",
+      "consumable": "Verbrauchsmaterial",
+      "consumables": "Verbrauchsmaterialien",
+      "container": "Behälter",
+      "containers": "Behälter",
+      "extendedTest": "Erweiterter Wurf",
+      "extendedTests": "Erweiterte Würfe",
+      "grimoire": "Grimoire",
+      "grimoires": "Grimoires",
+      "inventory": "Inventar",
+      "item": "Item",
+      "magic": "Magie",
+      "prayer": "Gebete",
+      "prayersBlessing": "Segnung",
+      "prayersBlessings": "Segnungen",
+      "prayersMiracle": "Wunder",
+      "prayersMiracles": "Wunder",
+      "skill": "Fähigkeit",
+      "skills": "Fähigkeiten",
+      "skillsAdvanced": "Ausbaufähigkeiten",
+      "skillsBasic": "Grundfähigkeiten",
+      "spell": "Zauber",
+      "spells": "Zauber",
+      "spellsArcane": "Arkane Zauber",
+      "spellsPetty": "Niedere Magie",
+      "systemEffect": "System Effekt",
+      "systemEffects": "System Effekte",
+      "talent": "Talent",
+      "talents": "Talente",
+      "trait": "Eigenschaft",
+      "traits": "Eigenschaften",
+      "trapping": "Ausrüstung",
+      "trappings": "Ausrüstungen",
+      "weapon": "Waffe",
+      "weapons": "Waffen",
+
+      "actions": {
+        "rollInitiative": "Würfle für Initiative",
+        "makeItemPile": "In Item Stapel umwandeln",
+        "makeItemPiles": "In Item Stapel umwandeln",
+        "revertItemPile": "Von Item Stapel zurückkehren",
+        "revertItemPiles": "Von Item Stapel zurückkehren",
+        "toggleItemPiles": "Item Stapel umschalten",
+        "toggleDisposition": "Disposition umschalten",
+        "checkCareer": "Überprüfe Karrierenfortschritt",
+        "checkEquipment": "Überprüfe Ausrüstung",
+        "restRecover": "Ausruhen und Erholen",
+        "incomeRoll": "Würfle für Einnahmen",
+        "increaseAdvantage": "Erhöhe Vorteile",
+        "decreaseAdvantage": "Verringere Vorteile",
+        "showHelp": "Hilfe",
+        "showHelpTooltip": "Zeige TAH Hilfe",
+
+        "awardXP": {
+          "awardXP": "EP vergeben",
+          "DialogTitle": "",
+          "Amount": "Menge",
+          "Reason": "Grund",
+          "Award": "Vergabe",
+          "XPNaN": "EP müssen eine Zahl sein!",
+          "ReasonEmpty": "Grund darf nicht leer sein!"
+        }
+      },
+
+      "tooltips": {
+        "AP": "Rüstungspunkte",
+        "CN": "Zauberwert",
+        "ChannellingSL": "Kanalisierungs EG",
+        "CharacteristicValue": "Attributswert",
+        "ConditionRating": "Zustandswert",
+        "Encumbrance": "Traglast",
+        "ExtendedTestTarget": "Momentaner EG / Ziel EG",
+        "HighestAP": "Höchste RP",
+        "Quantity": "Menge",
+        "Shield": "Schild",
+        "Skill": "Tested Skill",
+        "SpellDamage": "Zauberschaden",
+        "TB": "Widerstandsbonus",
+        "TestTarget": "Probenziel",
+        "WeaponDamage": "Waffenschaden"
+      }    
+    },
+
+    "Help": {
+      "Title": "Token Action HUD WFRP4e — Hilfe",
+      "Tabs": {
+        "Wiki": "TAH Core Wiki"
+      },
+      "Mods": {
+        "CTRL": "STRG",
+        "SHIFT": "SHIFT",
+        "ALT": "ALT"
+      },
+      "Header": {
+        "ModuleOn": "Modul auf Foundry VTT",
+        "ProjectOn": "Projekt auf GitHub",
+        "CheckOtherModules": "Such auf meinem FVTT Profil für andere Module",
+        "CoreSettings": "TAH Core Einstellungen",
+        "Settings": "TAH WFRP4e Einstellungen"
+      },
+      "LoadingWiki": "Lädt Wiki…",
+      "Action": "Aktion"
+    }
+  }
+}
