@@ -126,6 +126,7 @@ You can also [join my Discord – Foundry Workshop](https://discord.gg/XkTFv8DRD
 * Thanks to doumoku for providing Japanese translations
 * Thanks to silentmark for providing Polish translations
 * Thanks to LeRatierBretonnien for providing French translations
+* Thanks to isegal2001-lol for providing German translations
 
 ## License
 

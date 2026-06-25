@@ -10,6 +10,7 @@
 * Emptied RollHandler — all action logic now lives in ActionHandler `onClick` closures
 * Refactored ActionHandler, RollHandler, and SystemManager to factory functions
 * Talent and Spell actions now show the item description in their tooltip on hover
+* Added German localization (thanks to isegal2001-lol for providing translation)
 
 ## v3.2.1
 * Restored bypassing Test Dialog by holding ALT
