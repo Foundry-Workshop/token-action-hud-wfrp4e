@@ -1,6 +1,8 @@
 import {constants} from './constants.mjs';
 import Utility from './utility/Utility.mjs';
-import {SystemManagerWfrp4e} from "./SystemManager.mjs";
+import {createSystemManager} from "./SystemManager.mjs";
+import {createActionHandler} from "./ActionHandler.mjs";
+import {createRollHandler} from "./RollHandler.mjs";
 import GroupAdvantage from "./GroupAdvantage.js";
 import Help from "./apps/Help.mjs";
 
@@ -17,17 +19,44 @@ Hooks.once('ready', () => {
   Utility.notify(`${constants.moduleLabel} ready`, {consoleOnly: true});
 });
 
-Hooks.on('tokenActionHudCoreApiReady', async () => {
-  /**
-   * Return the SystemManager and requiredCoreModuleVersion to Token Action HUD Core
-   */
+Hooks.on('tokenActionHudCoreApiReady', async (coreModule) => {
+  const ActionHandler = createActionHandler(coreModule)
+  const RollHandler = createRollHandler(coreModule)
   const module = game.modules.get(constants.moduleId)
   module.api = {
     requiredCoreModuleVersion: constants.requiredCoreModuleVersion,
-    SystemManager: SystemManagerWfrp4e
+    SystemManager: createSystemManager(coreModule, ActionHandler, RollHandler)
   }
   Hooks.call('tokenActionHudSystemReady', module)
   Utility.notify(`${constants.moduleLabel} connected to TAH Core`, {consoleOnly: true});
+})
+
+Hooks.on('tokenActionHudCoreActionContextMenu', (items, hudManager) => {
+  const getAction = target => hudManager.actionHandler.availableActions?.get(target.dataset.actionId)
+
+  const itemTypes = new Set(['combatTrait', 'extendedTest', 'consumable', 'item', 'magic', 'skill', 'talent'])
+  const effectTypes = new Set(['testIndependentEffect', 'manualEffect'])
+
+  items.push({
+    label: game.i18n.localize('tokenActionHud.wfrp4e.context.openSheet'),
+    icon: "<i class='fa-solid fa-scroll'></i>",
+    visible: target => itemTypes.has(getAction(target)?.system?.actionType),
+    onClick: (event, target) => {
+      hudManager.actor.items.get(target.dataset.actionId)?.sheet.render(true)
+    }
+  })
+
+  items.push({
+    label: game.i18n.localize('tokenActionHud.wfrp4e.context.openParentSheet'),
+    icon: "<i class='fa-solid fa-scroll'></i>",
+    visible: target => effectTypes.has(getAction(target)?.system?.actionType),
+    onClick: async (event, target) => {
+      const effectUuid = getAction(target)?.system?.effectUuid
+      if (!effectUuid) return
+      const effect = await fromUuid(effectUuid)
+      effect?.parent?.sheet.render(true)
+    }
+  })
 })
 
 Hooks.on("wfrp4e:opposedTestResult", GroupAdvantage.opposedTestResult.bind(GroupAdvantage))

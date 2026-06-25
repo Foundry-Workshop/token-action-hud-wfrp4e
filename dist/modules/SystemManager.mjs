@@ -1,18 +1,14 @@
 import {DEFAULTS} from './defaults.mjs'
-import {ActionHandlerWfrp4e} from "./ActionHandler.mjs";
-import {RollHandlerWfrp4e} from "./RollHandler.mjs";
 import {registerSettingsCoreUpdate} from "./settings.mjs";
 import {constants} from "./constants.mjs";
 
-export let SystemManagerWfrp4e = null
-
-Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
+export function createSystemManager(coreModule, ActionHandler, RollHandler) {
 
   /**
    * Extends Token Action HUD Core's SystemManager class
    * @extends SystemManager
    */
-  SystemManagerWfrp4e = class SystemManagerWfrp4e extends coreModule.api.SystemManager {
+  return class SystemManagerWfrp4e extends coreModule.api.SystemManager {
     /**
      * Returns an instance of the ActionHandler to Token Action HUD Core
      * Called by Token Action HUD Core
@@ -20,7 +16,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @returns {ActionHandler} The ActionHandler instance
      */
     getActionHandler () {
-      return new ActionHandlerWfrp4e();
+      return new ActionHandler();
     }
 
     /**
@@ -49,7 +45,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       switch (rollHandlerId) {
         case 'wfrp4e':
         default:
-          rollHandler = new RollHandlerWfrp4e();
+          rollHandler = new RollHandler();
           break;
       }
 
@@ -103,4 +99,4 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       }
     }
   }
-})
+}

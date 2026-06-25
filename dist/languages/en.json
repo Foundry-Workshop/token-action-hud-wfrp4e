@@ -90,6 +90,11 @@
         }
       },
 
+      "context": {
+        "openSheet": "Open Item Sheet",
+        "openParentSheet": "Open Parent Item Sheet"
+      },
+
       "tooltips": {
         "AP": "Armour Points",
         "CN": "Spell's CN",

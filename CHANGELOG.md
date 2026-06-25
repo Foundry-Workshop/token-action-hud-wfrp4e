@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+* Migrated all actions from the deprecated `encodedValue` API to `onClick` closures (TAH Core 2.x)
+* Fixed System Effects group — actions were not being added to the group due to an empty group reference
+* Right-clicking actions now opens a context menu (TAH Core 2.1); "Open Item Sheet" and "Open Parent Item Sheet" entries available for relevant action types
+* Emptied RollHandler — all action logic now lives in ActionHandler `onClick` closures
+* Refactored ActionHandler, RollHandler, and SystemManager to factory functions
+* Talent and Spell actions now show the item description in their tooltip on hover
+
 ## v3.2.1
 * Restored bypassing Test Dialog by holding ALT
 * Allowed for Public Roll mode in the **Shift Roll Mode** setting.
