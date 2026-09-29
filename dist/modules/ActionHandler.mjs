@@ -962,7 +962,7 @@ export function createActionHandler(coreModule) {
           name: item.name,
           listName: `Container: ${item.name}`,
           type: 'system',
-          icon1: '<i class="fas fa-box-open></i>',
+          icon1: '<i class="fas fa-box-open"></i>',
           settings: {
             image: coreModule.api.Utils.getImage(item),
             style: 'tab'
