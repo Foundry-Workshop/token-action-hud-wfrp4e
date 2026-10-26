@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-* 
+* Fixed the HUD not rendering on Foundry v14 for actors carrying a container: the container icon had an unclosed `class` attribute, and v14 requires each application part to render a single root element
 
 ## v3.3.0
 * Migrated all actions from the deprecated `encodedValue` API to `onClick` closures (TAH Core 2.x)
